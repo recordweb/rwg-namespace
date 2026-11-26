@@ -1,0 +1,2837 @@
+<!doctype html><html lang="en">
+ <head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <title>RecordWeb Guide: Namespace Governance</title>
+  <meta content="CG-DRAFT" name="w3c-status">
+  <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
+  <meta content="Bikeshed version e0b165ae4, updated Mon Nov 2 15:16:49 2026 -0800" name="generator">
+  <link href="https://recordweb.github.io/rwg-namespace/" rel="canonical">
+  <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
+  <meta content="b0f5d975ec5b3765c9f2a0d8a5e38296d0536126" name="revision">
+  <meta content="dark light" name="color-scheme">
+  <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
+<style>/* Boilerplate: style-autolinks */
+.css.css, .property.property, .descriptor.descriptor {
+    color: var(--a-normal-text);
+    font-size: inherit;
+    font-family: inherit;
+}
+.css::before, .property::before, .descriptor::before {
+    content: "‘";
+}
+.css::after, .property::after, .descriptor::after {
+    content: "’";
+}
+.property, .descriptor {
+    /* Don't wrap property and descriptor names */
+    white-space: nowrap;
+}
+.type { /* CSS value <type> */
+    font-style: italic;
+}
+pre .property::before, pre .property::after {
+    content: "";
+}
+[data-link-type="property"]::before,
+[data-link-type="propdesc"]::before,
+[data-link-type="descriptor"]::before,
+[data-link-type="value"]::before,
+[data-link-type="function"]::before,
+[data-link-type="at-rule"]::before,
+[data-link-type="selector"]::before,
+[data-link-type="maybe"]::before {
+    content: "‘";
+}
+[data-link-type="property"]::after,
+[data-link-type="propdesc"]::after,
+[data-link-type="descriptor"]::after,
+[data-link-type="value"]::after,
+[data-link-type="function"]::after,
+[data-link-type="at-rule"]::after,
+[data-link-type="selector"]::after,
+[data-link-type="maybe"]::after {
+    content: "’";
+}
+
+[data-link-type].production::before,
+[data-link-type].production::after,
+.prod [data-link-type]::before,
+.prod [data-link-type]::after {
+    content: "";
+}
+
+[data-link-type=element],
+[data-link-type=element-attr] {
+    font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
+    font-size: .9em;
+}
+[data-link-type=element]::before { content: "<" }
+[data-link-type=element]::after  { content: ">" }
+
+[data-link-type=biblio] {
+    white-space: pre;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --selflink-text: black;
+        --selflink-bg: silver;
+        --selflink-hover-text: white;
+    }
+}
+</style>
+<style>/* Boilerplate: style-colors */
+/* Any --*-text not paired with a --*-bg is assumed to have a transparent bg */
+:root {
+    color-scheme: light dark;
+
+    --text: black;
+    --bg: white;
+
+    --unofficial-watermark: url(https://www.w3.org/StyleSheets/TR/2016/logos/UD-watermark);
+
+    --logo-bg: #1a5e9a;
+    --logo-active-bg: #c00;
+    --logo-text: white;
+
+    --tocnav-normal-text: #707070;
+    --tocnav-normal-bg: var(--bg);
+    --tocnav-hover-text: var(--tocnav-normal-text);
+    --tocnav-hover-bg: #f8f8f8;
+    --tocnav-active-text: #c00;
+    --tocnav-active-bg: var(--tocnav-normal-bg);
+
+    --tocsidebar-text: var(--text);
+    --tocsidebar-bg: #f7f8f9;
+    --tocsidebar-shadow: rgba(0,0,0,.1);
+    --tocsidebar-heading-text: hsla(203,20%,40%,.7);
+
+    --toclink-text: var(--text);
+    --toclink-underline: #3980b5;
+    --toclink-visited-text: var(--toclink-text);
+    --toclink-visited-underline: #054572;
+
+    --heading-text: #005a9c;
+
+    --hr-text: var(--text);
+
+    --algo-border: #def;
+
+    --del-text: red;
+    --del-bg: transparent;
+    --ins-text: #080;
+    --ins-bg: transparent;
+
+    --a-normal-text: #034575;
+    --a-normal-underline: #bbb;
+    --a-visited-text: var(--a-normal-text);
+    --a-visited-underline: #707070;
+    --a-hover-bg: rgba(75%, 75%, 75%, .25);
+    --a-active-text: #c00;
+    --a-active-underline: #c00;
+
+    --blockquote-border: silver;
+    --blockquote-bg: transparent;
+    --blockquote-text: currentcolor;
+
+    --issue-border: #e05252;
+    --issue-bg: #fbe9e9;
+    --issue-text: var(--text);
+    --issueheading-text: #831616;
+
+    --example-border: #e0cb52;
+    --example-bg: #fcfaee;
+    --example-text: var(--text);
+    --exampleheading-text: #574b0f;
+
+    --note-border: #52e052;
+    --note-bg: #e9fbe9;
+    --note-text: var(--text);
+    --noteheading-text: hsl(120, 70%, 30%);
+    --notesummary-underline: silver;
+
+    --assertion-border: #aaa;
+    --assertion-bg: #eee;
+    --assertion-text: black;
+
+    --advisement-border: orange;
+    --advisement-bg: #fec;
+    --advisement-text: var(--text);
+    --advisementheading-text: #b35f00;
+
+    --warning-border: red;
+    --warning-bg: hsla(40,100%,50%,0.95);
+    --warning-text: var(--text);
+
+    --amendment-border: #330099;
+    --amendment-bg: #F5F0FF;
+    --amendment-text: var(--text);
+    --amendmentheading-text: #220066;
+
+    --def-border: #8ccbf2;
+    --def-bg: #def;
+    --def-text: var(--text);
+    --defrow-border: #bbd7e9;
+
+    --datacell-border: silver;
+
+    --indexinfo-text: #707070;
+
+    --indextable-hover-text: black;
+    --indextable-hover-bg: #f7f8f9;
+
+    --outdatedspec-bg: rgba(0, 0, 0, .5);
+    --outdatedspec-text: black;
+    --outdated-bg: maroon;
+    --outdated-text: white;
+    --outdated-shadow: red;
+
+    --editedrec-bg: darkorange;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text: #ddd;
+        --bg: black;
+
+        --unofficial-watermark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cg fill='%23100808' transform='translate(200 200) rotate(-45) translate(-200 -200)' stroke='%23100808' stroke-width='3'%3E%3Ctext x='50%25' y='220' style='font: bold 70px sans-serif; text-anchor: middle; letter-spacing: 6px;'%3EUNOFFICIAL%3C/text%3E%3Ctext x='50%25' y='305' style='font: bold 70px sans-serif; text-anchor: middle; letter-spacing: 6px;'%3EDRAFT%3C/text%3E%3C/g%3E%3C/svg%3E");
+
+        --logo-bg: #1a5e9a;
+        --logo-active-bg: #c00;
+        --logo-text: white;
+
+        --tocnav-normal-text: #999;
+        --tocnav-normal-bg: var(--bg);
+        --tocnav-hover-text: var(--tocnav-normal-text);
+        --tocnav-hover-bg: #080808;
+        --tocnav-active-text: #f44;
+        --tocnav-active-bg: var(--tocnav-normal-bg);
+
+        --tocsidebar-text: var(--text);
+        --tocsidebar-bg: #080808;
+        --tocsidebar-shadow: rgba(255,255,255,.1);
+        --tocsidebar-heading-text: hsla(203,20%,40%,.7);
+
+        --toclink-text: var(--text);
+        --toclink-underline: #6af;
+        --toclink-visited-text: var(--toclink-text);
+        --toclink-visited-underline: #054572;
+
+        --heading-text: #8af;
+
+        --hr-text: var(--text);
+
+        --algo-border: #456;
+
+        --del-text: #f44;
+        --del-bg: transparent;
+        --ins-text: #4a4;
+        --ins-bg: transparent;
+
+        --a-normal-text: #6af;
+        --a-normal-underline: #555;
+        --a-visited-text: var(--a-normal-text);
+        --a-visited-underline: var(--a-normal-underline);
+        --a-hover-bg: rgba(25%, 25%, 25%, .2);
+        --a-active-text: #f44;
+        --a-active-underline: var(--a-active-text);
+
+        --borderedblock-bg: rgba(255, 255, 255, .05);
+
+        --blockquote-border: silver;
+        --blockquote-bg: var(--borderedblock-bg);
+        --blockquote-text: currentcolor;
+
+        --issue-border: #e05252;
+        --issue-bg: var(--borderedblock-bg);
+        --issue-text: var(--text);
+        --issueheading-text: hsl(0deg, 70%, 70%);
+
+        --example-border: hsl(50deg, 90%, 60%);
+        --example-bg: var(--borderedblock-bg);
+        --example-text: var(--text);
+        --exampleheading-text: hsl(50deg, 70%, 70%);
+
+        --note-border: hsl(120deg, 100%, 35%);
+        --note-bg: var(--borderedblock-bg);
+        --note-text: var(--text);
+        --noteheading-text: hsl(120, 70%, 70%);
+        --notesummary-underline: silver;
+
+        --assertion-border: #444;
+        --assertion-bg: var(--borderedblock-bg);
+        --assertion-text: var(--text);
+
+        --advisement-border: orange;
+        --advisement-bg: #222218;
+        --advisement-text: var(--text);
+        --advisementheading-text: #f84;
+
+        --warning-border: red;
+        --warning-bg: hsla(40,100%,20%,0.95);
+        --warning-text: var(--text);
+
+        --amendment-border: #330099;
+        --amendment-bg: #080010;
+        --amendment-text: var(--text);
+        --amendmentheading-text: #cc00ff;
+
+        --def-border: #8ccbf2;
+        --def-bg: #080818;
+        --def-text: var(--text);
+        --defrow-border: #136;
+
+        --datacell-border: silver;
+
+        --indexinfo-text: #aaa;
+
+        --indextable-hover-text: var(--text);
+        --indextable-hover-bg: #181818;
+
+        --outdatedspec-bg: rgba(255, 255, 255, .5);
+        --outdatedspec-text: black;
+        --outdated-bg: maroon;
+        --outdated-text: white;
+        --outdated-shadow: red;
+
+        --editedrec-bg: darkorange;
+    }
+    /* In case a transparent-bg image doesn't expect to be on a dark bg,
+       which is quite common in practice... */
+    img { background: white; }
+}
+</style>
+<style>/* Boilerplate: style-counters */
+body {
+    counter-reset: example figure issue table;
+}
+.issue {
+    counter-increment: issue;
+}
+.issue:not(.no-marker)::before {
+    content: "Issue " counter(issue);
+}
+
+.example {
+    counter-increment: example;
+}
+.example:not(.no-marker)::before {
+    content: "Example " counter(example);
+}
+.invalid.example:not(.no-marker)::before,
+.illegal.example:not(.no-marker)::before {
+    content: "Invalid Example " counter(example);
+}
+
+figcaption {
+    counter-increment: figure;
+}
+figcaption:not(.no-marker)::before {
+    content: "Figure " counter(figure) " ";
+}
+
+figure.table figcaption {
+    counter-increment: table;
+}
+figure.table figcaption:not(.no-marker)::before {
+    content: "Table " counter(table) " ";
+}
+</style>
+<style>/* Boilerplate: style-dfn-panel */
+:root {
+    --dfnpanel-bg: #ddd;
+    --dfnpanel-text: var(--text);
+    --dfnpanel-target-bg: #ffc;
+    --dfnpanel-target-outline: orange;
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --dfnpanel-bg: #222;
+        --dfnpanel-text: var(--text);
+        --dfnpanel-target-bg: #333;
+        --dfnpanel-target-outline: silver;
+    }
+}
+.dfn-panel {
+    position: absolute;
+    z-index: 35;
+    width: 20em;
+    width: 300px;
+    height: auto;
+    max-height: 500px;
+    overflow: auto;
+    margin: 0;
+    padding: 0.5em 0.75em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: var(--dfnpanel-bg);
+    color: var(--dfnpanel-text);
+    border: outset 0.2em;
+    white-space: normal; /* in case it's moved into a pre */
+    inset: auto;
+    position-area: bottom span-right;
+    position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+}
+.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
+.dfn-panel > b { display: block; }
+.dfn-panel a { color: var(--dfnpanel-text); }
+.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+.dfn-panel a:focus {
+    outline: 5px auto Highlight;
+    outline: 5px auto -webkit-focus-ring-color;
+}
+.dfn-panel > b + b { margin-top: 0.25em; }
+.dfn-panel ul { padding: 0 0 0 1em; list-style: none; }
+.dfn-panel li a {
+    max-width: calc(300px - 1.5em - 1em);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dfn-panel.activated {
+    display: inline-block;
+    position: fixed;
+    position-area: none;
+    top: auto;
+    right: auto;
+    left: 8px;
+    bottom: 2em;
+    margin: 0 auto;
+    max-width: calc(100vw - 1.5em - .4em - .5em);
+    max-height: 30vh;
+    transition: left 1s ease-out, bottom 1s ease-out;
+}
+
+.dfn-panel .link-item:hover {
+    text-decoration: underline;
+}
+.dfn-panel .link-item .copy-icon {
+    opacity: 0;
+}
+.dfn-panel .link-item:hover .copy-icon,
+.dfn-panel .link-item .copy-icon:focus {
+    opacity: 1;
+}
+
+.dfn-panel .copy-icon {
+    display: inline-block;
+    margin-right: 0.5em;
+    width: 0.85em;
+    height: 1em;
+    border-radius: 3px;
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+.dfn-panel .copy-icon .icon {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.dfn-panel .copy-icon .icon::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    background-color: #ccc;
+    opacity: 0.25;
+    transform: translate(3px, -3px);
+}
+
+.dfn-panel .copy-icon:active .icon::before {
+    opacity: 1;
+}
+
+.dfn-paneled { cursor: help; }
+.dfn-paneled > .dfn-panelbutton { all: unset; }
+
+.highlighted {
+    animation: target-fade 3s;
+}
+
+@keyframes target-fade {
+    from {
+        background-color: var(--dfnpanel-target-bg);
+        outline: 5px solid var(--dfnpanel-target-outline);
+    }
+    to {
+        color: var(--a-normal-text);
+        background-color: transparent;
+        outline: transparent;
+    }
+}
+</style>
+<style>/* Boilerplate: style-issues */
+a[href].issue-return {
+    float: right;
+    float: inline-end;
+    color: var(--issueheading-text);
+    font-weight: bold;
+    text-decoration: none;
+}
+</style>
+<style>/* Boilerplate: style-md-lists */
+/* This is a weird hack for me not yet following the commonmark spec
+   regarding paragraph and lists. */
+[data-md] > :first-child {
+    margin-top: 0;
+}
+[data-md] > :last-child {
+    margin-bottom: 0;
+}
+</style>
+<style>/* Boilerplate: style-ref-hints */
+:root {
+    --ref-hint-bg: #ddd;
+    --ref-hint-text: var(--text);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --ref-hint-bg: #222;
+        --ref-hint-text: var(--text);
+    }
+}
+
+.ref-hint {
+    display: inline-block;
+    position: absolute;
+    z-index: 35;
+    width: 20em;
+    width: 300px;
+    height: auto;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.5em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: var(--ref-hint-bg);
+    color: var(--ref-hint-text);
+    border: outset 0.2em;
+    white-space: normal; /* in case it's moved into a pre */
+}
+
+.ref-hint * { margin: 0; padding: 0; text-indent: 0; }
+
+.ref-hint ul { padding: 0 0 0 1em; list-style: none; }
+</style>
+<style>/* Boilerplate: style-selflinks */
+:root {
+    --selflink-text: white;
+    --selflink-bg: gray;
+    --selflink-hover-text: black;
+}
+.heading, .issue, .note, .example, li, dt {
+    position: relative;
+}
+a.self-link {
+    position: absolute;
+    top: 0;
+    left: calc(-1 * (3.5rem - 26px));
+    width: calc(3.5rem - 26px);
+    height: 2em;
+    text-align: center;
+    border: none;
+    transition: opacity .2s;
+    opacity: .5;
+}
+a.self-link:hover {
+    opacity: 1;
+}
+.heading > a.self-link {
+    font-size: 83%;
+}
+.example > a.self-link,
+.note > a.self-link,
+.issue > a.self-link {
+    /* These blocks are overflow:auto, so positioning outside
+       doesn't work. */
+    left: auto;
+    right: 0;
+}
+li > a.self-link {
+    left: calc(-1 * (3.5rem - 26px) - 2em);
+}
+dfn > a.self-link {
+    top: auto;
+    left: auto;
+    opacity: 0;
+    width: 1.5em;
+    height: 1.5em;
+    background: var(--selflink-bg);
+    color: var(--selflink-text);
+    font-style: normal;
+    transition: opacity .2s, background-color .2s, color .2s;
+}
+dfn:hover > a.self-link {
+    opacity: 1;
+}
+dfn > a.self-link:hover {
+    color: var(--selflink-hover-text);
+}
+
+a.self-link::before            { content: "¶"; }
+.heading > a.self-link::before { content: "§"; }
+dfn > a.self-link::before      { content: "#"; }
+</style>
+ <body class="h-entry">
+  <div class="head">
+   <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/">
+    <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72">
+</a>
+</p>
+   <h1 class="no-ref p-name" id="title">RecordWeb Guide: Namespace Governance</h1>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>,
+    <time class="dt-updated" datetime="2026-11-26">26 November 2026</time></p>
+   <details open>
+    <summary>More details about this document</summary>
+    <div data-fill-with="spec-metadata">
+     <dl>
+      <dt>This version:
+      <dd><a class="u-url" href="https://recordweb.github.io/rwg-namespace/">https://recordweb.github.io/rwg-namespace/</a>
+      <dt>Version History:
+      <dd><a href="https://github.com/recordweb/rwg-namespace/commits/main/index.bs">https://github.com/recordweb/rwg-namespace/commits/main/index.bs</a>
+      <dt>Issue Tracking:
+      <dd><a href="https://github.com/recordweb/rwg-namespace/issues/">GitHub</a>
+      <dd><a href="#issues-index">Inline In Spec</a>
+      <dt class="editor">Editor:
+      <dd class="editor h-card p-author vcard"><a class="email fn p-name u-email" href="mailto:nik@triebwerkstatt.ch">Nik Jenzer</a>
+      <dt>Version:
+      <dd>0.0.1
+     </dl>
+    </div>
+   </details>
+   <div data-fill-with="warning"></div>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2026 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply.
+</p>
+   <hr title="Separator for header">
+  </div>
+  <div class="p-summary" data-fill-with="abstract">
+   <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
+   <p>Dieser Report beschreibt, wie Organisationen mit Namensräumen von RecordWeb umgehen: wozu ein Namensraum dient, wer für ihn zuständig ist, wie er zugeschnitten wird, wie lange die Verantwortung dauert und was bei Übergängen und Störungen vorgesehen sein muss. Er ergänzt das RecordWeb Protocol (RWP), das die Auflösbarkeit technisch regelt, aber nicht die Zuständigkeit dafür. Der Report ist informativ.</p>
+  </div>
+  <h2 class="heading no-num no-ref no-toc settled" id="sotd"><span class="content">Status of this document</span></h2>
+  <div data-fill-with="status">
+   <p></p>
+  </div>
+  <div data-fill-with="at-risk"></div>
+  <nav data-fill-with="table-of-contents" id="toc">
+   <h2 class="no-num no-ref no-toc" id="contents">Table of Contents</h2>
+   <ol class="toc">
+    <li>
+     <a href="#purpose"><span class="secno">1</span> <span class="content">Zweck und Abgrenzung</span></a>
+     <ol class="toc">
+      <li><a href="#purpose-intro"><span class="secno">1.1</span> <span class="content">Zweck</span></a>
+      <li><a href="#status"><span class="secno">1.2</span> <span class="content">Status dieses Reports</span></a>
+      <li><a href="#relationship"><span class="secno">1.3</span> <span class="content">Verhältnis zu RWP, RWC und RWT</span></a>
+      <li><a href="#scope"><span class="secno">1.4</span> <span class="content">Abgrenzung</span></a>
+      <li><a href="#audience"><span class="secno">1.5</span> <span class="content">Zielgruppe und Beispiele</span></a>
+     </ol>
+    <li>
+     <a href="#principles"><span class="secno">2</span> <span class="content">Grundsätze</span></a>
+     <ol class="toc">
+      <li><a href="#p-unit"><span class="secno">2.1</span> <span class="content">Ein Namensraum ist ein Zuständigkeitsbereich</span></a>
+      <li><a href="#p-continuity"><span class="secno">2.2</span> <span class="content">Kontinuität kommt von der Organisation, nicht vom Identifier</span></a>
+      <li><a href="#p-opaque"><span class="secno">2.3</span> <span class="content">Der Namensraum sagt nichts über die Organisation</span></a>
+      <li><a href="#p-trust"><span class="secno">2.4</span> <span class="content">Auflösbarkeit ist kein Vertrauensnachweis</span></a>
+      <li><a href="#p-separation"><span class="secno">2.5</span> <span class="content">Rollen werden getrennt und schriftlich festgehalten</span></a>
+      <li><a href="#p-duration"><span class="secno">2.6</span> <span class="content">Die Dauer folgt dem Record, nicht dem Produkt</span></a>
+     </ol>
+    <li>
+     <a href="#terms"><span class="secno">3</span> <span class="content">Begriffe und Rollen</span></a>
+     <ol class="toc">
+      <li><a href="#terms-rwt"><span class="secno">3.1</span> <span class="content">Verhältnis zu RWT</span></a>
+      <li><a href="#tech-roles"><span class="secno">3.2</span> <span class="content">Technische Rollen und Funktionen (RWT)</span></a>
+      <li><a href="#org-roles"><span class="secno">3.3</span> <span class="content">Organisatorische Rollen (nur dieser Report)</span></a>
+      <li><a href="#delimitations"><span class="secno">3.4</span> <span class="content">Abgrenzungen</span></a>
+      <li><a href="#constellations"><span class="secno">3.5</span> <span class="content">Typische Konstellationen</span></a>
+      <li><a href="#global-local"><span class="secno">3.6</span> <span class="content">Global und lokal</span></a>
+      <li><a href="#liability"><span class="secno">3.7</span> <span class="content">Haftung</span></a>
+     </ol>
+    <li>
+     <a href="#tasks"><span class="secno">4</span> <span class="content">Aufgaben und Anforderungen</span></a>
+     <ol class="toc">
+      <li><a href="#tasks-responsibility"><span class="secno">4.1</span> <span class="content">Wer für die Auflösbarkeit einsteht</span></a>
+      <li><a href="#tasks-did-provider"><span class="secno">4.2</span> <span class="content">DID-Provider</span></a>
+      <li><a href="#tasks-namespace-provider"><span class="secno">4.3</span> <span class="content">Namensraum-Provider (GNR)</span></a>
+      <li><a href="#tasks-namespace-resolver"><span class="secno">4.4</span> <span class="content">Namensraum-Resolver</span></a>
+      <li><a href="#tasks-profiles"><span class="secno">4.5</span> <span class="content">Zuordnung zu Rollen und Profilen</span></a>
+      <li><a href="#tasks-operations"><span class="secno">4.6</span> <span class="content">Betriebliche Empfehlungen</span></a>
+     </ol>
+    <li>
+     <a href="#scope-namespace"><span class="secno">5</span> <span class="content">Zuschnitt eines Namensraums</span></a>
+     <ol class="toc">
+      <li><a href="#scope-unit"><span class="secno">5.1</span> <span class="content">Der Namensraum als Einheit der Verantwortung</span></a>
+      <li><a href="#scope-irreversible"><span class="secno">5.2</span> <span class="content">Der Zuschnitt lässt sich kaum korrigieren</span></a>
+      <li><a href="#scope-criteria"><span class="secno">5.3</span> <span class="content">Kriterien</span></a>
+      <li><a href="#scope-options"><span class="secno">5.4</span> <span class="content">Orientierungen im Vergleich</span></a>
+      <li><a href="#scope-number"><span class="secno">5.5</span> <span class="content">Wie viele Namensräume</span></a>
+      <li><a href="#scope-global-local"><span class="secno">5.6</span> <span class="content">Global oder lokal</span></a>
+      <li><a href="#scope-register"><span class="secno">5.7</span> <span class="content">Zuordnung festhalten</span></a>
+     </ol>
+    <li>
+     <a href="#gnr"><span class="secno">6</span> <span class="content">Registrierung und Verwendung des GNR</span></a>
+     <ol class="toc">
+      <li><a href="#gnr-purpose"><span class="secno">6.1</span> <span class="content">Wozu das GNR dient</span></a>
+      <li><a href="#gnr-prerequisites"><span class="secno">6.2</span> <span class="content">Voraussetzungen</span></a>
+      <li><a href="#gnr-entry"><span class="secno">6.3</span> <span class="content">Was eingetragen wird</span></a>
+      <li><a href="#gnr-decisions"><span class="secno">6.4</span> <span class="content">Entscheidungen vor der Registrierung</span></a>
+      <li><a href="#gnr-changes"><span class="secno">6.5</span> <span class="content">Änderungen am Eintrag</span></a>
+      <li><a href="#gnr-limits"><span class="secno">6.6</span> <span class="content">Was das GNR nicht leistet</span></a>
+      <li><a href="#gnr-recordweb"><span class="secno">6.7</span> <span class="content">Der RecordWeb-Namensraum</span></a>
+      <li><a href="#gnr-documentation"><span class="secno">6.8</span> <span class="content">Dokumentation der Registrierung</span></a>
+     </ol>
+    <li>
+     <a href="#duration"><span class="secno">7</span> <span class="content">Dauer der Verantwortung</span></a>
+     <ol class="toc">
+      <li><a href="#duration-principle"><span class="secno">7.1</span> <span class="content">Grundsatz</span></a>
+      <li><a href="#duration-start"><span class="secno">7.2</span> <span class="content">Beginn</span></a>
+      <li><a href="#duration-derivation"><span class="secno">7.3</span> <span class="content">Bestimmung der Dauer</span></a>
+      <li><a href="#duration-end"><span class="secno">7.4</span> <span class="content">Ende der Frist beendet die Verantwortung nicht</span></a>
+      <li><a href="#duration-handover"><span class="secno">7.5</span> <span class="content">Ende der Verantwortung</span></a>
+      <li><a href="#duration-funding"><span class="secno">7.6</span> <span class="content">Finanzierung</span></a>
+      <li><a href="#duration-documentation"><span class="secno">7.7</span> <span class="content">Dokumentation</span></a>
+     </ol>
+    <li>
+     <a href="#transitions"><span class="secno">8</span> <span class="content">Übergänge</span></a>
+     <ol class="toc">
+      <li><a href="#transitions-principle"><span class="secno">8.1</span> <span class="content">Was gleich bleibt und was sich ändert</span></a>
+      <li><a href="#transitions-scope"><span class="secno">8.2</span> <span class="content">Was übergeben werden muss</span></a>
+      <li><a href="#transitions-system"><span class="secno">8.3</span> <span class="content">Systemwechsel und Anbieterwechsel</span></a>
+      <li><a href="#transitions-archive"><span class="secno">8.4</span> <span class="content">Überführung ins Archiv</span></a>
+      <li><a href="#transitions-owner"><span class="secno">8.5</span> <span class="content">Eigentümerwechsel</span></a>
+      <li><a href="#transitions-others"><span class="secno">8.6</span> <span class="content">Wirkung auf andere Namensräume</span></a>
+     </ol>
+    <li>
+     <a href="#disruptions"><span class="secno">9</span> <span class="content">Störungen und Ausfall</span></a>
+     <ol class="toc">
+      <li><a href="#disruptions-principle"><span class="secno">9.1</span> <span class="content">Grundsatz</span></a>
+      <li><a href="#disruptions-cases"><span class="secno">9.2</span> <span class="content">Fälle im Überblick</span></a>
+      <li><a href="#disruptions-preparation"><span class="secno">9.3</span> <span class="content">Voraussetzungen für eine geordnete Übernahme</span></a>
+      <li><a href="#disruptions-discontinuation"><span class="secno">9.4</span> <span class="content">Produkteinstellung</span></a>
+      <li><a href="#disruptions-outage"><span class="secno">9.5</span> <span class="content">Betriebsausfall</span></a>
+      <li><a href="#disruptions-dissolution"><span class="secno">9.6</span> <span class="content">Auflösung der Organisation</span></a>
+      <li><a href="#disruptions-keys"><span class="secno">9.7</span> <span class="content">Kompromittierter oder verlorener Schlüssel</span></a>
+      <li><a href="#disruptions-endpoint"><span class="secno">9.8</span> <span class="content">Falscher Resolver-Endpunkt</span></a>
+      <li><a href="#disruptions-gnr"><span class="secno">9.9</span> <span class="content">Ausfall des GNR</span></a>
+      <li><a href="#disruptions-plan"><span class="secno">9.10</span> <span class="content">Notfallplan</span></a>
+     </ol>
+    <li>
+     <a href="#procurement"><span class="secno">10</span> <span class="content">Was eine Beschaffung klären muss</span></a>
+     <ol class="toc">
+      <li><a href="#procurement-purpose"><span class="secno">10.1</span> <span class="content">Zweck und Verwendung</span></a>
+      <li><a href="#procurement-profile"><span class="secno">10.2</span> <span class="content">Auswirkung auf die Wahl des Profils</span></a>
+      <li><a href="#procurement-owner"><span class="secno">10.3</span> <span class="content">A. Klärungen der beschaffenden Stelle</span></a>
+      <li><a href="#procurement-supplier"><span class="secno">10.4</span> <span class="content">B. Fragen an den Lieferanten</span></a>
+      <li><a href="#procurement-contract"><span class="secno">10.5</span> <span class="content">C. Vertragliche Regelungen</span></a>
+      <li><a href="#procurement-use"><span class="secno">10.6</span> <span class="content">Verwendung der Checkliste</span></a>
+     </ol>
+    <li>
+     <a href="#annex-rwp"><span class="secno"></span> <span class="content">Anhang A: Zuordnung zu RWP und RWT</span></a>
+     <ol class="toc">
+      <li><a href="#annex-rwp-chapters"><span class="secno"></span> <span class="content">A.1 Kapitel und RWP-Abschnitte</span></a>
+      <li><a href="#annex-rwp-terms"><span class="secno"></span> <span class="content">A.2 Begriffe</span></a>
+      <li><a href="#annex-rwp-own"><span class="secno"></span> <span class="content">A.3 Eigene Empfehlungen des Guides</span></a>
+     </ol>
+    <li><a href="#annex-open"><span class="secno"></span> <span class="content">Anhang B: Offene Punkte</span></a>
+    <li>
+     <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
+     <ol class="toc">
+      <li><a href="#index-defined-here"><span class="secno"></span> <span class="content">Terms defined by this specification</span></a>
+      <li><a href="#index-defined-elsewhere"><span class="secno"></span> <span class="content">Terms defined by reference</span></a>
+     </ol>
+    <li>
+     <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
+     <ol class="toc">
+      <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
+      <li><a href="#informative"><span class="secno"></span> <span class="content">Non-Normative References</span></a>
+     </ol>
+    <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
+   </ol>
+  </nav>
+  <main>
+   <div class="copyright">
+    <p>Copyright © 2026 the Contributors to the RecordWeb Guide: Namespace Governance, published by the <a href="https://www.w3.org/community/recordweb/">RecordWeb Community Group</a> under the <a href="https://www.w3.org/community/about/process/cla/">W3C Community Contributor License Agreement (CLA)</a>. A human-readable <a href="https://www.w3.org/community/about/process/cla-deed/">summary</a> is available.</p>
+   </div>
+   <h2 class="heading settled" data-level="1" id="purpose"><span class="secno">1. </span><span class="content">Zweck und Abgrenzung</span><a class="self-link" href="#purpose"></a></h2>
+   <h3 class="heading settled" data-level="1.1" id="purpose-intro"><span class="secno">1.1. </span><span class="content">Zweck</span><a class="self-link" href="#purpose-intro"></a></h3>
+   <p>Ein Record-Identifier soll das System überdauern, in dem der Record entstanden ist. RWP macht diese Identifier technisch auflösbar: Der <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#namespace%E2%91%A0" id="ref-for-namespace%E2%91%A0">Namensraum</a> ist Teil der DID, und aus ihm ergibt sich, welcher Stelle die Auflösung zufällt (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §4 und §16).</p>
+   <p>Die technische Auflösbarkeit ist damit gelöst. Nicht gelöst ist, wer dafür zuständig ist, dass ein Namensraum über die Zeit tatsächlich aufgelöst wird. Ein Protokoll kann diese Zuständigkeit nicht herstellen. Dieser Report beschreibt, was Organisationen dafür klären und vorsehen sollten.</p>
+   <h3 class="heading settled" data-level="1.2" id="status"><span class="secno">1.2. </span><span class="content">Status dieses Reports</span><a class="self-link" href="#status"></a></h3>
+   <p>Dieser Report ist informativ. Er enthält keine Anforderungen im Sinne von RFC 2119. Normative Anforderungen sind in <a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a> definiert. Aussagen dieses Reports, die als Empfehlung gekennzeichnet sind, sind Orientierungen und keine Konformitätsbedingungen.</p>
+   <p>Die Begriffe dieses Reports sind in <a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a> definiert, soweit sie in mehr als einem RecordWeb-Report vorkommen. Begriffe, die nur hier gebraucht werden, sind in <a href="#terms">§ 3 Begriffe und Rollen</a> definiert. Der deutsche Text ist die erste Fassung. Eine englische Fassung folgt.</p>
+   <h3 class="heading settled" data-level="1.3" id="relationship"><span class="secno">1.3. </span><span class="content">Verhältnis zu RWP, RWC und RWT</span><a class="self-link" href="#relationship"></a></h3>
+   <ul>
+    <li data-md>
+     <p><a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a> legt fest, wie ein Namensraum aufgebaut ist, wie er aufgelöst wird und wie das GNR funktioniert. Dieser Report ändert nichts daran.</p>
+    <li data-md>
+     <p><a data-link-type="biblio" href="#biblio-rwc" title="RecordWeb Concept (RWC)">[RWC]</a> beschreibt das Konzept. Zur Verantwortung für Namensräume liegt ein Kapitelvorschlag zur Namespace Stewardship in Diskussion. Dieser Report vertieft die Frage und soll dem Kapitelvorschlag nicht widersprechen.</p>
+    <li data-md>
+     <p><a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a> ist die Quelle der gemeinsamen Begriffe.</p>
+    <li data-md>
+     <p>Die in Diskussion befindlichen Profile zur Auflösbarkeit von DIDs (rwp#59) unterscheiden zwischen einem Profil ohne Abhängigkeit von der Zuständigkeit für den Namensraum (Identifier) und einem Profil mit dieser Abhängigkeit (Resolvable). Die Fragen in <a href="#procurement">§ 10 Was eine Beschaffung klären muss</a> sollten geklärt sein, bevor das zweite Profil als Anforderung in einer Beschaffung verwendet wird.</p>
+   </ul>
+   <h3 class="heading settled" data-level="1.4" id="scope"><span class="secno">1.4. </span><span class="content">Abgrenzung</span><a class="self-link" href="#scope"></a></h3>
+   <p>Dieser Report behandelt nicht:</p>
+   <ul>
+    <li data-md>
+     <p>Vertrauen in Agenten, Namensräume oder Resolver-Betreiber. Dies ist Sache der Vertrauensrichtlinie der prüfenden Stelle (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.4).</p>
+    <li data-md>
+     <p>Zugriffssteuerung auf Records und DID-Dokumente (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §18).</p>
+    <li data-md>
+     <p>Löschung und Löschregime (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §14). Sie werden nur insoweit behandelt, als sie die Auflösbarkeit betreffen.</p>
+    <li data-md>
+     <p>Die rechtliche Ausgestaltung von Haftung und Verträgen. Der Report benennt Entscheidungspunkte, legt aber keine Lösung fest.</p>
+    <li data-md>
+     <p>Produktempfehlungen.</p>
+    <li data-md>
+     <p>Die Governance des GNR-Netzwerks (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.9). Sie regelt, wie Organisationen ins GNR aufgenommen werden und wie Einträge geändert werden. Dieser Guide behandelt die Governance auf der Ebene eines einzelnen Namensraums: wer für ihn zuständig ist und wie die Zuständigkeit über die Zeit gesichert wird.</p>
+   </ul>
+   <h3 class="heading settled" data-level="1.5" id="audience"><span class="secno">1.5. </span><span class="content">Zielgruppe und Beispiele</span><a class="self-link" href="#audience"></a></h3>
+   <p>Der Report richtet sich an Organisationen, die RecordWeb einführen oder beschaffen (Records Management, Archiv, IT-Betrieb, Beschaffung) sowie an Hersteller und Dienstleister. Der Text ist allgemein gehalten. Beispiele aus der Schweizer Verwaltung sind ausdrücklich als solche gekennzeichnet, etwa «(Beispiel Bund: …)».</p>
+   <h2 class="heading settled" data-level="2" id="principles"><span class="secno">2. </span><span class="content">Grundsätze</span><a class="self-link" href="#principles"></a></h2>
+   <h3 class="heading settled" data-level="2.1" id="p-unit"><span class="secno">2.1. </span><span class="content">Ein Namensraum ist ein Zuständigkeitsbereich</span><a class="self-link" href="#p-unit"></a></h3>
+   <p>Technisch ist ein <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#namespace%E2%91%A0" id="ref-for-namespace%E2%91%A0①">Namensraum</a> der Geltungsbereich, in dem eine <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#record-id%E2%91%A0" id="ref-for-record-id%E2%91%A0">recordId</a> eindeutig ist und die DID aufgelöst wird. Organisatorisch ist er die Einheit, für die jemand die Auflösbarkeit verantwortet. Erst die organisatorische Seite macht den Namensraum für die Praxis relevant.</p>
+   <h3 class="heading settled" data-level="2.2" id="p-continuity"><span class="secno">2.2. </span><span class="content">Kontinuität kommt von der Organisation, nicht vom Identifier</span><a class="self-link" href="#p-continuity"></a></h3>
+   <p>Ein Identifier bleibt nicht allein deshalb auflösbar, weil er permanent ist. Dazu braucht es eine Organisation, die für den Namensraum und für die Auflösung der Identifier darin zuständig bleibt. Ein Systemwechsel ändert die Endpunkte, nicht die Identifier (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §3.2 und §4.1).</p>
+   <h3 class="heading settled" data-level="2.3" id="p-opaque"><span class="secno">2.3. </span><span class="content">Der Namensraum sagt nichts über die Organisation</span><a class="self-link" href="#p-opaque"></a></h3>
+   <p>Ein global auflösbarer Namensraum ist eine opake UUID und trägt keine Organisations-, Orts- oder Routinginformation (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §4.3). Die Zuordnung zwischen Namensraum, Eigentümer und Aufgabe muss deshalb ausserhalb des Identifiers geführt werden, etwa in den Metadaten (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §5.2) und in der Dokumentation der Organisation.</p>
+   <h3 class="heading settled" data-level="2.4" id="p-trust"><span class="secno">2.4. </span><span class="content">Auflösbarkeit ist kein Vertrauensnachweis</span><a class="self-link" href="#p-trust"></a></h3>
+   <p>Die erfolgreiche Auflösung eines Namensraums beweist nicht, dass die DID existiert, dass der Record zugänglich ist oder dass der Registrant die Organisation ist, die er zu sein behauptet (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.4). Auch die Registrierung im GNR begründet keine Vertrauensstellung (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.4).</p>
+   <h3 class="heading settled" data-level="2.5" id="p-separation"><span class="secno">2.5. </span><span class="content">Rollen werden getrennt und schriftlich festgehalten</span><a class="self-link" href="#p-separation"></a></h3>
+   <p>Wer entscheidet, wer betreibt und wer die Software liefert, sind verschiedene Fragen. Oft laufen Resolver und Record-Endpunkte auf der Infrastruktur eines Herstellers. Die Rollen verschwimmen dann, wenn sie nicht vorher schriftlich getrennt wurden. Die Lieferung eines Produkts macht den Hersteller nicht zum Eigentümer des Namensraums.</p>
+   <h3 class="heading settled" data-level="2.6" id="p-duration"><span class="secno">2.6. </span><span class="content">Die Dauer folgt dem Record, nicht dem Produkt</span><a class="self-link" href="#p-duration"></a></h3>
+   <p>Die Verantwortung für einen Namensraum dauert so lange, wie die darin enthaltenen Identifier auflösbar sein sollen. Sie richtet sich nach den Aufbewahrungsfristen der Records und nicht nach Vertrags- oder Systemlaufzeiten (siehe <a href="#duration">§ 7 Dauer der Verantwortung</a>).</p>
+   <h2 class="heading settled" data-level="3" id="terms"><span class="secno">3. </span><span class="content">Begriffe und Rollen</span><a class="self-link" href="#terms"></a></h2>
+   <h3 class="heading settled" data-level="3.1" id="terms-rwt"><span class="secno">3.1. </span><span class="content">Verhältnis zu RWT</span><a class="self-link" href="#terms-rwt"></a></h3>
+   <p>Technische Begriffe und Rollen stammen aus <a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a>. Sie werden hier verwendet und nicht neu definiert. Die organisatorischen Begriffe in <a href="#org-roles">§ 3.3 Organisatorische Rollen (nur dieser Report)</a> gelten vorerst nur für diesen Report. Sie werden erst dann in <a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a> aufgenommen, wenn weitere Reports sie verwenden.</p>
+   <h3 class="heading settled" data-level="3.2" id="tech-roles"><span class="secno">3.2. </span><span class="content">Technische Rollen und Funktionen (RWT)</span><a class="self-link" href="#tech-roles"></a></h3>
+   <p>Eine <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#role" id="ref-for-role">Rolle</a> ist die Verantwortung einer Implementierung. Eine Funktion ist eine Operation, die eine Komponente ausführt. «Provider» bezeichnet die Rolle, «Resolver» die Komponente, die auflöst.</p>
+   <table class="data">
+    <thead>
+     <tr>
+      <th>Gegenstand
+      <th>Rolle (stellt bereit)
+      <th>Funktion (löst auf)
+  
+    <tbody>
+     <tr>
+      <td>Namensraum
+      <td><a data-link-type="dfn" href="https://recordweb.github.io/rwt/#namespace-provider" id="ref-for-namespace-provider">Namensraum-Provider</a>
+      <td><a data-link-type="dfn" href="https://recordweb.github.io/rwt/#namespace-resolution" id="ref-for-namespace-resolution">Namensraum-Auflösung</a> durch einen <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#namespace-resolver" id="ref-for-namespace-resolver">Namensraum-Resolver</a>
+    
+     <tr>
+      <td>DID
+      <td><a data-link-type="dfn" href="https://recordweb.github.io/rwt/#did-provider" id="ref-for-did-provider">DID-Provider</a>
+      <td><a data-link-type="dfn" href="https://recordweb.github.io/rwt/#did-resolution" id="ref-for-did-resolution">DID-Auflösung</a> durch einen <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#did-resolver" id="ref-for-did-resolver">DID-Resolver</a>
+
+   </table>
+   <ul>
+    <li data-md>
+     <p>Der <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#namespace-provider" id="ref-for-namespace-provider①">Namensraum-Provider</a> stellt für einen global auflösbaren Namensraum die Information zur Verfügung, die zum zuständigen DID-Provider führt. Er liefert weder DID-Dokumente noch Records. Diese Rolle nimmt das GNR wahr (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2).</p>
+    <li data-md>
+     <p>Der <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#did-provider" id="ref-for-did-provider①">DID-Provider</a> liefert die DID-Dokumente eines Namensraums und bewahrt jede DID-Dokument-Version auf, solange die DID auflösbar ist.</p>
+    <li data-md>
+     <p>Der <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#custodian%E2%91%A0" id="ref-for-custodian%E2%91%A0">Verwahrer</a> bewahrt Records und ihre Versionen auf und macht sie abrufbar. Die DID-Dokumente verweisen über <code>recordEndpoint</code> auf den Verwahrer. DID-Provider und Verwahrer können daher verschiedene Parteien sein.</p>
+   </ul>
+   <p class="note" role="note"><span class="marker">Note:</span> <a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a> 0.0.17 nennt die Rolle des DID-Providers noch «resolver». Die Anpassung ist in einem Issue erfasst.</p>
+   <h3 class="heading settled" data-level="3.3" id="org-roles"><span class="secno">3.3. </span><span class="content">Organisatorische Rollen (nur dieser Report)</span><a class="self-link" href="#org-roles"></a></h3>
+   <p>Die folgenden Begriffe bezeichnen Parteien und nicht Rollen von Implementierungen.</p>
+   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="Eigentümer|Namensraum-Eigentümer|namespace owner" data-noexport id="eigentmer">Eigentümer</dfn>: die Organisation, die für einen Namensraum und die darin vergebenen Identifier rechenschaftspflichtig ist. Der Eigentümer entscheidet über Zuschnitt, Dauer der Verantwortung, Übergänge und die Wahl des Betreibers. Bei einem global auflösbaren Namensraum ist der Eigentümer im GNR als Registrant eingetragen (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.7).</p>
+   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="Betreiber|Namensraum-Betreiber|namespace operator" data-noexport id="betreiber">Betreiber</dfn>: die Partei, die für einen Namensraum die Rolle <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#did-provider" id="ref-for-did-provider②">DID-Provider</a> oder die Rolle <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#custodian%E2%91%A0" id="ref-for-custodian%E2%91%A0①">Verwahrer</a> ausübt, also den DID-Resolver und die Record-Endpunkte betreibt. Der Betreiber kann der Eigentümer oder ein Dienstleister sein.</p>
+   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="Hersteller|product vendor" data-noexport id="hersteller">Hersteller</dfn>: der Lieferant der Software, mit der ein Namensraum bedient wird. Ein Hersteller ist nicht allein durch die Lieferung eines Produkts Eigentümer eines Namensraums. Er kann zugleich Betreiber sein, etwa wenn er die Software als Dienst anbietet.</p>
+   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="registrant">Registrant</dfn>: die Partei, die einen Namensraum im GNR eingetragen hat (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.7). Wer für einen Eigentümer stellvertretend registrieren darf, regelt das Governance-Framework des GNR (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.9).</p>
+   <h3 class="heading settled" data-level="3.4" id="delimitations"><span class="secno">3.4. </span><span class="content">Abgrenzungen</span><a class="self-link" href="#delimitations"></a></h3>
+   <ul>
+    <li data-md>
+     <p>Der Eigentümer eines Namensraums ist nicht der Eigentümer eines Records. Das Feld <code>metadata.governance.owner</code> bezeichnet die für einen einzelnen Record verantwortliche Person oder Organisationseinheit (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §5.2).</p>
+    <li data-md>
+     <p>Der Inhaber eines Signaturschlüssels ist nicht ohne Weiteres der Eigentümer. Die Signatur belegt, wer eine Version autorisiert hat, nicht wer für den Namensraum zuständig ist (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §5.2 und §7.7).</p>
+    <li data-md>
+     <p>Der Betreiber ist nicht automatisch der Verwahrer, und der Hersteller ist nicht der Eigentümer.</p>
+   </ul>
+   <h3 class="heading settled" data-level="3.5" id="constellations"><span class="secno">3.5. </span><span class="content">Typische Konstellationen</span><a class="self-link" href="#constellations"></a></h3>
+   <p>Die Rollen können in einer Organisation zusammenfallen oder auf mehrere Parteien verteilt sein. Die Tabelle zeigt typische Konstellationen. Jede Konstellation verlangt eine andere schriftliche Trennung der Rollen.</p>
+   <table class="data">
+    <thead>
+     <tr>
+      <th>Konstellation
+      <th>Eigentümer
+      <th>Betreiber
+      <th>Hersteller
+      <th>Worauf zu achten ist
+  
+    <tbody>
+     <tr>
+      <td>Eigenbetrieb
+      <td>Organisation
+      <td>dieselbe Organisation
+      <td>extern
+      <td>Die Software kann wechseln, der Namensraum bleibt.
+    
+     <tr>
+      <td>Externer Betreiber
+      <td>Organisation
+      <td>Dienstleister
+      <td>Hersteller oder Dienstleister
+      <td>Ausstieg, Export und Kosten nach Vertragsende sind vorab zu regeln.
+    
+     <tr>
+      <td>Betrieb durch den Hersteller
+      <td>Organisation
+      <td>Hersteller
+      <td>Hersteller
+      <td>Die Rollen verschwimmen leicht. Die Eigentümerschaft muss ausdrücklich bei der Organisation liegen.
+    
+     <tr>
+      <td>Gemeinsamer Betreiber
+      <td>mehrere Organisationen
+      <td>eine Stelle
+      <td>beliebig
+      <td>Jeder Namensraum hat einen eigenen Eigentümer, auch wenn ein Resolver mehrere Namensräume bedient. (Beispiel Bund: eine zentrale Stelle betreibt für mehrere Ämter.)
+
+   </table>
+   <h3 class="heading settled" data-level="3.6" id="global-local"><span class="secno">3.6. </span><span class="content">Global und lokal</span><a class="self-link" href="#global-local"></a></h3>
+   <p>Ein <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#namespace%E2%91%A0" id="ref-for-namespace%E2%91%A0②">Namensraum</a> ist global auflösbar oder lokal. Die Unterscheidung bestimmt, wer für die Auflösbarkeit sorgen muss (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §4.3 und §4.4).</p>
+   <table class="data">
+    <thead>
+     <tr>
+      <th>
+      <th>Global auflösbar
+      <th>Lokal
+  
+    <tbody>
+     <tr>
+      <td>Form
+      <td>UUID Version 4, opak
+      <td>jede andere Form
+    
+     <tr>
+      <td>GNR
+      <td>registrierbar und über das GNR auflösbar
+      <td>darf nicht im GNR registriert oder darüber aufgelöst werden
+    
+     <tr>
+      <td>Namensraum-Provider
+      <td>GNR
+      <td>keiner
+    
+     <tr>
+      <td>Auflösung
+      <td>über das GNR zum DID-Provider
+      <td>nur mit lokalem Wissen, lokaler Konfiguration oder einem lokalen Resolver
+    
+     <tr>
+      <td>Verantwortung des Eigentümers
+      <td>Eintrag im GNR und DID-Provider
+      <td>zusätzlich Bekanntmachung und Pflege der lokalen Konfiguration
+
+   </table>
+   <p>Ein Client darf aus einer lokalen DID keinen Resolver-Endpunkt ableiten.</p>
+   <h3 class="heading settled" data-level="3.7" id="liability"><span class="secno">3.7. </span><span class="content">Haftung</span><a class="self-link" href="#liability"></a></h3>
+   <p>RWP regelt keine Haftung. Wo Eigentümer, Betreiber und Hersteller verschiedene Parteien sind, ist vor Inbetriebnahme zu entscheiden, wer welche Folgen trägt. Aus der Praxis ist bekannt: Stellt ein Hersteller den Betrieb ohne geordnete Übergabe ein, trägt der Eigentümer die Folgen.</p>
+   <div class="issue" id="issue-87c5d702">
+    <a class="self-link" href="#issue-87c5d702"></a>
+
+
+    <p>Offener Punkt: Soll der Report Haftungsmodelle ausführen (zum Beispiel vertragliche Regelung, Verwaltungsvereinbarung) oder nur den Entscheidungspunkt benennen? Diese Fassung benennt nur den Entscheidungspunkt.</p>
+   </div>
+   <h2 class="heading settled" data-level="4" id="tasks"><span class="secno">4. </span><span class="content">Aufgaben und Anforderungen</span><a class="self-link" href="#tasks"></a></h2>
+   <p>Dieser Guide stellt keine neuen Anforderungen auf. Er ordnet die Anforderungen von <a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a> den Rollen aus <a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a> zu und ergänzt betriebliche Empfehlungen, die nicht aus dem Protokoll folgen. Empfehlungen sind als solche gekennzeichnet.</p>
+   <h3 class="heading settled" data-level="4.1" id="tasks-responsibility"><span class="secno">4.1. </span><span class="content">Wer für die Auflösbarkeit einsteht</span><a class="self-link" href="#tasks-responsibility"></a></h3>
+   <p><a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a> verlangt von einem <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#producer%E2%91%A0" id="ref-for-producer%E2%91%A0">Erzeuger</a> oder <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#custodian%E2%91%A0" id="ref-for-custodian%E2%91%A0②">Verwahrer</a>, der Records erzeugt oder verwaltet, dass die zugehörigen Record-DIDs gemäss der Spezifikation auflösbar bleiben (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §3.6). Er muss dafür nicht selbst einen <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#did-resolver" id="ref-for-did-resolver①">DID-Resolver</a> betreiben. Er darf sich auf den Resolver einer anderen konformen Implementierung stützen, sofern er die Rolle des DID-Providers nicht selbst beansprucht.</p>
+   <p>Die Pflicht bleibt damit bei dem, der Records erzeugt oder verwahrt, auch wenn der Betrieb des Resolvers bei einem Dritten liegt. Wer die Auflösbarkeit an einen Dienstleister auslagert, lagert die Ausführung aus, aber nicht die Verantwortung. Diese Trennung ist der Ausgangspunkt für <a href="#org-roles">§ 3.3 Organisatorische Rollen (nur dieser Report)</a> und <a href="#procurement">§ 10 Was eine Beschaffung klären muss</a>.</p>
+   <h3 class="heading settled" data-level="4.2" id="tasks-did-provider"><span class="secno">4.2. </span><span class="content">DID-Provider</span><a class="self-link" href="#tasks-did-provider"></a></h3>
+   <p>Eine Implementierung, die die Rolle des <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#did-provider" id="ref-for-did-provider③">DID-Providers</a> beansprucht, erfüllt die folgenden Anforderungen aus <a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §3.6:</p>
+   <ul>
+    <li data-md>
+     <p>Sie löst DIDs der Methode <code>rwp</code> auf und liefert das zugehörige DID-Dokument als JSON-LD gemäss DID Core.</p>
+    <li data-md>
+     <p>Sie unterstützt die Auflösungsoptionen <code>versionHash</code> und <code>versionTime</code>. Beide schliessen sich aus. Ohne Option liefert sie die jeweils neueste Version.</p>
+    <li data-md>
+     <p>Sie antwortet mit HTTP 200 (DID bekannt), 400 (beide Optionen angegeben), 403 (Zugriffsrichtlinie erlaubt es nicht), 404 (DID oder Version unbekannt) und 410 (Record vollständig gelöscht).</p>
+    <li data-md>
+     <p>Sie bewahrt jede DID-Dokument-Version auf, solange die DID auflösbar ist. Eine Payload-Löschung entfernt die Historie nicht und führt nicht zu 410.</p>
+    <li data-md>
+     <p>Sie veröffentlicht, falls vorhanden, die Service-Einträge des DID-Dokuments. Dazu ist sie nicht verpflichtet.</p>
+   </ul>
+   <p>Der DID-Provider liefert das DID-Dokument. Über <code>recordEndpoint</code> verweist es auf den Verwahrer, der den Record selbst abrufbar macht. DID-Provider und Verwahrer sind verschiedene Rollen und können von verschiedenen Parteien ausgeübt werden.</p>
+   <h3 class="heading settled" data-level="4.3" id="tasks-namespace-provider"><span class="secno">4.3. </span><span class="content">Namensraum-Provider (GNR)</span><a class="self-link" href="#tasks-namespace-provider"></a></h3>
+   <p>Das GNR nimmt die Rolle des <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#namespace-provider" id="ref-for-namespace-provider②">Namensraum-Providers</a> wahr (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2):</p>
+   <ul>
+    <li data-md>
+     <p>Es ordnet einem global auflösbaren Namensraum den Endpunkt des zuständigen DID-Resolvers zu.</p>
+    <li data-md>
+     <p>Es löst keine einzelnen DIDs auf und speichert weder DID-Dokumente noch Records, Zugriffsentscheidungen oder Organisationsverzeichnisse. Ein GNR, das dies tut, ist nicht RWP-konform.</p>
+    <li data-md>
+     <p>Es bietet eine Operation zum Auflösen eines Namensraums und eine Operation zum Abrufen seiner Registrierungshistorie für Prüfung und Migration. Die Historie ist unveränderlich.</p>
+    <li data-md>
+     <p>Es läuft auf Hyperledger Fabric und wird von der RecordWeb Trust Association nach einem veröffentlichten Governance-Framework betrieben.</p>
+   </ul>
+   <p>Für die Organisationen, die Namensräume führen, ist vor allem relevant, dass das GNR nur den Weg zum DID-Provider kennt. Es weiss nichts über den Inhalt und trifft keine Aussage über Vertrauen.</p>
+   <h3 class="heading settled" data-level="4.4" id="tasks-namespace-resolver"><span class="secno">4.4. </span><span class="content">Namensraum-Resolver</span><a class="self-link" href="#tasks-namespace-resolver"></a></h3>
+   <p>Ein <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#namespace-resolver" id="ref-for-namespace-resolver①">Namensraum-Resolver</a> arbeitet auf der Seite des Clients. Nach <a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.3, §16.2.5 und §16.3 geht er so vor:</p>
+   <ul>
+    <li data-md>
+     <p>Er klassifiziert den Namensraum einer DID. Lokale Namensräume übergibt er nicht dem GNR.</p>
+    <li data-md>
+     <p>Bei global auflösbaren Namensräumen ermittelt er über das GNR den Endpunkt des DID-Providers und löst dort die vollständige DID auf.</p>
+    <li data-md>
+     <p>Den Endpunkt des Records entnimmt er dem DID-Dokument. Er leitet keinen Endpunkt aus dem Namensraum oder der DID ab.</p>
+    <li data-md>
+     <p>Bei Verweisen in andere Namensräume prüft er den <code>versionHash</code> des abgerufenen Records und legt die Version mit dem ursprünglichen Hash zwischengespeichert ab.</p>
+   </ul>
+   <h3 class="heading settled" data-level="4.5" id="tasks-profiles"><span class="secno">4.5. </span><span class="content">Zuordnung zu Rollen und Profilen</span><a class="self-link" href="#tasks-profiles"></a></h3>
+   <p><a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a> unterscheidet Profile (zum Beispiel für Information Records, Case Records oder Assertion Records) von Rollen. Die Rolle des DID-Providers ist kein Profil. Wer sie beansprucht, erfüllt §3.6 und, soweit anwendbar, §16.2 (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §15.4). Wer ein anderes Profil oder eine andere Rolle beansprucht, kann sich auf den Resolver einer anderen konformen Implementierung stützen.</p>
+   <p>Der Begriff «Conformance-Level» wird in <a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a> nicht verwendet. Aussagen zur Auflösbarkeit sollten sich auf die beanspruchten Profile und Rollen beziehen.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> In Diskussion sind Profile, die zwischen der Vergabe stabiler Identifier und der Auflösbarkeit unterscheiden (rwp#59). Das zweite Profil setzt voraus, dass jemand für den Namensraum einsteht. Die Fragen in <a href="#procurement">§ 10 Was eine Beschaffung klären muss</a> sollten deshalb vor einer Beschaffung geklärt sein.</p>
+   <h3 class="heading settled" data-level="4.6" id="tasks-operations"><span class="secno">4.6. </span><span class="content">Betriebliche Empfehlungen</span><a class="self-link" href="#tasks-operations"></a></h3>
+   <p>Die folgenden Empfehlungen sind nicht Teil von <a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>. Sie ergeben sich aus den Anforderungen an einen DID-Provider und aus der langen Lebensdauer von Records.</p>
+   <table class="data">
+    <thead>
+     <tr>
+      <th>Thema
+      <th>Empfehlung
+      <th>Grund
+  
+    <tbody>
+     <tr>
+      <td>Verfügbarkeit
+      <td>Verfügbarkeit des DID-Providers und der Record-Endpunkte festlegen und überwachen
+      <td>Eine nicht erreichbare Auflösung ist für Prüfende nicht von einem fehlenden Record zu unterscheiden (Validierungscode 424 statt 404).
+    
+     <tr>
+      <td>Datensicherung
+      <td>DID-Dokument-Historie und Record-Endpunkte gemeinsam sichern und regelmässig die Wiederherstellung testen
+      <td>Der DID-Provider muss jede Version aufbewahren. Ein Verlust der Historie lässt sich nicht aus den Records rekonstruieren.
+    
+     <tr>
+      <td>Schlüsselverwaltung
+      <td>Schlüssel für DID-Dokument-Versionen getrennt verwalten, Rotation und Notfallverfahren dokumentieren
+      <td>Ein Schlüsselwechsel erzeugt eine neue DID-Dokument-Version. Ein kompromittierter Schlüssel betrifft alle Dokumente, die er signiert.
+    
+     <tr>
+      <td>Zeitquelle
+      <td>Zeitstempel zuverlässig synchronisieren
+      <td>Die Auflösung nach <code>versionTime</code> stützt sich auf <code>updated</code> der DID-Dokument-Versionen.
+    
+     <tr>
+      <td>Zugriffsrichtlinie
+      <td>Antwortcode 403 und 404 bewusst festlegen und dokumentieren
+      <td>Der Provider darf die Existenz einer DID verbergen. Prüfende müssen wissen, wie sie das Ergebnis lesen.
+    
+     <tr>
+      <td>Mehrere Namensräume
+      <td>Bei einer Resolver-Instanz für mehrere Namensräume Trennung und Zuständigkeit je Namensraum festhalten
+      <td>Eine Instanz kann mehrere Namensräume bedienen, jeder Namensraum hat aber einen eigenen Eigentümer und eigene Fristen.
+    
+     <tr>
+      <td>Export
+      <td>Export der DID-Dokument-Historie und der Record-Endpunkte in dokumentierter Form vorsehen
+      <td>Voraussetzung für Anbieterwechsel und Archivübernahme (siehe <a href="#transitions">§ 8 Übergänge</a>).
+    
+     <tr>
+      <td>Dokumentation
+      <td>Endpunkte, Verantwortliche und Eintrag im GNR in einem internen Register führen
+      <td>Siehe <a href="#scope-namespace">§ 5 Zuschnitt eines Namensraums</a>.
+
+   </table>
+   <h2 class="heading settled" data-level="5" id="scope-namespace"><span class="secno">5. </span><span class="content">Zuschnitt eines Namensraums</span><a class="self-link" href="#scope-namespace"></a></h2>
+   <p>Dieses Kapitel beschreibt, woran sich der Zuschnitt eines Namensraums orientieren kann. Es gibt eine Orientierung und keine Vorgabe. Jede Organisation klärt den Zuschnitt in ihrem eigenen Einführungsprojekt.</p>
+   <h3 class="heading settled" data-level="5.1" id="scope-unit"><span class="secno">5.1. </span><span class="content">Der Namensraum als Einheit der Verantwortung</span><a class="self-link" href="#scope-unit"></a></h3>
+   <p>Ein <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#namespace%E2%91%A0" id="ref-for-namespace%E2%91%A0③">Namensraum</a> ist die Einheit, für die ein <a data-link-type="dfn" href="#eigentmer" id="ref-for-eigentmer">Eigentümer</a> die Auflösbarkeit verantwortet. Der Zuschnitt legt fest, welche Records unter derselben Verantwortung, demselben Resolver und derselben Dauer der Auflösbarkeit stehen. Ein Namensraum für eine ganze Organisation ist möglich und kann für sehr kleine Organisationen sinnvoll sein. Er bündelt aber Zuständigkeiten, die in grösseren Organisationen in der Praxis verteilt sind.</p>
+   <h3 class="heading settled" data-level="5.2" id="scope-irreversible"><span class="secno">5.2. </span><span class="content">Der Zuschnitt lässt sich kaum korrigieren</span><a class="self-link" href="#scope-irreversible"></a></h3>
+   <p>Die Identität eines Records besteht aus Namensraum und <code>recordId</code>. Sie ist permanent, und eine <code>recordId</code> wird nie wiederverwendet (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §4.1, §4.2 und §4.5). Ein bestehender Record kann daher nicht in einen anderen Namensraum verschoben werden, ohne dass seine DID wechselt.</p>
+   <p>Ein Fehlzuschnitt lässt sich deshalb nur für künftige Records ändern. Die bestehenden Records bleiben im alten Namensraum, der weiterhin aufgelöst werden muss. Der Zuschnitt sollte daher am Anfang gewählt werden und über Jahrzehnte tragen.</p>
+   <h3 class="heading settled" data-level="5.3" id="scope-criteria"><span class="secno">5.3. </span><span class="content">Kriterien</span><a class="self-link" href="#scope-criteria"></a></h3>
+   <p>Ein Zuschnitt ist geeignet, wenn er über lange Zeit stabil bleibt und die folgenden Fragen für alle Records im Namensraum gleich beantwortet werden:</p>
+   <ul>
+    <li data-md>
+     <p><strong>Verantwortung:</strong> Wer ist zuständig? Gibt es einen Eigentümer, der die Rolle für die gesamte Dauer übernehmen oder an einen Nachfolger übergeben kann?</p>
+    <li data-md>
+     <p><strong>Aufbewahrung:</strong> Gilt für die Records dieselbe Aufbewahrungsregel und damit dieselbe Dauer der Auflösbarkeit (siehe <a href="#duration">§ 7 Dauer der Verantwortung</a>)?</p>
+    <li data-md>
+     <p><strong>Übertragbarkeit:</strong> Kann die Zuständigkeit als Ganzes an eine andere Organisationseinheit oder ein Archiv übergehen, ohne dass der Namensraum aufgeteilt werden muss?</p>
+    <li data-md>
+     <p><strong>Betrieb:</strong> Steht der Aufwand für Eintrag im GNR und Resolver in einem vernünftigen Verhältnis zum Nutzen?</p>
+   </ul>
+   <h3 class="heading settled" data-level="5.4" id="scope-options"><span class="secno">5.4. </span><span class="content">Orientierungen im Vergleich</span><a class="self-link" href="#scope-options"></a></h3>
+   <table class="data">
+    <thead>
+     <tr>
+      <th>Orientierung
+      <th>Stärken
+      <th>Schwächen
+  
+    <tbody>
+     <tr>
+      <td>Ganze Organisation
+      <td>Wenig Aufwand, ein Eigentümer
+      <td>Bündelt verteilte Zuständigkeiten, Übergang von Teilen bleibt schwierig
+    
+     <tr>
+      <td>Aufgabe im Ordnungssystem (Funktion oder Tätigkeit)
+      <td>Verantwortung, Aufbewahrung und Zugriff hängen meist an der Aufgabe. Der Namensraum kann mit der Aufgabe umziehen.
+      <td>Ordnungssysteme sind oft feiner gegliedert und werden regelmässig umgebaut. Die Zahl der Namensräume wächst mit der Gliederung.
+    
+     <tr>
+      <td>Gesetzliche Aufgabe und Aufbewahrungsvorgabe
+      <td>Langfristig stabiler als organisatorische Gliederungen, direkt an der Dauer der Verantwortung ausgerichtet
+      <td>Setzt voraus, dass die rechtlichen Grundlagen klar zugeordnet sind. Querschnittsaufgaben sind schwer abzugrenzen.
+    
+     <tr>
+      <td>Einzelnes System
+      <td>Einfach umzusetzen
+      <td>Nicht empfohlen: Ein Systemwechsel würde den Namensraum betreffen, obwohl die Identität unabhängig vom System sein soll (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §4.1).
+
+   </table>
+   <p>(Beispiel Bund: Das Ordnungssystem ist häufig nach organisatorischen Teilprozessen gegliedert und deshalb für die Abgrenzung langfristiger Namensräume tendenziell zu fein. Die gesetzlichen Aufgaben und Aufbewahrungsvorgaben bieten eine stabilere Grundlage.)</p>
+   <p>Als Orientierung empfiehlt dieser Guide, den Zuschnitt an einer langfristig stabilen Aufgabe auszurichten, für die Eigentümer und Aufbewahrungsregel feststehen. Das Ordnungssystem kann dabei als Hilfsmittel dienen, ist aber nicht der Massstab.</p>
+   <div class="issue" id="issue-266fd985">
+    <a class="self-link" href="#issue-266fd985"></a>
+
+
+    <p>Offener Punkt: In der Community ist die Ausrichtung an einer Aufgabe des Ordnungssystems nach ISO 15489 vorgeschlagen worden (Ebene Funktion oder Tätigkeit). Es ist offen, ob der Guide die gesetzliche Aufgabe als bevorzugte Orientierung nennt oder beide Orientierungen gleichrangig führt.</p>
+   </div>
+   <h3 class="heading settled" data-level="5.5" id="scope-number"><span class="secno">5.5. </span><span class="content">Wie viele Namensräume</span><a class="self-link" href="#scope-number"></a></h3>
+   <p>Eine feste Zahl gibt es nicht. Kleine Organisationen kommen mit einem Namensraum aus. Grössere Organisationen haben meist mehrere Verantwortungsbereiche und damit mehrere Namensräume. Die Anzahl ist kein Ziel, sie ergibt sich aus der Zahl der Einheiten, die sich unabhängig voneinander übertragen lassen.</p>
+   <p>Jeder global auflösbare Namensraum braucht einen Eintrag im GNR. Mehr Namensräume erhöhen den organisatorischen Aufwand, den technischen dagegen nur begrenzt: Eine Resolver-Instanz kann mehrere Namensräume bedienen (siehe <a href="#tasks-operations">§ 4.6 Betriebliche Empfehlungen</a>).</p>
+   <h3 class="heading settled" data-level="5.6" id="scope-global-local"><span class="secno">5.6. </span><span class="content">Global oder lokal</span><a class="self-link" href="#scope-global-local"></a></h3>
+   <p>Die Entscheidung zwischen global und lokal gehört zum Zuschnitt, weil sie sich nicht ohne Wechsel der DID rückgängig machen lässt. Der Namensraum ist Teil der Identität eines Records. Ein Wechsel von einem lokalen zu einem global auflösbaren Namensraum ändert daher die DIDs der Records (siehe <a href="#scope-irreversible">§ 5.2 Der Zuschnitt lässt sich kaum korrigieren</a>).</p>
+   <ul>
+    <li data-md>
+     <p>Ein <strong>global auflösbarer</strong> Namensraum eignet sich, wenn Records über die Organisation hinaus referenziert, abgerufen oder geprüft werden sollen.</p>
+    <li data-md>
+     <p>Ein <strong>lokaler</strong> Namensraum eignet sich für Records, die ausschliesslich innerhalb eines abgegrenzten Bereichs genutzt werden. Die Auflösung bleibt auf lokale Konfiguration angewiesen, und lokale Namensräume dürfen nicht im GNR stehen (siehe <a href="#global-local">§ 3.6 Global und lokal</a>).</p>
+   </ul>
+   <p>Wenn absehbar ist, dass ein Namensraum später extern aufgelöst werden soll, ist ein global auflösbarer Namensraum von Anfang an die sichere Wahl.</p>
+   <h3 class="heading settled" data-level="5.7" id="scope-register"><span class="secno">5.7. </span><span class="content">Zuordnung festhalten</span><a class="self-link" href="#scope-register"></a></h3>
+   <p>Weil ein global auflösbarer Namensraum opak ist (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §4.3), ergibt sich aus der DID nicht, wofür der Namensraum steht. Die Zuordnung sollte in einem Register der Organisation geführt werden. Empfohlene Angaben:</p>
+   <ul>
+    <li data-md>
+     <p>Namensraum und Art (global oder lokal)</p>
+    <li data-md>
+     <p>Aufgabe oder Zweck, gegebenenfalls Rechtsgrundlage</p>
+    <li data-md>
+     <p>Eigentümer, Betreiber und Hersteller</p>
+    <li data-md>
+     <p>massgebliche Aufbewahrungsregel (<code>retentionPolicy</code>)</p>
+    <li data-md>
+     <p>Endpunkt des DID-Providers und Eintrag im GNR</p>
+    <li data-md>
+     <p>Beginn der Verantwortung und vorgesehene Übergabe</p>
+   </ul>
+   <p>Auf Ebene eines einzelnen Records wird die verantwortliche Einheit im Feld <code>metadata.governance.owner</code> geführt (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §5.2). Dieses Feld bezeichnet den Record-Eigentümer, nicht den Eigentümer des Namensraums.</p>
+   <h2 class="heading settled" data-level="6" id="gnr"><span class="secno">6. </span><span class="content">Registrierung und Verwendung des GNR</span><a class="self-link" href="#gnr"></a></h2>
+   <p>Dieses Kapitel beschreibt, was eine Organisation beachten muss, wenn sie einen Namensraum im GNR registriert. Es behandelt nicht den Betrieb des GNR-Netzwerks (siehe <a href="#tasks-namespace-provider">§ 4.3 Namensraum-Provider (GNR)</a>).</p>
+   <h3 class="heading settled" data-level="6.1" id="gnr-purpose"><span class="secno">6.1. </span><span class="content">Wozu das GNR dient</span><a class="self-link" href="#gnr-purpose"></a></h3>
+   <p>Das GNR ordnet einem global auflösbaren Namensraum den Endpunkt des zuständigen DID-Providers zu. Ein Client, der eine fremde DID auflösen will, kann so den DID-Provider finden, ohne den Endpunkt vorher zu kennen (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.1 und §16.2.5). Das GNR nimmt damit die Rolle des <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#namespace-provider" id="ref-for-namespace-provider③">Namensraum-Providers</a> wahr.</p>
+   <h3 class="heading settled" data-level="6.2" id="gnr-prerequisites"><span class="secno">6.2. </span><span class="content">Voraussetzungen</span><a class="self-link" href="#gnr-prerequisites"></a></h3>
+   <ul>
+    <li data-md>
+     <p>Der Namensraum ist eine UUID Version 4 in kanonischer Schreibweise (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §4.3).</p>
+    <li data-md>
+     <p>Das GNR nimmt ausschliesslich global auflösbare Namensräume an. Die Registrierung eines lokalen Namensraums wird abgelehnt (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.7).</p>
+    <li data-md>
+     <p>Der Eigentümer hat einen DID-Provider, der den Namensraum bedient und dessen Endpunkt erreichbar ist.</p>
+    <li data-md>
+     <p>Die Organisation erfüllt die Zulassungsbedingungen des Governance-Frameworks des GNR-Netzwerks (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.9).</p>
+   </ul>
+   <h3 class="heading settled" data-level="6.3" id="gnr-entry"><span class="secno">6.3. </span><span class="content">Was eingetragen wird</span><a class="self-link" href="#gnr-entry"></a></h3>
+   <p>Der aktuelle Routingeintrag eines Namensraums enthält mindestens den Namensraum, den Endpunkt des DID-Providers (<code>resolverEndpoint</code>), den Registranten (<code>registeredBy</code>), den Zeitpunkt der Registrierung (<code>registeredAt</code>) und die Transaktionskennung (<code>txId</code>) (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.7).</p>
+   <p>Der Registrant wird aus der authentifizierten Netzwerkidentität des Registrierenden abgeleitet. Er lässt sich nicht über die Eingabe der Transaktion festlegen. Die Eigentümerschaft kann daher nur von einer Partei festgehalten werden, die im GNR-Netzwerk eine Identität hat. Wie diese Identität zustande kommt, regelt das Governance-Framework.</p>
+   <p>Der Eintrag enthält keine Angaben zur Organisation, zum Zweck des Namensraums oder zu den Records. Diese Zuordnung gehört in das Register der Organisation (siehe <a href="#scope-register">§ 5.7 Zuordnung festhalten</a>).</p>
+   <h3 class="heading settled" data-level="6.4" id="gnr-decisions"><span class="secno">6.4. </span><span class="content">Entscheidungen vor der Registrierung</span><a class="self-link" href="#gnr-decisions"></a></h3>
+   <table class="data">
+    <thead>
+     <tr>
+      <th>Entscheidung
+      <th>Wer entscheidet
+      <th>Warum es vorher feststehen muss
+  
+    <tbody>
+     <tr>
+      <td>Wer ist Registrant und damit Eigentümer?
+      <td>Eigentümer
+      <td>Der Registrant lässt sich nicht nachträglich frei ändern (siehe <a href="#transitions">§ 8 Übergänge</a>).
+    
+     <tr>
+      <td>Welcher DID-Provider bedient den Namensraum?
+      <td>Eigentümer
+      <td>Sein Endpunkt wird eingetragen und muss dauerhaft erreichbar sein.
+    
+     <tr>
+      <td>Wie erhält die Organisation Zugang zum GNR-Netzwerk?
+      <td>Eigentümer
+      <td>Teilnahme und Zulassung richten sich nach dem Governance-Framework.
+    
+     <tr>
+      <td>Wer ist für Änderungen am Eintrag zuständig?
+      <td>Eigentümer
+      <td>Endpunktwechsel und Stilllegung brauchen eine benannte Person oder Funktion.
+    
+     <tr>
+      <td>Wer wird bei Störungen benachrichtigt?
+      <td>Eigentümer und Betreiber
+      <td>Falsche Endpunkte und Sicherheitsvorfälle betreffen alle, die den Namensraum auflösen (siehe <a href="#disruptions">§ 9 Störungen und Ausfall</a>).
+
+   </table>
+   <h3 class="heading settled" data-level="6.5" id="gnr-changes"><span class="secno">6.5. </span><span class="content">Änderungen am Eintrag</span><a class="self-link" href="#gnr-changes"></a></h3>
+   <p>Das Governance-Framework des GNR-Netzwerks legt fest, wie Namensräume registriert, aktualisiert, gesperrt und gegebenenfalls stillgelegt werden (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.9). Der Eintrag lässt sich ändern, die zugrunde liegende Transaktionshistorie aber nicht. Sie steht für Audit, Prüfung und Migration zur Verfügung (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.8).</p>
+   <p>Für die Praxis bedeutet das:</p>
+   <ul>
+    <li data-md>
+     <p>Ein Wechsel des DID-Providers erfordert eine Aktualisierung des Endpunkts im GNR (siehe <a href="#transitions">§ 8 Übergänge</a>).</p>
+    <li data-md>
+     <p>Die Registrierungshistorie zeigt später, wer wann welchen Endpunkt eingetragen hat. Sie ist Teil der Nachweise für den Eigentümer.</p>
+    <li data-md>
+     <p>Eine Stilllegung beendet die globale Auflösbarkeit. Verweise aus anderen Namensräumen laufen dann ins Leere (siehe <a href="#duration">§ 7 Dauer der Verantwortung</a>).</p>
+   </ul>
+   <h3 class="heading settled" data-level="6.6" id="gnr-limits"><span class="secno">6.6. </span><span class="content">Was das GNR nicht leistet</span><a class="self-link" href="#gnr-limits"></a></h3>
+   <ul>
+    <li data-md>
+     <p>Das GNR ist kein DID-Resolver. Es löst keine einzelnen DIDs auf und speichert weder DID-Dokumente, Records, Zugriffsentscheidungen noch Organisationsverzeichnisse (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.2).</p>
+    <li data-md>
+     <p>Eine erfolgreiche Namensraum-Auflösung beweist nicht, dass die DID existiert, dass der Record zugänglich ist oder dass der Registrant die Organisation ist, die er zu sein behauptet (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.4).</p>
+    <li data-md>
+     <p>Die Registrierung begründet keine Vertrauensstellung. Ob eine Registrierung, ein Controller oder ein Resolver akzeptiert wird, entscheidet die prüfende Stelle selbst (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16 und §16.4).</p>
+   </ul>
+   <h3 class="heading settled" data-level="6.7" id="gnr-recordweb"><span class="secno">6.7. </span><span class="content">Der RecordWeb-Namensraum</span><a class="self-link" href="#gnr-recordweb"></a></h3>
+   <p>Die RecordWeb Trust Association betreibt den DID-Provider für den RecordWeb-Namensraum, und ihre Mitglieder betreiben das GNR (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.4). Das GNR bietet daher keine unabhängige Kontrolle der DID-Dokument-Historie dieses Namensraums. Prüfende Stellen sollten früher verifizierte DID-Dokument-Versionen aufbewahren, wenn sie sich dagegen absichern wollen.</p>
+   <h3 class="heading settled" data-level="6.8" id="gnr-documentation"><span class="secno">6.8. </span><span class="content">Dokumentation der Registrierung</span><a class="self-link" href="#gnr-documentation"></a></h3>
+   <p>Empfohlen wird, für jede Registrierung eine Akte zu führen: Beschluss des Eigentümers, Datum, Registrant, eingetragener Endpunkt, zuständige Person und Ansprechpartner des Betreibers.</p>
+   <div class="issue" id="issue-46f8a677">
+    <a class="self-link" href="#issue-46f8a677"></a>
+
+
+    <p>Offener Punkt: <a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a> 0.0.17 beschreibt nicht, wie ein Namensraum von einem Registranten auf einen anderen übergeht. Das ist beim Eigentümerwechsel relevant (siehe <a href="#transitions">§ 8 Übergänge</a>).</p>
+   </div>
+   <h2 class="heading settled" data-level="7" id="duration"><span class="secno">7. </span><span class="content">Dauer der Verantwortung</span><a class="self-link" href="#duration"></a></h2>
+   <h3 class="heading settled" data-level="7.1" id="duration-principle"><span class="secno">7.1. </span><span class="content">Grundsatz</span><a class="self-link" href="#duration-principle"></a></h3>
+   <p>Die Verantwortung für einen Namensraum dauert so lange, wie die darin enthaltenen Identifier auflösbar sein sollen. Sie leitet sich aus den Aufbewahrungsfristen der Records ab und nicht aus Vertrags- oder Systemlaufzeiten.</p>
+   <table class="data">
+    <thead>
+     <tr>
+      <th>Laufzeit
+      <th>Typische Dauer
+      <th>Massgeblich für die Verantwortung?
+  
+    <tbody>
+     <tr>
+      <td>Vertrag mit dem Betreiber oder Hersteller
+      <td>wenige bis etwa zehn Jahre
+      <td>Nein
+    
+     <tr>
+      <td>Lebenszyklus eines Produkts
+      <td>kürzer als die Aufbewahrungsfrist
+      <td>Nein
+    
+     <tr>
+      <td>Aufbewahrungsfrist der Records (<code>retentionPolicy</code>)
+      <td>oft dreissig Jahre und mehr
+      <td>Ja
+    
+     <tr>
+      <td>Archivierung
+      <td>dauerhaft
+      <td>Ja, über die Frist hinaus (siehe <a href="#duration-end">§ 7.4 Ende der Frist beendet die Verantwortung nicht</a>)
+
+   </table>
+   <p><a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a> zeigt in seinem Beispiel eine Aufbewahrungsregel von dreissig Jahren. Dieser Wert ist ein Beispiel und keine Vorgabe. Bei Aufbewahrungsfristen dieser Länge liegt zwischen der Dauer der Verantwortung und der Laufzeit eines Softwarevertrags regelmässig eine Lücke. Dieser Guide benennt sie ausdrücklich, damit sie vor der Beschaffung geschlossen wird (siehe <a href="#procurement">§ 10 Was eine Beschaffung klären muss</a>).</p>
+   <h3 class="heading settled" data-level="7.2" id="duration-start"><span class="secno">7.2. </span><span class="content">Beginn</span><a class="self-link" href="#duration-start"></a></h3>
+   <p>Die Verantwortung beginnt spätestens mit der Vergabe der ersten DID im Namensraum. Ab diesem Zeitpunkt können andere Systeme auf den Identifier verweisen und erwarten, dass er auflösbar ist.</p>
+   <h3 class="heading settled" data-level="7.3" id="duration-derivation"><span class="secno">7.3. </span><span class="content">Bestimmung der Dauer</span><a class="self-link" href="#duration-derivation"></a></h3>
+   <p>Die Dauer ergibt sich aus der längsten Aufbewahrungsfrist der Records im Namensraum. Wo die Fristen der Records stark voneinander abweichen, bestimmt die längste Frist die Verantwortung des gesamten Namensraums. Das ist ein Grund, Records mit sehr unterschiedlichen Fristen verschiedenen Namensräumen zuzuordnen (siehe <a href="#scope-criteria">§ 5.3 Kriterien</a>).</p>
+   <h3 class="heading settled" data-level="7.4" id="duration-end"><span class="secno">7.4. </span><span class="content">Ende der Frist beendet die Verantwortung nicht</span><a class="self-link" href="#duration-end"></a></h3>
+   <p>Ein Ablauf der Aufbewahrungsfrist führt nicht automatisch dazu, dass der Namensraum nicht mehr aufgelöst werden muss. Was gilt, hängt vom Löschregime des Records ab (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §14.4):</p>
+   <table class="data">
+    <thead>
+     <tr>
+      <th>Regime
+      <th>Wirkung auf die Auflösbarkeit
+  
+    <tbody>
+     <tr>
+      <td>Payload-Löschung (<code>payload-only</code>)
+      <td>DID, Metadaten und Versionsgraph bleiben bestehen. Die DID bleibt auflösbar (HTTP 200), und der DID-Provider bewahrt die DID-Dokument-Historie weiter auf.
+    
+     <tr>
+      <td>Vollständige Löschung (<code>full-delete</code>)
+      <td>Der DID-Provider muss die DID weiterhin beantworten, und zwar mit HTTP 410. Die <code>recordId</code> wird nie wiederverwendet.
+    
+     <tr>
+      <td>Ausnahme (<code>exempt</code>)
+      <td>Es wird nicht gelöscht. Die gesetzliche Aufbewahrungspflicht gilt fort.
+
+   </table>
+   <p>Auch nach Löschungen braucht ein Namensraum also einen DID-Provider, der Anfragen korrekt beantwortet (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §3.6 und §4.2). Die Pflicht endet nicht mit der Löschung, sondern mit einer bewussten Entscheidung.</p>
+   <h3 class="heading settled" data-level="7.5" id="duration-handover"><span class="secno">7.5. </span><span class="content">Ende der Verantwortung</span><a class="self-link" href="#duration-handover"></a></h3>
+   <p>Die Verantwortung für einen Namensraum endet in der Regel durch Übergabe an einen Nachfolger und nicht durch Zeitablauf. Als Nachfolger kommen eine Nachfolgeorganisation oder ein Archiv in Frage. Die Übergabe wird vereinbart und dokumentiert, bevor sie wirksam wird (siehe <a href="#transitions">§ 8 Übergänge</a>).</p>
+   <p>Wird kein Nachfolger bestimmt, entscheidet der Eigentümer bewusst über die Stilllegung. Dabei sind die Folgen zu klären und zu dokumentieren: Die globale Auflösbarkeit endet, und Verweise anderer Namensräume sowie zwischengespeicherte Versionen verlieren ihre Auflösung (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.3). Eine Stilllegung durch Versäumnis ist nicht vorgesehen und gilt als Störung (siehe <a href="#disruptions">§ 9 Störungen und Ausfall</a>).</p>
+   <h3 class="heading settled" data-level="7.6" id="duration-funding"><span class="secno">7.6. </span><span class="content">Finanzierung</span><a class="self-link" href="#duration-funding"></a></h3>
+   <p>Auflösbarkeit ist ein laufender Betrieb und keine einmalige Migration. Eine Pflicht zur Auflösbarkeit ohne Finanzierungsmodell ist eine offene Verbindlichkeit für den, der sie am Ende trägt. Der Eigentümer sollte deshalb vor der Inbetriebnahme klären:</p>
+   <ul>
+    <li data-md>
+     <p>wer die Kosten der Auflösung trägt, solange Records aufbewahrt werden,</p>
+    <li data-md>
+     <p>wer sie nach Ende eines Vertrags oder nach einer Archivübernahme trägt,</p>
+    <li data-md>
+     <p>wie lange diese Finanzierung gesichert ist.</p>
+   </ul>
+   <h3 class="heading settled" data-level="7.7" id="duration-documentation"><span class="secno">7.7. </span><span class="content">Dokumentation</span><a class="self-link" href="#duration-documentation"></a></h3>
+   <p>Im Register der Organisation wird festgehalten (siehe <a href="#scope-register">§ 5.7 Zuordnung festhalten</a>): die massgebliche Aufbewahrungsfrist, das daraus abgeleitete Ende der Verantwortung (falls eine Übergabe vorgesehen ist), der vorgesehene Nachfolger und die Finanzierung.</p>
+   <div class="issue" id="issue-cc1ff650">
+    <a class="self-link" href="#issue-cc1ff650"></a>
+
+
+    <p>Offener Punkt: Soll der Guide empfehlen, dass die Auflösung nach der Frist bis zur Übergabe an ein Archiv weiterläuft? Und wie wird verhindert, dass ein Namensraum nach einer Übergabe ohne Betreiber bleibt?</p>
+   </div>
+   <h2 class="heading settled" data-level="8" id="transitions"><span class="secno">8. </span><span class="content">Übergänge</span><a class="self-link" href="#transitions"></a></h2>
+   <h3 class="heading settled" data-level="8.1" id="transitions-principle"><span class="secno">8.1. </span><span class="content">Was gleich bleibt und was sich ändert</span><a class="self-link" href="#transitions-principle"></a></h3>
+   <p>Der Identifier eines Records bleibt über jeden Übergang unverändert, auch nach einer Systemmigration (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §4.1). Es ändern sich Endpunkte, Betreiber, Verwahrer oder Eigentümer. Das Ziel jedes Übergangs ist, dass die Auflösbarkeit lückenlos erhalten bleibt.</p>
+   <table class="data">
+    <thead>
+     <tr>
+      <th>Übergang
+      <th>Was sich ändert
+      <th>Wo die Änderung sichtbar wird
+  
+    <tbody>
+     <tr>
+      <td>Wechsel des DID-Providers
+      <td>Der Endpunkt, der die DID-Dokumente liefert
+      <td>Routingeintrag im GNR
+    
+     <tr>
+      <td>Wechsel des Verwahrers
+      <td>Der Ort, an dem die Records liegen
+      <td><code>recordEndpoint</code> im DID-Dokument (neue DID-Dokument-Version)
+    
+     <tr>
+      <td>Wechsel des Eigentümers
+      <td>Die rechenschaftspflichtige Organisation
+      <td>Registrant im GNR, <code>metadata.governance.owner</code> der Records
+    
+     <tr>
+      <td>Überführung ins Archiv
+      <td>Je nach Modell Verwahrer, DID-Provider oder Eigentümer
+      <td>wie oben, je nach Modell
+
+   </table>
+   <h3 class="heading settled" data-level="8.2" id="transitions-scope"><span class="secno">8.2. </span><span class="content">Was übergeben werden muss</span><a class="self-link" href="#transitions-scope"></a></h3>
+   <p>Die Auflösbarkeit bleibt nur erhalten, wenn die folgenden Bestandteile vollständig übergeben werden:</p>
+   <table class="data">
+    <thead>
+     <tr>
+      <th>Bestandteil
+      <th>Warum
+      <th>RWP
+  
+    <tbody>
+     <tr>
+      <td>DID-Dokument-Historie, alle Versionen unverändert
+      <td>Der DID-Provider muss jede Version aufbewahren. Prüfende rechnen die Hashkette nach.
+      <td>§3.2, §3.4, §3.6
+    
+     <tr>
+      <td>Records mit allen Versionen und Repräsentationen
+      <td>Der Verwahrer muss die Informationen zur Prüfung von Integrität und Versionierung erhalten.
+      <td>§1.5, §6
+    
+     <tr>
+      <td>Löschnachweise (DeletionRecords) und markierte Repräsentationen
+      <td>Sie belegen, warum Inhalte fehlen. Ohne sie lässt sich eine Löschung nicht von einem Verlust unterscheiden.
+      <td>§6.2, §14
+    
+     <tr>
+      <td>Schemas, auf die Records verweisen
+      <td>Jede referenzierte Schema-Version muss dauerhaft abrufbar bleiben.
+      <td>§13.5
+    
+     <tr>
+      <td>Verfügungsgewalt über die Schlüssel für DID-Dokumente
+      <td>Neue DID-Dokument-Versionen müssen mit einer zulässigen Verifikationsmethode signiert werden können.
+      <td>§3.4, §7.7
+    
+     <tr>
+      <td>Zugriffsrichtlinien
+      <td>Antworten wie 403 und 404 müssen gleich bleiben.
+      <td>§3.6, §18
+    
+     <tr>
+      <td>Register-Einträge und Verträge
+      <td>Zuständigkeiten, Fristen und Finanzierung müssen nachvollziehbar bleiben.
+      <td>—​
+   </table>
+   <p>Die Verifikationsmethode für neue DID-Dokument-Versionen muss in der aktuellen DID-Dokument-Version des Controllers stehen (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §3.4). Wo ein Controller angegeben ist, empfiehlt dieser Guide, dass er zum Eigentümer gehört und nicht zum Betreiber. So behält der Eigentümer bei einem Betreiberwechsel die Kontrolle über die Historie.</p>
+   <h3 class="heading settled" data-level="8.3" id="transitions-system"><span class="secno">8.3. </span><span class="content">Systemwechsel und Anbieterwechsel</span><a class="self-link" href="#transitions-system"></a></h3>
+   <p>Der Ablauf bei einem Wechsel von System, Betreiber oder Anbieter ist im Kern immer derselbe:</p>
+   <ol>
+    <li data-md>
+     <p><strong>Bestandsaufnahme:</strong> Das Register zeigt, welche Namensräume, Endpunkte, Schlüssel und Verträge betroffen sind.</p>
+    <li data-md>
+     <p><strong>Zielsystem bereitstellen:</strong> DID-Provider und Verwahrer laufen parallel zum bestehenden System.</p>
+    <li data-md>
+     <p><strong>Historie übernehmen und prüfen:</strong> Die DID-Dokument-Historie wird vollständig übernommen. Dann werden die Hashkette (<code>previousVersionHash</code>) und die <code>versionHash</code>-Werte nachgerechnet (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §3.3 und §3.4).</p>
+    <li data-md>
+     <p><strong>Records übernehmen und validieren:</strong> Records werden übernommen. Für Stichproben oder vollständig werden <code>recordHash</code>, <code>versionHash</code> und <code>contentHash</code> neu berechnet.</p>
+    <li data-md>
+     <p><strong>Umschalten:</strong> Ändert sich der Speicherort der Records, entsteht eine neue DID-Dokument-Version mit neuem <code>recordEndpoint</code> (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §3.2). Ändert sich der DID-Provider, wird der Endpunkt im GNR aktualisiert (siehe <a href="#gnr-changes">§ 6.5 Änderungen am Eintrag</a>).</p>
+    <li data-md>
+     <p><strong>Altsystem erst nach erfolgreicher Prüfung ausser Betrieb nehmen:</strong> Bis dahin laufen beide Systeme parallel.</p>
+    <li data-md>
+     <p><strong>Dokumentieren:</strong> Der Übergang wird im Register festgehalten.</p>
+   </ol>
+   <p>RWP sieht für dokumentierte Migrationen einen MigrationRecord vor, seine Ausgestaltung ist in der aktuellen Fassung aber noch offen (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §8.2).</p>
+   <p>Während der Umschaltung sollte keine Lücke in der Auflösbarkeit entstehen. Eine Lücke erscheint bei anderen Systemen als nicht auflösbar (Validierungscode 404 oder 424). Das ist kein Beleg dafür, dass ein Record ungültig ist (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §7.5.3). Es bleibt aber eine Störung, die vermieden werden kann.</p>
+   <h3 class="heading settled" data-level="8.4" id="transitions-archive"><span class="secno">8.4. </span><span class="content">Überführung ins Archiv</span><a class="self-link" href="#transitions-archive"></a></h3>
+   <p>Vor der Überführung ist zu klären, welches Modell gilt:</p>
+   <table class="data">
+    <thead>
+     <tr>
+      <th>Modell
+      <th>Eigentümer
+      <th>DID-Provider
+      <th>Verwahrer
+      <th>Folge
+  
+    <tbody>
+     <tr>
+      <td>Vollständige Übernahme
+      <td>Archiv
+      <td>Archiv
+      <td>Archiv
+      <td>Das Archiv führt den Namensraum weiter. Die Endpunkte zeigen auf das Archiv.
+    
+     <tr>
+      <td>Übernahme der Records
+      <td>bisherige Organisation
+      <td>bisherige Organisation oder Dienstleister
+      <td>Archiv
+      <td>Der <code>recordEndpoint</code> zeigt auf das Archiv. Die Organisation behält die Verantwortung für die Auflösung.
+    
+     <tr>
+      <td>Übernahme mit Eigentümerwechsel
+      <td>Archiv
+      <td>nach Vereinbarung
+      <td>Archiv
+      <td>Das Archiv wird Registrant. Das setzt einen Eigentümerwechsel im GNR voraus (siehe unten).
+
+   </table>
+   <p>(Beispiel Bund: Bei der Ablieferung an das zuständige Archiv sollte vor der Ablieferung geklärt werden, ob der Namensraum beim Amt bleibt oder an das Archiv übergeht.)</p>
+   <p>Das Archiv darf die Identifier der Records nicht durch eigene ersetzen. Die DID ist permanent, eine eigene Archivsignatur kann als zusätzlicher Identifier geführt werden (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §4.1). Records sind beim Finalisieren bereits in archivtauglichen Formaten gespeichert (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §6.4 und §6.6). Das erleichtert die Übernahme.</p>
+   <h3 class="heading settled" data-level="8.5" id="transitions-owner"><span class="secno">8.5. </span><span class="content">Eigentümerwechsel</span><a class="self-link" href="#transitions-owner"></a></h3>
+   <p>Ein Eigentümerwechsel ist bei Reorganisationen, Fusionen und Aufgabenübertragungen wahrscheinlicher als ein Anbieterwechsel. Die Nachfolgeorganisation oder das Archiv übernimmt die Rolle des Eigentümers. Das wird vereinbart und dokumentiert, bevor der Wechsel wirksam wird.</p>
+   <p>Mit der Aufgabe wechselt auch der Namensraum, wenn der Zuschnitt dazu passt (siehe <a href="#scope-criteria">§ 5.3 Kriterien</a>). Zu regeln sind:</p>
+   <ul>
+    <li data-md>
+     <p><strong>Vereinbarung:</strong> Wer wird Eigentümer, ab wann, mit welchen Rechten und Pflichten (siehe <a href="#liability">§ 3.7 Haftung</a>)?</p>
+    <li data-md>
+     <p><strong>Registrant im GNR:</strong> Der Registrant wird aus der authentifizierten Netzwerkidentität abgeleitet (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.7). Wie die Eigentümerschaft im GNR übergeht, ist in RWP 0.0.17 nicht beschrieben.</p>
+    <li data-md>
+     <p><strong>Records:</strong> Das Feld <code>metadata.governance.owner</code> wird auf den neuen Eigentümer angepasst. RWP sieht das ausdrücklich vor, etwa bei einer Übertragung der Verantwortung (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §5.2). Metadaten werden an Ort und Stelle geändert, die Änderung ist durch den <code>recordHash</code> erkennbar.</p>
+    <li data-md>
+     <p><strong>Schlüssel:</strong> Die Kontrolle über die Schlüssel für DID-Dokumente geht an den neuen Eigentümer über.</p>
+   </ul>
+   <p>Geht nur ein Teil der Aufgaben eines Namensraums auf eine andere Einheit über, lässt sich der Namensraum nicht teilen. Die bestehenden Records bleiben im alten Namensraum, neue Records entstehen im neuen (siehe <a href="#scope-irreversible">§ 5.2 Der Zuschnitt lässt sich kaum korrigieren</a>). Der alte Namensraum muss bis zum Ende der Frist weiter aufgelöst werden. Das ist der Preis eines Zuschnitts, der sich nicht an der Aufgabe orientiert.</p>
+   <h3 class="heading settled" data-level="8.6" id="transitions-others"><span class="secno">8.6. </span><span class="content">Wirkung auf andere Namensräume</span><a class="self-link" href="#transitions-others"></a></h3>
+   <p>Verweise aus anderen Namensräumen bleiben gültig, solange der Namensraum aufgelöst werden kann. Der Identifier ändert sich nicht, und Systeme lösen über das GNR immer den aktuellen Endpunkt auf. Zwischengespeicherte Versionen werden mit dem ursprünglichen Hash geprüft (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.3). Ein Übergang bricht fremde Verweise nur, wenn die Auflösung unterbrochen wird.</p>
+   <div class="issue" id="issue-07827967">
+    <a class="self-link" href="#issue-07827967"></a>
+
+
+    <p>Offene Punkte: Wie wird die Eigentümerschaft eines global auflösbaren Namensraums im GNR übertragen? Wie wird der MigrationRecord ausgestaltet? Beide Fragen sind Gegenstand von RWP und nicht des Guides.</p>
+   </div>
+   <h2 class="heading settled" data-level="9" id="disruptions"><span class="secno">9. </span><span class="content">Störungen und Ausfall</span><a class="self-link" href="#disruptions"></a></h2>
+   <h3 class="heading settled" data-level="9.1" id="disruptions-principle"><span class="secno">9.1. </span><span class="content">Grundsatz</span><a class="self-link" href="#disruptions-principle"></a></h3>
+   <p>Eine Störung lässt sich nicht verhindern, aber ihre Folgen lassen sich begrenzen. Entscheidend ist, was vor Eintritt des Falls vorgesehen ist. Nach einem Ausfall fehlen meist die Möglichkeiten, die Übergabe noch zu organisieren. Der Eigentümer trägt die Folgen, auch wenn der Ausfall beim Betreiber oder Hersteller liegt (siehe <a href="#liability">§ 3.7 Haftung</a>).</p>
+   <h3 class="heading settled" data-level="9.2" id="disruptions-cases"><span class="secno">9.2. </span><span class="content">Fälle im Überblick</span><a class="self-link" href="#disruptions-cases"></a></h3>
+   <table class="data">
+    <thead>
+     <tr>
+      <th>Fall
+      <th>Wirkung auf die Auflösbarkeit
+      <th>Was vorgesehen sein muss
+  
+    <tbody>
+     <tr>
+      <td>Produkteinstellung durch den Hersteller
+      <td>Der Betrieb endet zu einem angekündigten Termin.
+      <td>Übernahme durch ein anderes Produkt oder einen anderen Betreiber vor Dienstende (<a href="#disruptions-discontinuation">§ 9.4 Produkteinstellung</a>)
+    
+     <tr>
+      <td>Betriebsausfall beim Betreiber
+      <td>DID-Dokumente oder Records sind vorübergehend nicht erreichbar.
+      <td>Wiederherstellung, Kommunikation, bekannte Ansprechpartner (<a href="#disruptions-outage">§ 9.5 Betriebsausfall</a>)
+    
+     <tr>
+      <td>Betreiber stellt den Betrieb ohne Übergabe ein
+      <td>Die Auflösung bricht ab, ohne dass jemand übernimmt.
+      <td>Exportierbare Historie und Endpunkte, Übernahmepartei (<a href="#disruptions-preparation">§ 9.3 Voraussetzungen für eine geordnete Übernahme</a>)
+    
+     <tr>
+      <td>Auflösung der Organisation des Eigentümers
+      <td>Niemand ist mehr für den Namensraum zuständig.
+      <td>Nachfolger oder Archiv, vor der Auflösung bestimmt (<a href="#disruptions-dissolution">§ 9.6 Auflösung der Organisation</a>)
+    
+     <tr>
+      <td>Kompromittierter oder verlorener Schlüssel
+      <td>Neue DID-Dokument-Versionen sind nicht mehr vertrauenswürdig oder nicht mehr möglich.
+      <td>Notfallverfahren für Schlüssel (<a href="#disruptions-keys">§ 9.7 Kompromittierter oder verlorener Schlüssel</a>)
+    
+     <tr>
+      <td>Falscher Resolver-Endpunkt im GNR
+      <td>Anfragen werden an die falsche Stelle geleitet.
+      <td>Meldeweg und Korrekturverfahren (<a href="#disruptions-endpoint">§ 9.8 Falscher Resolver-Endpunkt</a>)
+    
+     <tr>
+      <td>Ausfall des GNR
+      <td>Die globale Auflösung von Namensräumen fällt aus.
+      <td>Kenntnis der Ansprechstellen des GNR-Netzwerks (<a href="#disruptions-gnr">§ 9.9 Ausfall des GNR</a>)
+
+   </table>
+   <h3 class="heading settled" data-level="9.3" id="disruptions-preparation"><span class="secno">9.3. </span><span class="content">Voraussetzungen für eine geordnete Übernahme</span><a class="self-link" href="#disruptions-preparation"></a></h3>
+   <p>Ein Übergang bei Ausfall gelingt nur, wenn drei Dinge bereits bestehen, bevor der Fall eintritt:</p>
+   <ul>
+    <li data-md>
+     <p><strong>Exportierbare DID-Dokument-Historie:</strong> Sie muss vollständig und unverändert herausgegeben werden können (siehe <a href="#transitions-scope">§ 8.2 Was übergeben werden muss</a>).</p>
+    <li data-md>
+     <p><strong>Dokumentierte Record-Endpunkte:</strong> Wo die Records liegen und wie sie in einer dokumentierten Form abgerufen werden, muss festgehalten sein.</p>
+    <li data-md>
+     <p><strong>Eine Partei, die bereit ist, zu übernehmen:</strong> Das kann ein anderer Betreiber, ein Nachfolgesystem oder ein Archiv sein. Ohne eine solche Partei gibt es keine geordnete Übernahme.</p>
+   </ul>
+   <p>Das sind keine Anforderungen von <a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>. Sie zeigen einer beschaffenden Stelle, was sie im Voraus sichern muss. Wo ein Hersteller den Betrieb ohne geordnete Übergabe einstellt, trägt der Eigentümer die Folgen.</p>
+   <h3 class="heading settled" data-level="9.4" id="disruptions-discontinuation"><span class="secno">9.4. </span><span class="content">Produkteinstellung</span><a class="self-link" href="#disruptions-discontinuation"></a></h3>
+   <p>Stellt ein Hersteller ein Produkt ein, sorgt der Eigentümer dafür, dass Resolver und Record-Endpunkte vor Ende des Dienstes von einem anderen Produkt oder Anbieter übernommen werden. Dazu gehört, dass er den Termin rechtzeitig erfährt. Empfohlen werden:</p>
+   <ul>
+    <li data-md>
+     <p>eine vertraglich vereinbarte Vorlaufzeit für die Einstellung,</p>
+    <li data-md>
+     <p>regelmässige Exporte, die der Eigentümer bei sich oder bei einer dritten Stelle aufbewahrt,</p>
+    <li data-md>
+     <p>ein Test, ob ein Export tatsächlich in ein anderes System eingespielt und geprüft werden kann (siehe <a href="#transitions-system">§ 8.3 Systemwechsel und Anbieterwechsel</a>).</p>
+   </ul>
+   <h3 class="heading settled" data-level="9.5" id="disruptions-outage"><span class="secno">9.5. </span><span class="content">Betriebsausfall</span><a class="self-link" href="#disruptions-outage"></a></h3>
+   <p>Nicht erreichbare DID-Dokumente oder Records sind für Prüfende nicht von fehlenden zu unterscheiden. Ein Ausfall führt bei anderen Systemen zu den Validierungsergebnissen 404 oder 424. Diese sind kein Beleg dafür, dass ein Record ungültig oder verändert ist (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §7.5.3). Der Betreiber sollte dennoch Ausfälle vermeiden und rasch beheben.</p>
+   <p>Vorgesehen sein sollten:</p>
+   <ul>
+    <li data-md>
+     <p>Zielzeiten für die Wiederherstellung und die Verfügbarkeit,</p>
+    <li data-md>
+     <p>Datensicherung der DID-Dokument-Historie und der Records mit getestetem Wiederanlauf (siehe <a href="#tasks-operations">§ 4.6 Betriebliche Empfehlungen</a>),</p>
+    <li data-md>
+     <p>eine Benachrichtigung des Eigentümers und eine Information an betroffene Gegenstellen.</p>
+   </ul>
+   <p>Prüfende Stellen können sich gegen Ausfälle absichern, indem sie früher verifizierte DID-Dokument-Versionen aufbewahren (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.4).</p>
+   <h3 class="heading settled" data-level="9.6" id="disruptions-dissolution"><span class="secno">9.6. </span><span class="content">Auflösung der Organisation</span><a class="self-link" href="#disruptions-dissolution"></a></h3>
+   <p>Wird die Organisation des Eigentümers aufgelöst oder zusammengelegt, muss vor dem Stichtag feststehen, wer die Rolle des Eigentümers übernimmt. Das kann die Rechtsnachfolgerin oder ein Archiv sein (siehe <a href="#transitions-owner">§ 8.5 Eigentümerwechsel</a> und <a href="#transitions-archive">§ 8.4 Überführung ins Archiv</a>). (Beispiel Bund: Bei der Aufhebung oder Zusammenlegung von Verwaltungseinheiten werden die Aufgaben einer Nachfolgeeinheit zugewiesen. Der Namensraum folgt der Aufgabe, wenn der Zuschnitt dazu passt.)</p>
+   <p>Wo kein Nachfolger vorgesehen ist, entscheidet die Organisation vor der Auflösung bewusst über die Stilllegung und dokumentiert die Folgen (siehe <a href="#duration-handover">§ 7.5 Ende der Verantwortung</a>). Eine Auflösung ohne Regelung ist die schwerste Störung, weil niemand mehr für die Auflösbarkeit einsteht.</p>
+   <h3 class="heading settled" data-level="9.7" id="disruptions-keys"><span class="secno">9.7. </span><span class="content">Kompromittierter oder verlorener Schlüssel</span><a class="self-link" href="#disruptions-keys"></a></h3>
+   <p>Neue DID-Dokument-Versionen werden mit einer Verifikationsmethode signiert, die im aktuellen DID-Dokument des Controllers steht (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §3.4). Wird ein Schlüssel kompromittiert, entsteht eine neue DID-Dokument-Version ohne diesen Schlüssel. Ein Schlüssel, der nicht mehr im aktuellen DID-Dokument steht, darf für neue Signaturen nicht mehr verwendet werden (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §7.7).</p>
+   <p>Zu klären ist vorab:</p>
+   <ul>
+    <li data-md>
+     <p>wer einen Schlüssel sperren und ersetzen darf, auch ausserhalb der Bürozeiten,</p>
+    <li data-md>
+     <p>wo Ersatzschlüssel aufbewahrt werden,</p>
+    <li data-md>
+     <p>wie bereits erstellte Signaturen eingeordnet werden. RWP bewertet bei der Validierung einer Signatur den Schlüsselstatus zum Zeitpunkt der Signatur nicht (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §7.5.2). Der Eigentümer kann über eine StatusAssertion festhalten, dass eine Verifikationsmethode ab einem Zeitpunkt nicht mehr verlässlich ist (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §11).</p>
+   </ul>
+   <p>Bei Verlust aller Schlüssel eines Controllers können keine neuen DID-Dokument-Versionen mehr erzeugt werden. Das ist ein Grund, die Schlüssel beim Eigentümer zu halten und Ersatzverfahren vorzusehen.</p>
+   <h3 class="heading settled" data-level="9.8" id="disruptions-endpoint"><span class="secno">9.8. </span><span class="content">Falscher Resolver-Endpunkt</span><a class="self-link" href="#disruptions-endpoint"></a></h3>
+   <p>Ein falscher oder missbräuchlich geänderter Endpunkt im GNR leitet Anfragen an eine Stelle, die nicht zuständig ist. Das Governance-Framework des GNR-Netzwerks muss Verfahren für falsche Resolver-Endpunkte, kompromittierte Schlüssel, Dienstausfälle und Sicherheitsvorfälle definieren (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.9). Der Eigentümer sollte den Meldeweg kennen und den Eintrag regelmässig prüfen. Die Registrierungshistorie erlaubt es, eine Änderung nachzuvollziehen (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.8).</p>
+   <p>Ein falscher Endpunkt kann eine in sich stimmige, aber gefälschte DID-Dokument-Historie liefern. Prüfende Stellen, die dagegen geschützt sein wollen, behalten früher verifizierte DID-Dokument-Versionen (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.4).</p>
+   <h3 class="heading settled" data-level="9.9" id="disruptions-gnr"><span class="secno">9.9. </span><span class="content">Ausfall des GNR</span><a class="self-link" href="#disruptions-gnr"></a></h3>
+   <p>Das GNR-Netzwerk muss laut seinem Governance-Framework Anforderungen an Verfügbarkeit, Überwachung, Datensicherung, Wiederherstellung und Kontinuität festlegen (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §16.2.9). Eine Organisation, die auf die globale Auflösung angewiesen ist, sollte die Ansprechstellen des Netzwerks kennen und wissen, welche ihrer Prozesse von der globalen Auflösung abhängen.</p>
+   <h3 class="heading settled" data-level="9.10" id="disruptions-plan"><span class="secno">9.10. </span><span class="content">Notfallplan</span><a class="self-link" href="#disruptions-plan"></a></h3>
+   <p>Als Ergebnis dieses Kapitels sollte pro Namensraum ein kurzer Notfallplan bestehen, der im Register (siehe <a href="#scope-register">§ 5.7 Zuordnung festhalten</a>) verlinkt ist:</p>
+   <ul>
+    <li data-md>
+     <p>Verantwortliche und Stellvertretungen auf Seiten von Eigentümer und Betreiber</p>
+    <li data-md>
+     <p>Ansprechstellen beim Hersteller und beim GNR-Netzwerk</p>
+    <li data-md>
+     <p>Ablauf für Export und Übernahme, mit Zielbetreiber oder Nachfolger</p>
+    <li data-md>
+     <p>Schlüsselverwahrung und Verfahren bei Kompromittierung</p>
+    <li data-md>
+     <p>Zielzeiten und Kommunikationsweg</p>
+    <li data-md>
+     <p>Zeitpunkt und Ergebnis der letzten Übung</p>
+   </ul>
+   <p>Empfohlen wird, den Export und die Übernahme in regelmässigen Abständen zu üben. Ein ungeprüfter Plan gilt nicht als vorgesehen.</p>
+   <div class="issue" id="issue-fe7f54f1">
+    <a class="self-link" href="#issue-fe7f54f1"></a>
+
+
+    <p>Offener Punkt: Wer ist Eigentümer, wenn eine Organisation ohne Nachfolger aufgelöst wird und der Namensraum noch auflösbar sein muss? Kann ein Archiv die Rolle als Auffang übernehmen?</p>
+   </div>
+   <h2 class="heading settled" data-level="10" id="procurement"><span class="secno">10. </span><span class="content">Was eine Beschaffung klären muss</span><a class="self-link" href="#procurement"></a></h2>
+   <h3 class="heading settled" data-level="10.1" id="procurement-purpose"><span class="secno">10.1. </span><span class="content">Zweck und Verwendung</span><a class="self-link" href="#procurement-purpose"></a></h3>
+   <p>Dieses Kapitel fasst die Fragen zusammen, die vor einer Ausschreibung beantwortet sein sollten. Es ist eine Checkliste und kein Anforderungskatalog. Die Antworten fliessen in die Ausschreibungsunterlagen und den Vertrag ein. Die Fragen sind in drei Gruppen geordnet: Klärungen der beschaffenden Stelle, Fragen an den Lieferanten und vertragliche Regelungen.</p>
+   <h3 class="heading settled" data-level="10.2" id="procurement-profile"><span class="secno">10.2. </span><span class="content">Auswirkung auf die Wahl des Profils</span><a class="self-link" href="#procurement-profile"></a></h3>
+   <p><a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a> unterscheidet Profile und Rollen. Eine beschaffende Stelle sollte die Konformität nach ihrer eigenen Vertrauensrichtlinie bewerten, einschliesslich der Identität der bestätigenden Stelle, der Bewertungsmethode, der Nachweise und der Version der Implementierung und von RWP. Selbstbestätigung, unabhängige Bewertung und Zertifizierung sind nicht gleichwertig (<a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, §15.6).</p>
+   <p>In Diskussion sind Profile, die die Vergabe von Identifiern von der Auflösbarkeit trennen (rwp#59). Das Identifier-Profil hat keine Abhängigkeit von der Zuständigkeit für den Namensraum und ist deshalb ein risikoarmer erster Schritt. Das Profil zur Auflösbarkeit setzt voraus, dass die Fragen dieses Kapitels geklärt sind, bevor es als Anforderung in einer Beschaffung verwendet wird.</p>
+   <h3 class="heading settled" data-level="10.3" id="procurement-owner"><span class="secno">10.3. </span><span class="content">A. Klärungen der beschaffenden Stelle</span><a class="self-link" href="#procurement-owner"></a></h3>
+   <p>Diese Fragen beantwortet die beschaffende Stelle als künftiger Eigentümer selbst, bevor sie mit Lieferanten spricht.</p>
+   <table class="data">
+    <thead>
+     <tr>
+      <th>Nr.
+      <th>Frage
+      <th>Hintergrund
+  
+    <tbody>
+     <tr>
+      <td>A1
+      <td>Wer ist Eigentümer und Registrant des Namensraums?
+      <td><a href="#org-roles">§ 3.3 Organisatorische Rollen (nur dieser Report)</a>, <a href="#gnr-decisions">§ 6.4 Entscheidungen vor der Registrierung</a>
+    
+     <tr>
+      <td>A2
+      <td>Welchen Zuschnitt hat der Namensraum, und ist er global auflösbar oder lokal?
+      <td><a href="#scope-namespace">§ 5 Zuschnitt eines Namensraums</a>, <a href="#scope-global-local">§ 5.6 Global oder lokal</a>
+    
+     <tr>
+      <td>A3
+      <td>Welche Aufbewahrungsfrist gilt, und wie lange dauert daher die Verantwortung?
+      <td><a href="#duration-derivation">§ 7.3 Bestimmung der Dauer</a>
+    
+     <tr>
+      <td>A4
+      <td>Wer übernimmt die Rollen Betreiber, Verwahrer und Hersteller, und fallen sie zusammen?
+      <td><a href="#constellations">§ 3.5 Typische Konstellationen</a>
+    
+     <tr>
+      <td>A5
+      <td>Wer kontrolliert die Schlüssel für die DID-Dokumente?
+      <td><a href="#transitions-scope">§ 8.2 Was übergeben werden muss</a>, <a href="#disruptions-keys">§ 9.7 Kompromittierter oder verlorener Schlüssel</a>
+    
+     <tr>
+      <td>A6
+      <td>Wie ist die Auflösung über die gesamte Dauer finanziert?
+      <td><a href="#duration-funding">§ 7.6 Finanzierung</a>
+    
+     <tr>
+      <td>A7
+      <td>Wer ist Nachfolger oder Auffangstelle (zum Beispiel ein Archiv)?
+      <td><a href="#duration-handover">§ 7.5 Ende der Verantwortung</a>, <a href="#disruptions-dissolution">§ 9.6 Auflösung der Organisation</a>
+
+   </table>
+   <h3 class="heading settled" data-level="10.4" id="procurement-supplier"><span class="secno">10.4. </span><span class="content">B. Fragen an den Lieferanten</span><a class="self-link" href="#procurement-supplier"></a></h3>
+   <table class="data">
+    <thead>
+     <tr>
+      <th>Nr.
+      <th>Frage
+      <th>Hintergrund
+  
+    <tbody>
+     <tr>
+      <td>B1
+      <td>Welche Rollen übernimmt der Lieferant (Betreiber, Verwahrer, Hersteller), und ist das schriftlich getrennt?
+      <td><a href="#org-roles">§ 3.3 Organisatorische Rollen (nur dieser Report)</a>, <a href="#constellations">§ 3.5 Typische Konstellationen</a>
+    
+     <tr>
+      <td>B2
+      <td>Welche RWP-Rollen und Profile beansprucht er, mit welchem Nachweis, für welche Version?
+      <td><a href="#procurement-profile">§ 10.2 Auswirkung auf die Wahl des Profils</a>
+    
+     <tr>
+      <td>B3
+      <td>Wie lange betreibt er Resolver und Endpunkte, und was geschieht nach Vertragsende?
+      <td><a href="#duration-principle">§ 7.1 Grundsatz</a>
+    
+     <tr>
+      <td>B4
+      <td>Wie lassen sich DID-Dokument-Historie, Records, Löschnachweise und Schemas exportieren, in welchem Format und mit welchen Prüfmöglichkeiten?
+      <td><a href="#transitions-scope">§ 8.2 Was übergeben werden muss</a>
+    
+     <tr>
+      <td>B5
+      <td>Wie unterstützt er die Übergabe an ein Nachfolgesystem oder ein Archiv, und zu welchen Kosten?
+      <td><a href="#transitions-system">§ 8.3 Systemwechsel und Anbieterwechsel</a>, <a href="#transitions-archive">§ 8.4 Überführung ins Archiv</a>
+    
+     <tr>
+      <td>B6
+      <td>Wie läuft die Einstellung eines Produkts oder des Betriebs ab, mit welcher Vorlaufzeit?
+      <td><a href="#disruptions-discontinuation">§ 9.4 Produkteinstellung</a>
+    
+     <tr>
+      <td>B7
+      <td>Wer trägt die Kosten der Auflösung nach Vertragsende, und für wie lange?
+      <td><a href="#duration-funding">§ 7.6 Finanzierung</a>
+    
+     <tr>
+      <td>B8
+      <td>Wo liegen die Schlüssel, wer hat Zugriff, wie laufen Rotation und Notfall?
+      <td><a href="#disruptions-keys">§ 9.7 Kompromittierter oder verlorener Schlüssel</a>
+    
+     <tr>
+      <td>B9
+      <td>Welche Verfügbarkeit, Datensicherung und Wiederherstellung werden zugesichert, auch für die DID-Dokument-Historie?
+      <td><a href="#tasks-operations">§ 4.6 Betriebliche Empfehlungen</a>
+    
+     <tr>
+      <td>B10
+      <td>Wie werden mehrere Namensräume auf einer Instanz getrennt?
+      <td><a href="#tasks-operations">§ 4.6 Betriebliche Empfehlungen</a>
+    
+     <tr>
+      <td>B11
+      <td>Wie verhält sich der Resolver bei Zugriffsrichtlinien (Antworten 403 und 404)?
+      <td><a href="#tasks-did-provider">§ 4.2 DID-Provider</a>
+    
+     <tr>
+      <td>B12
+      <td>Wie werden Sicherheitsvorfälle gemeldet, und in welcher Frist?
+      <td><a href="#disruptions-endpoint">§ 9.8 Falscher Resolver-Endpunkt</a>
+    
+     <tr>
+      <td>B13
+      <td>Wo und durch wen wird betrieben (Standort, Unterauftragnehmer)?
+      <td><a href="#constellations">§ 3.5 Typische Konstellationen</a>
+    
+     <tr>
+      <td>B14
+      <td>Wer registriert und ändert den Eintrag im GNR, und unter welcher Identität?
+      <td><a href="#gnr-entry">§ 6.3 Was eingetragen wird</a>, <a href="#gnr-changes">§ 6.5 Änderungen am Eintrag</a>
+
+   </table>
+   <h3 class="heading settled" data-level="10.5" id="procurement-contract"><span class="secno">10.5. </span><span class="content">C. Vertragliche Regelungen</span><a class="self-link" href="#procurement-contract"></a></h3>
+   <p>Die folgenden Punkte gehören in den Vertrag. Sie richten sich nach der Rollenverteilung aus <a href="#org-roles">§ 3.3 Organisatorische Rollen (nur dieser Report)</a>:</p>
+   <ul>
+    <li data-md>
+     <p>Die Eigentümerschaft am Namensraum liegt ausdrücklich beim Auftraggeber. Der Lieferant wird nicht Eigentümer, auch wenn er den Betrieb übernimmt.</p>
+    <li data-md>
+     <p>Der Lieferant verpflichtet sich zur Herausgabe der DID-Dokument-Historie, der Records und der Schlüssel in der vereinbarten Form, jederzeit und nach Vertragsende.</p>
+    <li data-md>
+     <p>Bei Beendigung gibt es einen Übergangsdienst, solange die Übernahme nicht abgeschlossen ist.</p>
+    <li data-md>
+     <p>Änderungen am Eintrag im GNR erfolgen nur mit Zustimmung des Eigentümers.</p>
+    <li data-md>
+     <p>Es sind regelmässige Exporte und ein Probelauf der Übernahme vorgesehen.</p>
+    <li data-md>
+     <p>Die Haftung für Ausfälle, Verluste und Folgen einer ungeordneten Einstellung ist geregelt (siehe <a href="#liability">§ 3.7 Haftung</a>).</p>
+    <li data-md>
+     <p>Der Auftraggeber hat Prüf- und Auskunftsrechte, insbesondere zu Betrieb, Standort und Unterauftragnehmern.</p>
+   </ul>
+   <h3 class="heading settled" data-level="10.6" id="procurement-use"><span class="secno">10.6. </span><span class="content">Verwendung der Checkliste</span><a class="self-link" href="#procurement-use"></a></h3>
+   <p>Eine Beschaffung ist reif für die Ausschreibung, wenn die Fragen der Gruppe A beantwortet sind und die Gruppe B als Anforderungen und Eignungs- oder Zuschlagskriterien formuliert ist. Die Gruppe C bildet die Grundlage für den Vertragsentwurf. Wo eine Frage offen bleibt, sollte sie als Risiko benannt werden und nicht übergangen.</p>
+   <h2 class="heading no-num settled" id="annex-rwp"><span class="content">Anhang A: Zuordnung zu RWP und RWT</span><a class="self-link" href="#annex-rwp"></a></h2>
+   <p>Dieser Anhang ist informativ. Er zeigt, auf welche Teile von <a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a> und <a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a> sich die Kapitel dieses Guides stützen, und macht sichtbar, welche Aussagen eigene Empfehlungen des Guides sind. Die Angaben beziehen sich auf RWP 0.0.17 und RWT 0.0.1.</p>
+   <h3 class="heading no-num settled" id="annex-rwp-chapters"><span class="content">A.1 Kapitel und RWP-Abschnitte</span><a class="self-link" href="#annex-rwp-chapters"></a></h3>
+   <table class="data">
+    <thead>
+     <tr>
+      <th>Kapitel
+      <th>RWP-Abschnitte
+      <th>Verwendet für
+  
+    <tbody>
+     <tr>
+      <td><a href="#purpose">§ 1 Zweck und Abgrenzung</a> Zweck und Abgrenzung
+      <td>§1.5, §3.6, §14, §16.4, §18
+      <td>Rollen, Auflösbarkeit, Abgrenzung zu Löschung, Vertrauen und Zugriffssteuerung
+    
+     <tr>
+      <td><a href="#principles">§ 2 Grundsätze</a> Grundsätze
+      <td>§3.2, §4.1, §4.3, §5.2, §16.2.4, §16.4
+      <td>Stabilität des Identifiers, Opazität des Namensraums, Auflösung ohne Vertrauensaussage
+    
+     <tr>
+      <td><a href="#terms">§ 3 Begriffe und Rollen</a> Begriffe und Rollen
+      <td>§1.5, §4.3, §4.4, §5.2, §7.7, §16.2.7, §16.2.9
+      <td>Rollen, global und lokal, Registrant, Record-Eigentümer, Abgrenzung zu Signaturen
+    
+     <tr>
+      <td><a href="#tasks">§ 4 Aufgaben und Anforderungen</a> Aufgaben und Anforderungen
+      <td>§3.5, §3.6, §7.5.3, §15.4, §16.2, §16.2.3, §16.2.5, §16.3
+      <td>Anforderungen an DID-Provider, Namensraum-Provider und Namensraum-Resolver, Zuordnung zu Rollen und Profilen
+    
+     <tr>
+      <td><a href="#scope-namespace">§ 5 Zuschnitt eines Namensraums</a> Zuschnitt
+      <td>§4.1, §4.2, §4.3, §4.4, §4.5, §5.2
+      <td>Permanenz der Identität, keine Wiederverwendung der recordId, opaker Namensraum, Metadaten statt Identifier
+    
+     <tr>
+      <td><a href="#gnr">§ 6 Registrierung und Verwendung des GNR</a> Registrierung und Verwendung des GNR
+      <td>§4.3, §16.2.2, §16.2.4, §16.2.7, §16.2.8, §16.2.9, §16.4
+      <td>Voraussetzungen, Routingeintrag, Registrierungshistorie, Governance, RecordWeb-Namensraum
+    
+     <tr>
+      <td><a href="#duration">§ 7 Dauer der Verantwortung</a> Dauer der Verantwortung
+      <td>§3.6, §4.2, §5.2, §14.4, §16.3
+      <td>Aufbewahrungsregel, Löschregime, Auflösbarkeit nach Löschung, Verweise aus anderen Namensräumen
+    
+     <tr>
+      <td><a href="#transitions">§ 8 Übergänge</a> Übergänge
+      <td>§3.2, §3.3, §3.4, §4.1, §5.2, §6.2, §6.4, §6.6, §8.2, §13.5, §14, §16.2.7, §16.3
+      <td>DID-Dokument-Historie, neue Versionen bei Endpunktwechsel, Schemas, Löschnachweise, MigrationRecord, Eigentümerwechsel
+    
+     <tr>
+      <td><a href="#disruptions">§ 9 Störungen und Ausfall</a> Störungen und Ausfall
+      <td>§3.4, §7.5.2, §7.5.3, §7.7, §11, §16.2.8, §16.2.9, §16.4
+      <td>Schlüsselverwaltung, StatusAssertion, Validierungscodes, Governance bei Störungen
+    
+     <tr>
+      <td><a href="#procurement">§ 10 Was eine Beschaffung klären muss</a> Beschaffung
+      <td>§15.2.4, §15.6
+      <td>Bewertung von Konformitätsaussagen, Unterschied von Selbstbestätigung, Bewertung und Zertifizierung
+
+   </table>
+   <h3 class="heading no-num settled" id="annex-rwp-terms"><span class="content">A.2 Begriffe</span><a class="self-link" href="#annex-rwp-terms"></a></h3>
+   <table class="data">
+    <thead>
+     <tr>
+      <th>Begriff im Guide
+      <th>Quelle
+      <th>Entsprechung oder Anmerkung zu RWP 0.0.17
+  
+    <tbody>
+     <tr>
+      <td><a data-link-type="dfn" href="https://recordweb.github.io/rwt/#namespace%E2%91%A0" id="ref-for-namespace%E2%91%A0④">Namensraum</a>
+      <td><a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a>
+      <td>Komponente <code>namespace</code> der DID (§4.2)
+    
+     <tr>
+      <td><a data-link-type="dfn" href="https://recordweb.github.io/rwt/#record-id%E2%91%A0" id="ref-for-record-id%E2%91%A0①">recordId</a>
+      <td><a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a>
+      <td>Komponente <code>recordId</code> der DID (§4.2)
+    
+     <tr>
+      <td><a data-link-type="dfn" href="https://recordweb.github.io/rwt/#record%E2%91%A0" id="ref-for-record%E2%91%A0">Record</a>
+      <td><a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a>
+      <td>§2.1
+    
+     <tr>
+      <td><a data-link-type="dfn" href="https://recordweb.github.io/rwt/#role" id="ref-for-role①">Rolle</a>
+      <td><a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a>
+      <td>§1.5
+    
+     <tr>
+      <td><a data-link-type="dfn" href="https://recordweb.github.io/rwt/#custodian%E2%91%A0" id="ref-for-custodian%E2%91%A0③">Verwahrer</a>
+      <td><a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a>
+      <td>Rolle «custodian», §1.5
+    
+     <tr>
+      <td><a data-link-type="dfn" href="https://recordweb.github.io/rwt/#did-provider" id="ref-for-did-provider④">DID-Provider</a>
+      <td><a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a>
+      <td>In RWP heisst die Rolle noch «resolver» (§1.5, §3.6). Eine Anpassung ist in einem Issue erfasst.
+    
+     <tr>
+      <td><a data-link-type="dfn" href="https://recordweb.github.io/rwt/#did-resolver" id="ref-for-did-resolver②">DID-Resolver</a>
+      <td><a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a>
+      <td>Komponente, §3.6
+    
+     <tr>
+      <td><a data-link-type="dfn" href="https://recordweb.github.io/rwt/#did-resolution" id="ref-for-did-resolution①">DID-Auflösung</a>
+      <td><a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a>
+      <td>§3.6
+    
+     <tr>
+      <td><a data-link-type="dfn" href="https://recordweb.github.io/rwt/#namespace-provider" id="ref-for-namespace-provider④">Namensraum-Provider</a>
+      <td><a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a>
+      <td>Das GNR (§16.2). RWP nennt die Rolle nicht ausdrücklich.
+    
+     <tr>
+      <td><a data-link-type="dfn" href="https://recordweb.github.io/rwt/#namespace-resolver" id="ref-for-namespace-resolver②">Namensraum-Resolver</a>
+      <td><a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a>
+      <td>In RWP als «GNR Resolver» (§16.2.3). §16.1 verwendet «namespace resolver» in anderer Bedeutung. Eine Anpassung ist in einem Issue erfasst.
+    
+     <tr>
+      <td><a data-link-type="dfn" href="https://recordweb.github.io/rwt/#namespace-resolution" id="ref-for-namespace-resolution①">Namensraum-Auflösung</a>
+      <td><a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a>
+      <td>§16.2.5
+    
+     <tr>
+      <td><a data-link-type="dfn" href="https://recordweb.github.io/rwt/#producer%E2%91%A0" id="ref-for-producer%E2%91%A0①">Erzeuger</a>, <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#consumer%E2%91%A0" id="ref-for-consumer%E2%91%A0">Nutzer</a>, <a data-link-type="dfn" href="https://recordweb.github.io/rwt/#verifier%E2%91%A0" id="ref-for-verifier%E2%91%A0">Prüfer</a>
+      <td><a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a>
+      <td>§1.5
+    
+     <tr>
+      <td><a data-link-type="dfn" href="#eigentmer" id="ref-for-eigentmer①">Eigentümer</a>
+      <td>Guide
+      <td>Kein Begriff in RWP. Im GNR der Registrant (§16.2.7). Verschieden vom Record-Eigentümer (<code>metadata.governance.owner</code>, §5.2).
+    
+     <tr>
+      <td><a data-link-type="dfn" href="#betreiber" id="ref-for-betreiber">Betreiber</a>
+      <td>Guide
+      <td>Kein Begriff in RWP. Partei, die DID-Provider- oder Verwahrer-Rolle ausübt.
+    
+     <tr>
+      <td><a data-link-type="dfn" href="#hersteller" id="ref-for-hersteller">Hersteller</a>
+      <td>Guide
+      <td>Kein Begriff in RWP.
+    
+     <tr>
+      <td><a data-link-type="dfn" href="#registrant" id="ref-for-registrant">Registrant</a>
+      <td>Guide
+      <td><code>registeredBy</code> im Routingeintrag (§16.2.7)
+
+   </table>
+   <p>Die Begriffe Eigentümer, Betreiber und Hersteller werden erst dann in <a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a> aufgenommen, wenn sie in weiteren Reports verwendet werden.</p>
+   <h3 class="heading no-num settled" id="annex-rwp-own"><span class="content">A.3 Eigene Empfehlungen des Guides</span><a class="self-link" href="#annex-rwp-own"></a></h3>
+   <p>Folgende Aussagen stammen nicht aus <a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>. Sie sind Empfehlungen oder Folgerungen des Guides und sollten in der Diskussion entsprechend behandelt werden:</p>
+   <ul>
+    <li data-md>
+     <p>die Unterscheidung von Eigentümer, Betreiber und Hersteller sowie die Konstellationen (<a href="#org-roles">§ 3.3 Organisatorische Rollen (nur dieser Report)</a>, <a href="#constellations">§ 3.5 Typische Konstellationen</a>)</p>
+    <li data-md>
+     <p>die Orientierungen für den Zuschnitt und die Empfehlung, sich an einer langfristig stabilen Aufgabe zu orientieren (<a href="#scope-namespace">§ 5 Zuschnitt eines Namensraums</a>)</p>
+    <li data-md>
+     <p>die Folgerung, dass sich ein Zuschnitt nur für künftige Records ändern lässt (<a href="#scope-irreversible">§ 5.2 Der Zuschnitt lässt sich kaum korrigieren</a>)</p>
+    <li data-md>
+     <p>das Register der Organisation und seine Angaben (<a href="#scope-register">§ 5.7 Zuordnung festhalten</a>)</p>
+    <li data-md>
+     <p>die betrieblichen Empfehlungen zu Verfügbarkeit, Datensicherung, Schlüsselverwaltung und Export (<a href="#tasks-operations">§ 4.6 Betriebliche Empfehlungen</a>)</p>
+    <li data-md>
+     <p>die Ableitung der Verantwortungsdauer aus der längsten Aufbewahrungsfrist und die Übergabe statt Zeitablauf als Ende (<a href="#duration">§ 7 Dauer der Verantwortung</a>)</p>
+    <li data-md>
+     <p>die Empfehlung, die Schlüssel für DID-Dokumente beim Eigentümer zu halten (<a href="#transitions-scope">§ 8.2 Was übergeben werden muss</a>)</p>
+    <li data-md>
+     <p>der Ablauf bei Systemwechsel und die Modelle der Archivüberführung (<a href="#transitions-system">§ 8.3 Systemwechsel und Anbieterwechsel</a>, <a href="#transitions-archive">§ 8.4 Überführung ins Archiv</a>)</p>
+    <li data-md>
+     <p>der Notfallplan und die Verwendung einer StatusAssertion bei Schlüsselkompromittierung (<a href="#disruptions">§ 9 Störungen und Ausfall</a>)</p>
+    <li data-md>
+     <p>die Checkliste der Beschaffung (<a href="#procurement">§ 10 Was eine Beschaffung klären muss</a>)</p>
+   </ul>
+   <h2 class="heading no-num settled" id="annex-open"><span class="content">Anhang B: Offene Punkte</span><a class="self-link" href="#annex-open"></a></h2>
+   <p>Dieser Anhang ist informativ. Er fasst die offenen Punkte der Kapitel zusammen und nennt, wer sie klären kann. Die Spalte «Adressat» zeigt, ob der Punkt im Guide selbst, in <a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a>, in <a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a>, in der RecordWeb-Ontologie (RWO) oder in der Community zu klären ist.</p>
+   <table class="data">
+    <thead>
+     <tr>
+      <th>Nr.
+      <th>Kapitel
+      <th>Frage
+      <th>Adressat
+  
+    <tbody>
+     <tr>
+      <td>B1
+      <td><a href="#liability">§ 3.7 Haftung</a>
+      <td>Soll der Guide Haftungsmodelle ausführen (vertragliche Regelung, Verwaltungsvereinbarung) oder nur den Entscheidungspunkt benennen?
+      <td>Guide, Community
+    
+     <tr>
+      <td>B2
+      <td><a href="#scope-options">§ 5.4 Orientierungen im Vergleich</a>
+      <td>Soll der Guide die gesetzliche Aufgabe als bevorzugte Orientierung für den Zuschnitt nennen oder die Ausrichtung am Ordnungssystem (Funktion, Tätigkeit) gleichrangig führen?
+      <td>Guide, Community
+    
+     <tr>
+      <td>B3
+      <td><a href="#scope-namespace">§ 5 Zuschnitt eines Namensraums</a>
+      <td>Soll die Aufgabe, der ein Namensraum zugeordnet ist, selbst als Record geführt werden (AgentRecord oder eigener Schematyp)?
+      <td>RWO, RWP
+    
+     <tr>
+      <td>B4
+      <td><a href="#gnr-entry">§ 6.3 Was eingetragen wird</a>
+      <td>Wo und wie wird die Zuordnung von Namensraum zu Eigentümer festgehalten, wenn der Namensraum opak ist (zum Beispiel als AssertionRecord)?
+      <td>RWO, RWP
+    
+     <tr>
+      <td>B5
+      <td><a href="#gnr-documentation">§ 6.8 Dokumentation der Registrierung</a>, <a href="#transitions-owner">§ 8.5 Eigentümerwechsel</a>
+      <td>Wie geht die Eigentümerschaft (Registrant) eines global auflösbaren Namensraums im GNR auf eine andere Partei über?
+      <td>RWP, GNR-Governance
+    
+     <tr>
+      <td>B6
+      <td><a href="#terms">§ 3 Begriffe und Rollen</a>
+      <td>Darf eine Registrierungsstelle stellvertretend für einen Eigentümer registrieren, und wie wird die Eigentümerschaft dann nachgewiesen?
+      <td>GNR-Governance
+    
+     <tr>
+      <td>B7
+      <td><a href="#transitions-system">§ 8.3 Systemwechsel und Anbieterwechsel</a>
+      <td>Wie wird der MigrationRecord ausgestaltet?
+      <td>RWP
+    
+     <tr>
+      <td>B8
+      <td><a href="#duration-handover">§ 7.5 Ende der Verantwortung</a>
+      <td>Wann endet die Pflicht zur Auflösbarkeit, und soll die Auflösung nach Ablauf der Frist bis zur Übergabe an ein Archiv weiterlaufen?
+      <td>Guide, Community
+    
+     <tr>
+      <td>B9
+      <td><a href="#disruptions-plan">§ 9.10 Notfallplan</a>
+      <td>Wer ist Eigentümer, wenn eine Organisation ohne Nachfolger aufgelöst wird? Kann ein Archiv als Auffang dienen?
+      <td>Community
+    
+     <tr>
+      <td>B10
+      <td><a href="#transitions-scope">§ 8.2 Was übergeben werden muss</a>
+      <td>Soll RWP festhalten, wer Controller eines DID-Dokuments eines Records sein soll und wo die Schlüssel liegen, damit die Empfehlung des Guides eine normative Grundlage hat?
+      <td>RWP
+    
+     <tr>
+      <td>B11
+      <td><a href="#disruptions-keys">§ 9.7 Kompromittierter oder verlorener Schlüssel</a>
+      <td>Soll RWP die Verwendung einer StatusAssertion für Verifikationsmethoden bei Kompromittierung ausdrücklich beschreiben?
+      <td>RWP
+    
+     <tr>
+      <td>B12
+      <td><a href="#tasks-operations">§ 4.6 Betriebliche Empfehlungen</a>
+      <td>Soll RWP klarstellen, dass mehrere Namensräume auf denselben Resolver-Endpunkt zeigen dürfen?
+      <td>RWP
+    
+     <tr>
+      <td>B13
+      <td><a href="#procurement-profile">§ 10.2 Auswirkung auf die Wahl des Profils</a>
+      <td>Soll im Profiltext zur Auflösbarkeit (rwp#59) stehen, dass die Fragen zu Eigentümer, Betrieb und Übergabe vor der Verwendung in einer Beschaffung zu klären sind?
+      <td>RWP
+    
+     <tr>
+      <td>B14
+      <td><a href="#relationship">§ 1.3 Verhältnis zu RWP, RWC und RWT</a>
+      <td>Wie wird der Kapitelvorschlag zur Namespace Stewardship im RWC mit diesem Guide abgestimmt, damit die Aussagen sich nicht widersprechen?
+      <td>RWC, Guide
+    
+     <tr>
+      <td>B15
+      <td><a href="#org-roles">§ 3.3 Organisatorische Rollen (nur dieser Report)</a>
+      <td>Wann werden Eigentümer, Betreiber und Hersteller als Begriffe in <a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a> aufgenommen? Nach der Regel dann, wenn ein weiterer Report sie verwendet.
+      <td>RWT
+    
+     <tr>
+      <td>B16
+      <td><a href="#terms-rwt">§ 3.1 Verhältnis zu RWT</a>
+      <td>Terminologie: Rolle «resolver» in DID-Provider umbenennen, «namespace resolver» in RWP §16.1 anpassen, Präfix der Ontologie vereinheitlichen. Die Issues sind angelegt.
+      <td>RWP, RWT, RWO
+    
+     <tr>
+      <td>B17
+      <td><a href="#status">§ 1.2 Status dieses Reports</a>
+      <td>Die englische Fassung des Guides folgt. Die deutschen Begriffe in <a data-link-type="biblio" href="#biblio-rwt" title="RecordWeb Terminology (RWT)">[RWT]</a> sind Vorschläge und müssen vorher bereinigt werden.
+      <td>Guide, RWT
+
+   </table>
+  </main>
+  <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
+  <h2 class="heading no-num no-ref settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <ul class="index">
+   <li><a href="#betreiber">Betreiber</a><span>, in § 3.3</span>
+   <li><a href="#eigentmer">Eigentümer</a><span>, in § 3.3</span>
+   <li><a href="#hersteller">Hersteller</a><span>, in § 3.3</span>
+   <li><a href="#betreiber">Namensraum-Betreiber</a><span>, in § 3.3</span>
+   <li><a href="#eigentmer">Namensraum-Eigentümer</a><span>, in § 3.3</span>
+   <li><a href="#betreiber">namespace operator</a><span>, in § 3.3</span>
+   <li><a href="#eigentmer">namespace owner</a><span>, in § 3.3</span>
+   <li><a href="#hersteller">product vendor</a><span>, in § 3.3</span>
+   <li><a href="#registrant">Registrant</a><span>, in § 3.3</span>
+  </ul>
+  <h3 class="heading no-num no-ref settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <ul class="index">
+   <li>
+    <a data-link-type="biblio">[RWT]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="bf5fbdb2">consumer</span>
+     <li><span class="dfn-paneled" id="3a3e4f67">custodian</span>
+     <li><span class="dfn-paneled" id="07a29bb6">DID provider</span>
+     <li><span class="dfn-paneled" id="a48848fb">DID resolution</span>
+     <li><span class="dfn-paneled" id="f6c5f002">DID resolver</span>
+     <li><span class="dfn-paneled" id="0c150b21">namespace</span>
+     <li><span class="dfn-paneled" id="eaf8d5da">namespace provider</span>
+     <li><span class="dfn-paneled" id="d962c6ec">namespace resolution</span>
+     <li><span class="dfn-paneled" id="19ef5c0d">namespace resolver</span>
+     <li><span class="dfn-paneled" id="ccb18b48">producer</span>
+     <li><span class="dfn-paneled" id="d28617b2">Record</span>
+     <li><span class="dfn-paneled" id="00a528d3">recordId</span>
+     <li><span class="dfn-paneled" id="ef0d58de">role</span>
+     <li><span class="dfn-paneled" id="a169e986">verifier</span>
+    </ul>
+  </ul>
+  <h2 class="heading no-num no-ref settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
+  <dl>
+   <dt id="biblio-rwt">[RWT]
+   <dd><a href="https://recordweb.github.io/rwt/"><cite>RecordWeb Terminology (RWT)</cite></a>. CG-DRAFT. URL: <a href="https://recordweb.github.io/rwt/">https://recordweb.github.io/rwt/</a>
+  </dl>
+  <h3 class="heading no-num no-ref settled" id="informative"><span class="content">Non-Normative References</span><a class="self-link" href="#informative"></a></h3>
+  <dl>
+   <dt id="biblio-rwc">[RWC]
+   <dd><a href="https://recordweb.github.io/rwc/"><cite>RecordWeb Concept (RWC)</cite></a>. CG-DRAFT. URL: <a href="https://recordweb.github.io/rwc/">https://recordweb.github.io/rwc/</a>
+   <dt id="biblio-rwp">[RWP]
+   <dd><a href="https://recordweb.github.io/rwp/"><cite>RecordWeb Protocol (RWP)</cite></a>. CG-DRAFT. URL: <a href="https://recordweb.github.io/rwp/">https://recordweb.github.io/rwp/</a>
+  </dl>
+  <h2 class="heading no-num no-ref settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+  <div style="counter-reset:issue">
+   <div class="issue">
+    <p>Offener Punkt: Soll der Report Haftungsmodelle ausführen (zum Beispiel vertragliche Regelung, Verwaltungsvereinbarung) oder nur den Entscheidungspunkt benennen? Diese Fassung benennt nur den Entscheidungspunkt.</p>
+    
+
+ <a class="issue-return" href="#issue-87c5d702" title="Jump to section">↵</a>
+   </div>
+   <div class="issue">
+    <p>Offener Punkt: In der Community ist die Ausrichtung an einer Aufgabe des Ordnungssystems nach ISO 15489 vorgeschlagen worden (Ebene Funktion oder Tätigkeit). Es ist offen, ob der Guide die gesetzliche Aufgabe als bevorzugte Orientierung nennt oder beide Orientierungen gleichrangig führt.</p>
+    
+
+ <a class="issue-return" href="#issue-266fd985" title="Jump to section">↵</a>
+   </div>
+   <div class="issue">
+    <p>Offener Punkt: <a data-link-type="biblio" href="#biblio-rwp" title="RecordWeb Protocol (RWP)">[RWP]</a> 0.0.17 beschreibt nicht, wie ein Namensraum von einem Registranten auf einen anderen übergeht. Das ist beim Eigentümerwechsel relevant (siehe <a href="#transitions">§ 8 Übergänge</a>).</p>
+    
+
+ <a class="issue-return" href="#issue-46f8a677" title="Jump to section">↵</a>
+   </div>
+   <div class="issue">
+    <p>Offener Punkt: Soll der Guide empfehlen, dass die Auflösung nach der Frist bis zur Übergabe an ein Archiv weiterläuft? Und wie wird verhindert, dass ein Namensraum nach einer Übergabe ohne Betreiber bleibt?</p>
+    
+
+ <a class="issue-return" href="#issue-cc1ff650" title="Jump to section">↵</a>
+   </div>
+   <div class="issue">
+    <p>Offene Punkte: Wie wird die Eigentümerschaft eines global auflösbaren Namensraums im GNR übertragen? Wie wird der MigrationRecord ausgestaltet? Beide Fragen sind Gegenstand von RWP und nicht des Guides.</p>
+    
+
+ <a class="issue-return" href="#issue-07827967" title="Jump to section">↵</a>
+   </div>
+   <div class="issue">
+    <p>Offener Punkt: Wer ist Eigentümer, wenn eine Organisation ohne Nachfolger aufgelöst wird und der Namensraum noch auflösbar sein muss? Kann ein Archiv die Rolle als Auffang übernehmen?</p>
+    
+
+ <a class="issue-return" href="#issue-fe7f54f1" title="Jump to section">↵</a>
+   </div>
+  </div>
+<script>/* Boilerplate: script-dom-helper */
+"use strict";
+function query(sel) { return document.querySelector(sel); }
+
+function queryAll(sel) { return [...document.querySelectorAll(sel)]; }
+
+function iter(obj) {
+	if(!obj) return [];
+	var it = obj[Symbol.iterator];
+	if(it) return it;
+	return Object.entries(obj);
+}
+
+function mk(tagname, attrs, ...children) {
+	const el = document.createElement(tagname);
+	for(const [k,v] of iter(attrs)) {
+		if(k.slice(0,3) == "_on") {
+			const eventName = k.slice(3);
+			el.addEventListener(eventName, v);
+		} else if(k[0] == "_") {
+			// property, not attribute
+			el[k.slice(1)] = v;
+		} else {
+			if(v === false || v == null) {
+        continue;
+      } else if(v === true) {
+        el.setAttribute(k, "");
+        continue;
+      } else {
+  			el.setAttribute(k, v);
+      }
+		}
+	}
+	append(el, children);
+	return el;
+}
+
+/* Create shortcuts for every known HTML element */
+[
+  "a",
+  "abbr",
+  "acronym",
+  "address",
+  "applet",
+  "area",
+  "article",
+  "aside",
+  "audio",
+  "b",
+  "base",
+  "basefont",
+  "bdo",
+  "big",
+  "blockquote",
+  "body",
+  "br",
+  "button",
+  "canvas",
+  "caption",
+  "center",
+  "cite",
+  "code",
+  "col",
+  "colgroup",
+  "datalist",
+  "dd",
+  "del",
+  "details",
+  "dfn",
+  "dialog",
+  "div",
+  "dl",
+  "dt",
+  "em",
+  "embed",
+  "fieldset",
+  "figcaption",
+  "figure",
+  "font",
+  "footer",
+  "form",
+  "frame",
+  "frameset",
+  "head",
+  "header",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "hr",
+  "html",
+  "i",
+  "iframe",
+  "img",
+  "input",
+  "ins",
+  "kbd",
+  "label",
+  "legend",
+  "li",
+  "link",
+  "main",
+  "map",
+  "mark",
+  "meta",
+  "meter",
+  "nav",
+  "nobr",
+  "noscript",
+  "object",
+  "ol",
+  "optgroup",
+  "option",
+  "output",
+  "p",
+  "param",
+  "pre",
+  "progress",
+  "q",
+  "s",
+  "samp",
+  "script",
+  "section",
+  "select",
+  "small",
+  "source",
+  "span",
+  "strike",
+  "strong",
+  "style",
+  "sub",
+  "summary",
+  "sup",
+  "table",
+  "tbody",
+  "td",
+  "template",
+  "textarea",
+  "tfoot",
+  "th",
+  "thead",
+  "time",
+  "title",
+  "tr",
+  "u",
+  "ul",
+  "var",
+  "video",
+  "wbr",
+  "xmp",
+].forEach(tagname=>{
+	mk[tagname] = (...args) => mk(tagname, ...args);
+});
+
+function* nodesFromChildList(children) {
+	for(const child of children.flat(Infinity)) {
+		if(child instanceof Node) {
+			yield child;
+		} else {
+			yield new Text(child);
+		}
+	}
+}
+function append(el, ...children) {
+	for(const child of nodesFromChildList(children)) {
+		if(el instanceof Node) el.appendChild(child);
+		else el.push(child);
+	}
+	return el;
+}
+
+function insertAfter(el, ...children) {
+	for(const child of nodesFromChildList(children)) {
+		el.parentNode.insertBefore(child, el.nextSibling);
+	}
+	return el;
+}
+
+function clearContents(el) {
+	el.innerHTML = "";
+	return el;
+}
+
+function parseHTML(markup) {
+	if(markup.toLowerCase().trim().indexOf('<!doctype') === 0) {
+		const doc = document.implementation.createHTMLDocument("");
+		doc.documentElement.innerHTML = markup;
+		return doc;
+	} else {
+		const el = mk.template({});
+		el.innerHTML = markup;
+		return el.content;
+	}
+}</script>
+<script>/* Boilerplate: script-dfn-panel */
+"use strict";
+{
+let dfnPanelData = {
+"00a528d3": {"dfnID":"00a528d3","dfnText":"recordId","external":true,"refSections":[{"refs":[{"id":"ref-for-record-id%E2%91%A0"}],"title":"2.1. Ein Namensraum ist ein Zust\u00e4ndigkeitsbereich"},{"refs":[{"id":"ref-for-record-id%E2%91%A0\u2460"}],"title":"A.2 Begriffe"}],"url":"https://recordweb.github.io/rwt/#record-id%E2%91%A0"},
+"07a29bb6": {"dfnID":"07a29bb6","dfnText":"DID provider","external":true,"refSections":[{"refs":[{"id":"ref-for-did-provider"},{"id":"ref-for-did-provider\u2460"}],"title":"3.2. Technische Rollen und Funktionen (RWT)"},{"refs":[{"id":"ref-for-did-provider\u2461"}],"title":"3.3. Organisatorische Rollen (nur dieser Report)"},{"refs":[{"id":"ref-for-did-provider\u2462"}],"title":"4.2. DID-Provider"},{"refs":[{"id":"ref-for-did-provider\u2463"}],"title":"A.2 Begriffe"}],"url":"https://recordweb.github.io/rwt/#did-provider"},
+"0c150b21": {"dfnID":"0c150b21","dfnText":"namespace","external":true,"refSections":[{"refs":[{"id":"ref-for-namespace%E2%91%A0"}],"title":"1.1. Zweck"},{"refs":[{"id":"ref-for-namespace%E2%91%A0\u2460"}],"title":"2.1. Ein Namensraum ist ein Zust\u00e4ndigkeitsbereich"},{"refs":[{"id":"ref-for-namespace%E2%91%A0\u2461"}],"title":"3.6. Global und lokal"},{"refs":[{"id":"ref-for-namespace%E2%91%A0\u2462"}],"title":"5.1. Der Namensraum als Einheit der Verantwortung"},{"refs":[{"id":"ref-for-namespace%E2%91%A0\u2463"}],"title":"A.2 Begriffe"}],"url":"https://recordweb.github.io/rwt/#namespace%E2%91%A0"},
+"19ef5c0d": {"dfnID":"19ef5c0d","dfnText":"namespace resolver","external":true,"refSections":[{"refs":[{"id":"ref-for-namespace-resolver"}],"title":"3.2. Technische Rollen und Funktionen (RWT)"},{"refs":[{"id":"ref-for-namespace-resolver\u2460"}],"title":"4.4. Namensraum-Resolver"},{"refs":[{"id":"ref-for-namespace-resolver\u2461"}],"title":"A.2 Begriffe"}],"url":"https://recordweb.github.io/rwt/#namespace-resolver"},
+"3a3e4f67": {"dfnID":"3a3e4f67","dfnText":"custodian","external":true,"refSections":[{"refs":[{"id":"ref-for-custodian%E2%91%A0"}],"title":"3.2. Technische Rollen und Funktionen (RWT)"},{"refs":[{"id":"ref-for-custodian%E2%91%A0\u2460"}],"title":"3.3. Organisatorische Rollen (nur dieser Report)"},{"refs":[{"id":"ref-for-custodian%E2%91%A0\u2461"}],"title":"4.1. Wer f\u00fcr die Aufl\u00f6sbarkeit einsteht"},{"refs":[{"id":"ref-for-custodian%E2%91%A0\u2462"}],"title":"A.2 Begriffe"}],"url":"https://recordweb.github.io/rwt/#custodian%E2%91%A0"},
+"a169e986": {"dfnID":"a169e986","dfnText":"verifier","external":true,"refSections":[{"refs":[{"id":"ref-for-verifier%E2%91%A0"}],"title":"A.2 Begriffe"}],"url":"https://recordweb.github.io/rwt/#verifier%E2%91%A0"},
+"a48848fb": {"dfnID":"a48848fb","dfnText":"DID resolution","external":true,"refSections":[{"refs":[{"id":"ref-for-did-resolution"}],"title":"3.2. Technische Rollen und Funktionen (RWT)"},{"refs":[{"id":"ref-for-did-resolution\u2460"}],"title":"A.2 Begriffe"}],"url":"https://recordweb.github.io/rwt/#did-resolution"},
+"betreiber": {"dfnID":"betreiber","dfnText":"Betreiber","external":false,"refSections":[{"refs":[{"id":"ref-for-betreiber"}],"title":"A.2 Begriffe"}],"url":"#betreiber"},
+"bf5fbdb2": {"dfnID":"bf5fbdb2","dfnText":"consumer","external":true,"refSections":[{"refs":[{"id":"ref-for-consumer%E2%91%A0"}],"title":"A.2 Begriffe"}],"url":"https://recordweb.github.io/rwt/#consumer%E2%91%A0"},
+"ccb18b48": {"dfnID":"ccb18b48","dfnText":"producer","external":true,"refSections":[{"refs":[{"id":"ref-for-producer%E2%91%A0"}],"title":"4.1. Wer f\u00fcr die Aufl\u00f6sbarkeit einsteht"},{"refs":[{"id":"ref-for-producer%E2%91%A0\u2460"}],"title":"A.2 Begriffe"}],"url":"https://recordweb.github.io/rwt/#producer%E2%91%A0"},
+"d28617b2": {"dfnID":"d28617b2","dfnText":"Record","external":true,"refSections":[{"refs":[{"id":"ref-for-record%E2%91%A0"}],"title":"A.2 Begriffe"}],"url":"https://recordweb.github.io/rwt/#record%E2%91%A0"},
+"d962c6ec": {"dfnID":"d962c6ec","dfnText":"namespace resolution","external":true,"refSections":[{"refs":[{"id":"ref-for-namespace-resolution"}],"title":"3.2. Technische Rollen und Funktionen (RWT)"},{"refs":[{"id":"ref-for-namespace-resolution\u2460"}],"title":"A.2 Begriffe"}],"url":"https://recordweb.github.io/rwt/#namespace-resolution"},
+"eaf8d5da": {"dfnID":"eaf8d5da","dfnText":"namespace provider","external":true,"refSections":[{"refs":[{"id":"ref-for-namespace-provider"},{"id":"ref-for-namespace-provider\u2460"}],"title":"3.2. Technische Rollen und Funktionen (RWT)"},{"refs":[{"id":"ref-for-namespace-provider\u2461"}],"title":"4.3. Namensraum-Provider (GNR)"},{"refs":[{"id":"ref-for-namespace-provider\u2462"}],"title":"6.1. Wozu das GNR dient"},{"refs":[{"id":"ref-for-namespace-provider\u2463"}],"title":"A.2 Begriffe"}],"url":"https://recordweb.github.io/rwt/#namespace-provider"},
+"ef0d58de": {"dfnID":"ef0d58de","dfnText":"role","external":true,"refSections":[{"refs":[{"id":"ref-for-role"}],"title":"3.2. Technische Rollen und Funktionen (RWT)"},{"refs":[{"id":"ref-for-role\u2460"}],"title":"A.2 Begriffe"}],"url":"https://recordweb.github.io/rwt/#role"},
+"eigentmer": {"dfnID":"eigentmer","dfnText":"Eigent\u00fcmer","external":false,"refSections":[{"refs":[{"id":"ref-for-eigentmer"}],"title":"5.1. Der Namensraum als Einheit der Verantwortung"},{"refs":[{"id":"ref-for-eigentmer\u2460"}],"title":"A.2 Begriffe"}],"url":"#eigentmer"},
+"f6c5f002": {"dfnID":"f6c5f002","dfnText":"DID resolver","external":true,"refSections":[{"refs":[{"id":"ref-for-did-resolver"}],"title":"3.2. Technische Rollen und Funktionen (RWT)"},{"refs":[{"id":"ref-for-did-resolver\u2460"}],"title":"4.1. Wer f\u00fcr die Aufl\u00f6sbarkeit einsteht"},{"refs":[{"id":"ref-for-did-resolver\u2461"}],"title":"A.2 Begriffe"}],"url":"https://recordweb.github.io/rwt/#did-resolver"},
+"hersteller": {"dfnID":"hersteller","dfnText":"Hersteller","external":false,"refSections":[{"refs":[{"id":"ref-for-hersteller"}],"title":"A.2 Begriffe"}],"url":"#hersteller"},
+"registrant": {"dfnID":"registrant","dfnText":"Registrant","external":false,"refSections":[{"refs":[{"id":"ref-for-registrant"}],"title":"A.2 Begriffe"}],"url":"#registrant"},
+};
+
+document.addEventListener("DOMContentLoaded", ()=>{
+    genAllDfnPanels();
+});
+
+function genAllDfnPanels() {
+    for(const panelData of Object.values(dfnPanelData)) {
+        const dfnID = panelData.dfnID;
+        const dfn = document.getElementById(dfnID);
+        if(!dfn) {
+            console.log(`Can't find dfn#${dfnID}.`, panelData);
+            continue;
+        }
+        dfn.panelData = panelData;
+        genDfnPanel(dfn, panelData);
+    }
+}
+
+function genDfnPanel(dfn, { dfnID, url, dfnText, refSections, external }) {
+    const dfnPanel = mk.dialog({
+        class: "dfn-panel",
+        id: `infopanel-for-${dfnID}`,
+        popover: "hint",
+        "data-for": dfnID,
+        "aria-labelledby": `infopaneltitle-for-${dfnID}`,
+        },
+        mk.span({id:`infopaneltitle-for-${dfnID}`, style:"display:none"},
+            `Info about the '${dfnText}' ${external?"external":""} reference.`),
+        mk.a({href:url, class:"dfn-link"}, url),
+        refSections.length == 0 ? [] :
+            mk.b({}, "Referenced in:"),
+            mk.ul({},
+                ...refSections.map(section=>
+                    mk.li({},
+                        ...section.refs.map((ref, refI)=>
+                            [
+                                mk.a({ href: `#${ref.id}` },
+                                    (refI == 0) ? section.title : `(${refI + 1})`
+                                ),
+                                " ",
+                            ]
+                        ),
+                    ),
+                ),
+            ),
+        genLinkingSyntaxes(dfn),
+    );
+
+    dfnPanel.addEventListener('click', (event) => {
+        if (event.target.nodeName == 'A') {
+            scrollToTargetAndHighlight(event);
+            pinDfnPanel(dfnPanel);
+        }
+        event.stopPropagation();
+        refocusOnTarget(event);
+    });
+
+    dfnPanel.addEventListener('toggle', event=>{
+        if(event.newState == "closed") {
+            unpinDfnPanel(dfnPanel);
+        }
+    });
+
+    dfnPanel.dfn = dfn;
+    dfn.dfnPanel = dfnPanel;
+    dfn.after(dfnPanel);
+    const button = mk.button(
+        {
+            class:"dfn-panelbutton",
+            "popovertarget":dfnPanel.id
+        },
+        ...dfn.childNodes
+    );
+    dfn.append(button);
+    return dfnPanel;
+}
+
+function pinDfnPanel(dfnPanel) {
+    // Switch it to "activated" state, which pins it.
+    dfnPanel.classList.add("activated");
+}
+
+function unpinDfnPanel(dfnPanel) {
+    dfnPanel.classList.remove("activated");
+}
+
+function refocusOnTarget(event) {
+    const target = event.target;
+    setTimeout(() => {
+        // Refocus on the event.target element.
+        // This is needed after browser scrolls to the destination.
+        target.focus();
+    });
+}
+
+function scrollToTargetAndHighlight(event) {
+    let hash = event.target.hash;
+    if (hash) {
+        hash = decodeURIComponent(hash.substring(1));
+        const dest = document.getElementById(hash);
+        if (dest) {
+            dest.classList.add('highlighted');
+            setTimeout(() => dest.classList.remove('highlighted'), 1000);
+        }
+    }
+}
+
+// Functions, divided by link type, that wrap an autolink's
+// contents with the appropriate outer syntax.
+// Alternately, a string naming another type they format
+// the same as.
+function needsFor(type) {
+    switch(type) {
+        case "descriptor":
+        case "value":
+        case "element-attr":
+        case "attr-value":
+        case "element-state":
+        case "method":
+        case "constructor":
+        case "argument":
+        case "attribute":
+        case "const":
+        case "dict-member":
+        case "event":
+        case "enum-value":
+        case "stringifier":
+        case "serializer":
+        case "iterator":
+        case "maplike":
+        case "setlike":
+        case "state":
+        case "mode":
+        case "context":
+        case "facet": return true;
+
+        default: return false;
+    }
+}
+function refusesFor(type) {
+    switch(type) {
+        case "property":
+        case "element":
+        case "interface":
+        case "namespace":
+        case "callback":
+        case "dictionary":
+        case "enum":
+        case "exception":
+        case "typedef":
+        case "http-header":
+        case "permission": return true;
+
+        default: return false;
+    }
+}
+function linkFormatterFromType(type) {
+    switch(type) {
+        case 'scheme':
+        case 'permission':
+        case 'dfn': return (text) => `[=${text}=]`;
+
+        case 'abstract-op': return (text) => `[\$${text}\$]`;
+
+        case 'function':
+        case 'at-rule':
+        case 'selector':
+        case 'value': return (text) => `''${text}''`;
+
+        case 'http-header': return (text) => `[:${text}:]`;
+
+        case 'interface':
+        case 'constructor':
+        case 'method':
+        case 'argument':
+        case 'attribute':
+        case 'callback':
+        case 'dictionary':
+        case 'dict-member':
+        case 'enum':
+        case 'enum-value':
+        case 'exception':
+        case 'const':
+        case 'typedef':
+        case 'stringifier':
+        case 'serializer':
+        case 'iterator':
+        case 'maplike':
+        case 'setlike':
+        case 'extended-attribute':
+        case 'event':
+        case 'idl': return (text) => `{{${text}}}`;
+
+        case 'element-state':
+        case 'element-attr':
+        case 'attr-value':
+        case 'element': return (element) => `<{${element}}>`;
+
+        case 'grammar': return (text) => `${text} (within a <pre class=prod>)`;
+
+        case 'type': return (text)=> `<<${text}>>`;
+
+        case 'descriptor':
+        case 'property': return (text) => `'${text}'`;
+
+        default: return;
+    };
+};
+
+function genLinkingSyntaxes(dfn) {
+    if(dfn.tagName != "DFN") return;
+
+    const type = dfn.getAttribute('data-dfn-type');
+    if(!type) {
+        console.log(`<dfn> doesn't have a data-dfn-type:`, dfn);
+        return [];
+    }
+
+    // Return a function that wraps link text based on the type
+    const linkFormatter = linkFormatterFromType(type);
+    if(!linkFormatter) {
+        console.log(`<dfn> has an unknown data-dfn-type:`, dfn);
+        return [];
+    }
+
+    let ltAlts;
+    if(dfn.hasAttribute('data-lt')) {
+        ltAlts = dfn.getAttribute('data-lt')
+            .split("|")
+            .map(x=>x.trim());
+    } else {
+        ltAlts = [dfn.textContent.trim()];
+    }
+    if(type == "type") {
+        // lt of "<foo>", but "foo" is the interior;
+        // <<foo/bar>> is how you write it with a for,
+        // not <foo/<bar>> or whatever.
+        for(var i = 0; i < ltAlts.length; i++) {
+            const lt = ltAlts[i];
+            const match = /<(.*)>/.exec(lt);
+            if(match) { ltAlts[i] = match[1]; }
+        }
+    }
+
+    let forAlts;
+    if(dfn.hasAttribute('data-dfn-for')) {
+        forAlts = dfn.getAttribute('data-dfn-for')
+            .split(",")
+            .map(x=>x.trim());
+    } else {
+        forAlts = [''];
+    }
+
+    let linkingSyntaxes = [];
+    if(!needsFor(type)) {
+        for(const lt of ltAlts) {
+            linkingSyntaxes.push(linkFormatter(lt));
+        }
+    }
+    if(!refusesFor(type)) {
+        for(const f of forAlts) {
+            linkingSyntaxes.push(linkFormatter(`${f}/${ltAlts[0]}`))
+        }
+    }
+    return [
+        mk.b({}, 'Possible linking syntaxes:'),
+        mk.ul({},
+            ...linkingSyntaxes.map(link => {
+                const copyLink = async () =>
+                    await navigator.clipboard.writeText(link);
+                return mk.li({},
+                    mk.div({ class: 'link-item' },
+                        mk.button({
+                            class: 'copy-icon', title: 'Copy',
+                            type: 'button',
+                            _onclick: copyLink,
+                            tabindex: 0,
+                        }, mk.span({ class: 'icon' }) ),
+                        mk.span({}, link)
+                    )
+                );
+            })
+        )
+    ];
+}
+}
+</script>
+<script>/* Boilerplate: script-ref-hints */
+"use strict";
+{
+let refsData = {
+"#betreiber": {"displayText":"betreiber","export":true,"for_":[],"level":"1","normative":true,"shortname":"rwg-namespace","spec":"rwg-namespace-1","status":"local","text":"betreiber","type":"dfn","url":"#betreiber"},
+"#eigentmer": {"displayText":"eigent\u00fcmer","export":true,"for_":[],"level":"1","normative":true,"shortname":"rwg-namespace","spec":"rwg-namespace-1","status":"local","text":"eigent\u00fcmer","type":"dfn","url":"#eigentmer"},
+"#hersteller": {"displayText":"hersteller","export":true,"for_":[],"level":"1","normative":true,"shortname":"rwg-namespace","spec":"rwg-namespace-1","status":"local","text":"hersteller","type":"dfn","url":"#hersteller"},
+"#registrant": {"displayText":"registrant","export":true,"for_":[],"level":"1","normative":true,"shortname":"rwg-namespace","spec":"rwg-namespace-1","status":"local","text":"registrant","type":"dfn","url":"#registrant"},
+"https://recordweb.github.io/rwt/#consumer%E2%91%A0": {"displayText":"consumer","export":true,"for_":[],"level":"","normative":true,"shortname":"rwt","spec":"rwt","status":"anchor-block","text":"consumer","type":"dfn","url":"https://recordweb.github.io/rwt/#consumer%E2%91%A0"},
+"https://recordweb.github.io/rwt/#custodian%E2%91%A0": {"displayText":"custodian","export":true,"for_":[],"level":"","normative":true,"shortname":"rwt","spec":"rwt","status":"anchor-block","text":"custodian","type":"dfn","url":"https://recordweb.github.io/rwt/#custodian%E2%91%A0"},
+"https://recordweb.github.io/rwt/#did-provider": {"displayText":"DID provider","export":true,"for_":[],"level":"","normative":true,"shortname":"rwt","spec":"rwt","status":"anchor-block","text":"did provider","type":"dfn","url":"https://recordweb.github.io/rwt/#did-provider"},
+"https://recordweb.github.io/rwt/#did-resolution": {"displayText":"DID resolution","export":true,"for_":[],"level":"","normative":true,"shortname":"rwt","spec":"rwt","status":"anchor-block","text":"did resolution","type":"dfn","url":"https://recordweb.github.io/rwt/#did-resolution"},
+"https://recordweb.github.io/rwt/#did-resolver": {"displayText":"DID resolver","export":true,"for_":[],"level":"","normative":true,"shortname":"rwt","spec":"rwt","status":"anchor-block","text":"did resolver","type":"dfn","url":"https://recordweb.github.io/rwt/#did-resolver"},
+"https://recordweb.github.io/rwt/#namespace%E2%91%A0": {"displayText":"namespace","export":true,"for_":[],"level":"","normative":true,"shortname":"rwt","spec":"rwt","status":"anchor-block","text":"namespace","type":"dfn","url":"https://recordweb.github.io/rwt/#namespace%E2%91%A0"},
+"https://recordweb.github.io/rwt/#namespace-provider": {"displayText":"namespace provider","export":true,"for_":[],"level":"","normative":true,"shortname":"rwt","spec":"rwt","status":"anchor-block","text":"namespace provider","type":"dfn","url":"https://recordweb.github.io/rwt/#namespace-provider"},
+"https://recordweb.github.io/rwt/#namespace-resolution": {"displayText":"namespace resolution","export":true,"for_":[],"level":"","normative":true,"shortname":"rwt","spec":"rwt","status":"anchor-block","text":"namespace resolution","type":"dfn","url":"https://recordweb.github.io/rwt/#namespace-resolution"},
+"https://recordweb.github.io/rwt/#namespace-resolver": {"displayText":"namespace resolver","export":true,"for_":[],"level":"","normative":true,"shortname":"rwt","spec":"rwt","status":"anchor-block","text":"namespace resolver","type":"dfn","url":"https://recordweb.github.io/rwt/#namespace-resolver"},
+"https://recordweb.github.io/rwt/#producer%E2%91%A0": {"displayText":"producer","export":true,"for_":[],"level":"","normative":true,"shortname":"rwt","spec":"rwt","status":"anchor-block","text":"producer","type":"dfn","url":"https://recordweb.github.io/rwt/#producer%E2%91%A0"},
+"https://recordweb.github.io/rwt/#record%E2%91%A0": {"displayText":"Record","export":true,"for_":[],"level":"","normative":true,"shortname":"rwt","spec":"rwt","status":"anchor-block","text":"record","type":"dfn","url":"https://recordweb.github.io/rwt/#record%E2%91%A0"},
+"https://recordweb.github.io/rwt/#record-id%E2%91%A0": {"displayText":"recordId","export":true,"for_":[],"level":"","normative":true,"shortname":"rwt","spec":"rwt","status":"anchor-block","text":"recordid","type":"dfn","url":"https://recordweb.github.io/rwt/#record-id%E2%91%A0"},
+"https://recordweb.github.io/rwt/#role": {"displayText":"role","export":true,"for_":[],"level":"","normative":true,"shortname":"rwt","spec":"rwt","status":"anchor-block","text":"role","type":"dfn","url":"https://recordweb.github.io/rwt/#role"},
+"https://recordweb.github.io/rwt/#verifier%E2%91%A0": {"displayText":"verifier","export":true,"for_":[],"level":"","normative":true,"shortname":"rwt","spec":"rwt","status":"anchor-block","text":"verifier","type":"dfn","url":"https://recordweb.github.io/rwt/#verifier%E2%91%A0"},
+};
+
+function mkRefHint(link, ref) {
+    const linkText = link.textContent;
+    let dfnTextElements = '';
+    if (ref.displayText.toLowerCase() != linkText.toLowerCase()) {
+        // Give the original term if it's being displayed in a different way.
+        // But allow casing differences, they're insignificant.
+        dfnTextElements =
+            mk.li({},
+                mk.b({}, "Term: "),
+                mk.span({}, ref.displayText)
+            );
+    }
+    const forList = ref.for_;
+    let forListElements;
+    if(forList.length == 0) {
+        forListElements = [];
+    } else if(forList.length == 1) {
+        forListElements = mk.li({},
+            mk.b({}, "For: "),
+            mk.span({}, forList[0]),
+        );
+    } else {
+        forListElements = mk.li({},
+            mk.b({}, "For: "),
+            mk.ul({},
+                ...forList.map(forItem =>
+                    mk.li({},
+                        mk.span({}, forItem)
+                    ),
+                ),
+            ),
+        );
+    }
+    const url = ref.url;
+    const safeUrl = encodeURIComponent(url);
+    const hintPanel = mk.aside({
+        class: "ref-hint",
+        id: `ref-hint-for-${safeUrl}`,
+        "data-for": url,
+        "aria-labelled-by": `ref-hint-for-${safeUrl}`,
+    },
+        mk.ul({},
+            dfnTextElements,
+            mk.li({},
+                mk.b({}, "URL: "),
+                mk.a({ href: url, class: "ref" }, url),
+            ),
+            mk.li({},
+                mk.b({}, "Type: "),
+                mk.span({}, `${ref.type}`),
+            ),
+            mk.li({},
+                mk.b({}, "Spec: "),
+                mk.span({}, `${ref.spec ? ref.spec : ''}`),
+            ),
+            forListElements
+        ),
+    );
+    hintPanel.forLink = link;
+    setupRefHintEventListeners(link, hintPanel);
+    return hintPanel;
+}
+
+function hideAllRefHints() {
+    queryAll(".ref-hint").forEach(el=>hideRefHint(el));
+}
+
+function hideRefHint(refHint) {
+    const link = refHint.forLink;
+    link.setAttribute("aria-expanded", "false");
+    if(refHint.teardownEventListeners) {
+        refHint.teardownEventListeners();
+    }
+    refHint.remove();
+}
+
+function showRefHint(link) {
+    if(link.classList.contains("dfn-link")) return;
+    const url = link.getAttribute("href");
+    const refHintKey = link.getAttribute("data-refhint-key");
+    let key = url;
+    if(refHintKey) {
+        key = refHintKey + "_" + url;
+    }
+    const ref = refsData[key];
+    if(!ref) return;
+
+    hideAllRefHints(); // Only display one at this time.
+
+    const refHint = mkRefHint(link, ref);
+    append(document.body, refHint);
+    link.setAttribute("aria-expanded", "true");
+    positionRefHint(refHint);
+}
+
+function setupRefHintEventListeners(link, refHint) {
+    if (refHint.teardownEventListeners) return;
+    // Add event handlers to hide the refHint after the user moves away
+    // from both the link and refHint, if not hovering either within one second.
+    let timeout = null;
+    const startHidingRefHint = (event) => {
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+        timeout = setTimeout(() => {
+            hideRefHint(refHint);
+        }, 1000);
+    }
+    const resetHidingRefHint = (event) => {
+        if (timeout) clearTimeout(timeout);
+        timeout = null;
+    };
+    link.addEventListener("mouseleave", startHidingRefHint);
+    link.addEventListener("mouseenter", resetHidingRefHint);
+    link.addEventListener("blur", startHidingRefHint);
+    link.addEventListener("focus", resetHidingRefHint);
+    refHint.addEventListener("mouseleave", startHidingRefHint);
+    refHint.addEventListener("mouseenter", resetHidingRefHint);
+    refHint.addEventListener("blur", startHidingRefHint);
+    refHint.addEventListener("focus", resetHidingRefHint);
+
+    refHint.teardownEventListeners = () => {
+        // remove event listeners
+        resetHidingRefHint();
+        link.removeEventListener("mouseleave", startHidingRefHint);
+        link.removeEventListener("mouseenter", resetHidingRefHint);
+        link.removeEventListener("blur", startHidingRefHint);
+        link.removeEventListener("focus", resetHidingRefHint);
+        refHint.removeEventListener("mouseleave", startHidingRefHint);
+        refHint.removeEventListener("mouseenter", resetHidingRefHint);
+        refHint.removeEventListener("blur", startHidingRefHint);
+        refHint.removeEventListener("focus", resetHidingRefHint);
+    };
+}
+
+function positionRefHint(refHint) {
+    const link = refHint.forLink;
+    const linkPos = getBounds(link);
+    refHint.style.top = linkPos.bottom + "px";
+    refHint.style.left = linkPos.left + "px";
+
+    const panelPos = refHint.getBoundingClientRect();
+    const panelMargin = 8;
+    const maxRight = document.body.parentNode.clientWidth - panelMargin;
+    if (panelPos.right > maxRight) {
+        const overflowAmount = panelPos.right - maxRight;
+        const newLeft = Math.max(panelMargin, linkPos.left - overflowAmount);
+        refHint.style.left = newLeft + "px";
+    }
+}
+
+// TODO: shared util
+// Returns the root-level absolute position {left and top} of element.
+function getBounds(el, relativeTo=document.body) {
+    const relativeRect = relativeTo.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    const top = elRect.top - relativeRect.top;
+    const left = elRect.left - relativeRect.left;
+    return {
+        top,
+        left,
+        bottom: top + elRect.height,
+        right: left + elRect.width,
+    }
+}
+
+function showRefHintListener(e) {
+    // If the target isn't in a link (or is a link),
+    // just ignore it.
+    let link = e.target.closest("a");
+    if(!link) return;
+
+    // If the target is in a ref-hint panel
+    // (aka a link in the already-open one),
+    // also just ignore it.
+    if(link.closest(".ref-hint")) return;
+
+    // Otherwise, show the panel for the link.
+    showRefHint(link);
+}
+
+function hideAllHintsListener(e) {
+    // If the click is inside a ref-hint panel, ignore it.
+    if(e.target.closest(".ref-hint")) return;
+    // Otherwise, close all the current panels.
+    hideAllRefHints();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.body.addEventListener("mousedown", showRefHintListener);
+    document.body.addEventListener("focus", showRefHintListener);
+
+    document.body.addEventListener("click", hideAllHintsListener);
+});
+
+window.addEventListener("resize", () => {
+    // Hide any open ref hint.
+    hideAllRefHints();
+});
+}
+</script>
