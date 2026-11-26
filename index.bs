@@ -1,0 +1,903 @@
+<pre class='metadata'>
+Title: RecordWeb Guide: Namespace Governance
+Shortname: rwg-namespace
+Level: 1
+Status: CG-DRAFT
+Org: W3C
+ED: https://recordweb.github.io/rwg-namespace/
+Editor: Nik Jenzer, nik@triebwerkstatt.ch
+Abstract:
+    Dieser Report beschreibt, wie Organisationen mit Namensräumen von RecordWeb umgehen: wozu ein Namensraum dient, wer für ihn zuständig ist, wie er zugeschnitten wird, wie lange die Verantwortung dauert und was bei Übergängen und Störungen vorgesehen sein muss. Er ergänzt das RecordWeb Protocol (RWP), das die Auflösbarkeit technisch regelt, aber nicht die Zuständigkeit dafür. Der Report ist informativ.
+Repository: recordweb/rwg-namespace
+Markup Shorthands: markdown yes, css no
+Boilerplate: omit conformance
+Version History: https://github.com/recordweb/rwg-namespace/commits/main/index.bs
+!Version: 0.0.1
+</pre>
+
+<pre class="biblio">
+{
+  "RWT": {
+    "href": "https://recordweb.github.io/rwt/",
+    "title": "RecordWeb Terminology (RWT)",
+    "publisher": "RecordWeb Community Group",
+    "status": "CG-DRAFT"
+  },
+  "RWP": {
+    "href": "https://recordweb.github.io/rwp/",
+    "title": "RecordWeb Protocol (RWP)",
+    "publisher": "RecordWeb Community Group",
+    "status": "CG-DRAFT"
+  },
+  "RWC": {
+    "href": "https://recordweb.github.io/rwc/",
+    "title": "RecordWeb Concept (RWC)",
+    "publisher": "RecordWeb Community Group",
+    "status": "CG-DRAFT"
+  }
+}
+</pre>
+
+<pre class="anchors">
+urlPrefix: https://recordweb.github.io/rwt/; spec: RWT; type: dfn
+    text: Record; url: #record%E2%91%A0
+    text: recordId; url: #record-id%E2%91%A0
+    text: namespace; url: #namespace%E2%91%A0
+    text: namespace resolution; url: #namespace-resolution
+    text: namespace resolver; url: #namespace-resolver
+    text: namespace provider; url: #namespace-provider
+    text: DID resolution; url: #did-resolution
+    text: DID resolver; url: #did-resolver
+    text: DID provider; url: #did-provider
+    text: role; url: #role
+    text: producer; url: #producer%E2%91%A0
+    text: custodian; url: #custodian%E2%91%A0
+    text: consumer; url: #consumer%E2%91%A0
+    text: verifier; url: #verifier%E2%91%A0
+</pre>
+
+<div class="copyright">
+<p>Copyright © 2026 the Contributors to the RecordWeb Guide: Namespace Governance, published by the <a href="https://www.w3.org/community/recordweb/">RecordWeb Community Group</a> under the <a href="https://www.w3.org/community/about/process/cla/">W3C Community Contributor License Agreement (CLA)</a>. A human-readable <a href="https://www.w3.org/community/about/process/cla-deed/">summary</a> is available.</p>
+</div>
+
+
+# Zweck und Abgrenzung # {#purpose}
+
+
+## Zweck ## {#purpose-intro}
+
+Ein Record-Identifier soll das System überdauern, in dem der Record entstanden ist. RWP macht diese Identifier technisch auflösbar: Der [=namespace|Namensraum=] ist Teil der DID, und aus ihm ergibt sich, welcher Stelle die Auflösung zufällt ([[RWP]], §4 und §16).
+
+Die technische Auflösbarkeit ist damit gelöst. Nicht gelöst ist, wer dafür zuständig ist, dass ein Namensraum über die Zeit tatsächlich aufgelöst wird. Ein Protokoll kann diese Zuständigkeit nicht herstellen. Dieser Report beschreibt, was Organisationen dafür klären und vorsehen sollten.
+
+
+## Status dieses Reports ## {#status}
+
+Dieser Report ist informativ. Er enthält keine Anforderungen im Sinne von RFC 2119. Normative Anforderungen sind in [[RWP]] definiert. Aussagen dieses Reports, die als Empfehlung gekennzeichnet sind, sind Orientierungen und keine Konformitätsbedingungen.
+
+Die Begriffe dieses Reports sind in [[RWT]] definiert, soweit sie in mehr als einem RecordWeb-Report vorkommen. Begriffe, die nur hier gebraucht werden, sind in [[#terms]] definiert. Der deutsche Text ist die erste Fassung. Eine englische Fassung folgt.
+
+
+## Verhältnis zu RWP, RWC und RWT ## {#relationship}
+
+* [[RWP]] legt fest, wie ein Namensraum aufgebaut ist, wie er aufgelöst wird und wie das GNR funktioniert. Dieser Report ändert nichts daran.
+* [[RWC]] beschreibt das Konzept. Zur Verantwortung für Namensräume liegt ein Kapitelvorschlag zur Namespace Stewardship in Diskussion. Dieser Report vertieft die Frage und soll dem Kapitelvorschlag nicht widersprechen.
+* [[RWT]] ist die Quelle der gemeinsamen Begriffe.
+* Die in Diskussion befindlichen Profile zur Auflösbarkeit von DIDs (rwp#59) unterscheiden zwischen einem Profil ohne Abhängigkeit von der Zuständigkeit für den Namensraum (Identifier) und einem Profil mit dieser Abhängigkeit (Resolvable). Die Fragen in [[#procurement]] sollten geklärt sein, bevor das zweite Profil als Anforderung in einer Beschaffung verwendet wird.
+
+
+## Abgrenzung ## {#scope}
+
+Dieser Report behandelt nicht:
+
+* Vertrauen in Agenten, Namensräume oder Resolver-Betreiber. Dies ist Sache der Vertrauensrichtlinie der prüfenden Stelle ([[RWP]], §16.4).
+* Zugriffssteuerung auf Records und DID-Dokumente ([[RWP]], §18).
+* Löschung und Löschregime ([[RWP]], §14). Sie werden nur insoweit behandelt, als sie die Auflösbarkeit betreffen.
+* Die rechtliche Ausgestaltung von Haftung und Verträgen. Der Report benennt Entscheidungspunkte, legt aber keine Lösung fest.
+* Produktempfehlungen.
+* Die Governance des GNR-Netzwerks ([[RWP]], §16.2.9). Sie regelt, wie Organisationen ins GNR aufgenommen werden und wie Einträge geändert werden. Dieser Guide behandelt die Governance auf der Ebene eines einzelnen Namensraums: wer für ihn zuständig ist und wie die Zuständigkeit über die Zeit gesichert wird.
+
+
+## Zielgruppe und Beispiele ## {#audience}
+
+Der Report richtet sich an Organisationen, die RecordWeb einführen oder beschaffen (Records Management, Archiv, IT-Betrieb, Beschaffung) sowie an Hersteller und Dienstleister. Der Text ist allgemein gehalten. Beispiele aus der Schweizer Verwaltung sind ausdrücklich als solche gekennzeichnet, etwa «(Beispiel Bund: …)».
+
+
+# Grundsätze # {#principles}
+
+
+## Ein Namensraum ist ein Zuständigkeitsbereich ## {#p-unit}
+
+Technisch ist ein [=namespace|Namensraum=] der Geltungsbereich, in dem eine [=recordId=] eindeutig ist und die DID aufgelöst wird. Organisatorisch ist er die Einheit, für die jemand die Auflösbarkeit verantwortet. Erst die organisatorische Seite macht den Namensraum für die Praxis relevant.
+
+
+## Kontinuität kommt von der Organisation, nicht vom Identifier ## {#p-continuity}
+
+Ein Identifier bleibt nicht allein deshalb auflösbar, weil er permanent ist. Dazu braucht es eine Organisation, die für den Namensraum und für die Auflösung der Identifier darin zuständig bleibt. Ein Systemwechsel ändert die Endpunkte, nicht die Identifier ([[RWP]], §3.2 und §4.1).
+
+
+## Der Namensraum sagt nichts über die Organisation ## {#p-opaque}
+
+Ein global auflösbarer Namensraum ist eine opake UUID und trägt keine Organisations-, Orts- oder Routinginformation ([[RWP]], §4.3). Die Zuordnung zwischen Namensraum, Eigentümer und Aufgabe muss deshalb ausserhalb des Identifiers geführt werden, etwa in den Metadaten ([[RWP]], §5.2) und in der Dokumentation der Organisation.
+
+
+## Auflösbarkeit ist kein Vertrauensnachweis ## {#p-trust}
+
+Die erfolgreiche Auflösung eines Namensraums beweist nicht, dass die DID existiert, dass der Record zugänglich ist oder dass der Registrant die Organisation ist, die er zu sein behauptet ([[RWP]], §16.2.4). Auch die Registrierung im GNR begründet keine Vertrauensstellung ([[RWP]], §16.4).
+
+
+## Rollen werden getrennt und schriftlich festgehalten ## {#p-separation}
+
+Wer entscheidet, wer betreibt und wer die Software liefert, sind verschiedene Fragen. Oft laufen Resolver und Record-Endpunkte auf der Infrastruktur eines Herstellers. Die Rollen verschwimmen dann, wenn sie nicht vorher schriftlich getrennt wurden. Die Lieferung eines Produkts macht den Hersteller nicht zum Eigentümer des Namensraums.
+
+
+## Die Dauer folgt dem Record, nicht dem Produkt ## {#p-duration}
+
+Die Verantwortung für einen Namensraum dauert so lange, wie die darin enthaltenen Identifier auflösbar sein sollen. Sie richtet sich nach den Aufbewahrungsfristen der Records und nicht nach Vertrags- oder Systemlaufzeiten (siehe [[#duration]]).
+
+
+# Begriffe und Rollen # {#terms}
+
+
+## Verhältnis zu RWT ## {#terms-rwt}
+
+Technische Begriffe und Rollen stammen aus [[RWT]]. Sie werden hier verwendet und nicht neu definiert. Die organisatorischen Begriffe in [[#org-roles]] gelten vorerst nur für diesen Report. Sie werden erst dann in [[RWT]] aufgenommen, wenn weitere Reports sie verwenden.
+
+
+## Technische Rollen und Funktionen (RWT) ## {#tech-roles}
+
+Eine [=role|Rolle=] ist die Verantwortung einer Implementierung. Eine Funktion ist eine Operation, die eine Komponente ausführt. «Provider» bezeichnet die Rolle, «Resolver» die Komponente, die auflöst.
+
+<table class="data">
+  <thead>
+    <tr><th>Gegenstand<th>Rolle (stellt bereit)<th>Funktion (löst auf)
+  <tbody>
+    <tr><td>Namensraum<td>[=namespace provider|Namensraum-Provider=]<td>[=namespace resolution|Namensraum-Auflösung=] durch einen [=namespace resolver|Namensraum-Resolver=]
+    <tr><td>DID<td>[=DID provider|DID-Provider=]<td>[=DID resolution|DID-Auflösung=] durch einen [=DID resolver|DID-Resolver=]
+</table>
+
+* Der [=namespace provider|Namensraum-Provider=] stellt für einen global auflösbaren Namensraum die Information zur Verfügung, die zum zuständigen DID-Provider führt. Er liefert weder DID-Dokumente noch Records. Diese Rolle nimmt das GNR wahr ([[RWP]], §16.2).
+* Der [=DID provider|DID-Provider=] liefert die DID-Dokumente eines Namensraums und bewahrt jede DID-Dokument-Version auf, solange die DID auflösbar ist.
+* Der [=custodian|Verwahrer=] bewahrt Records und ihre Versionen auf und macht sie abrufbar. Die DID-Dokumente verweisen über `recordEndpoint` auf den Verwahrer. DID-Provider und Verwahrer können daher verschiedene Parteien sein.
+
+Note: [[RWP]] 0.0.17 nennt die Rolle des DID-Providers noch «resolver». Die Anpassung ist in einem Issue erfasst.
+
+
+## Organisatorische Rollen (nur dieser Report) ## {#org-roles}
+
+Die folgenden Begriffe bezeichnen Parteien und nicht Rollen von Implementierungen.
+
+<dfn data-lt="Eigentümer|Namensraum-Eigentümer|namespace owner">Eigentümer</dfn>: die Organisation, die für einen Namensraum und die darin vergebenen Identifier rechenschaftspflichtig ist. Der Eigentümer entscheidet über Zuschnitt, Dauer der Verantwortung, Übergänge und die Wahl des Betreibers. Bei einem global auflösbaren Namensraum ist der Eigentümer im GNR als Registrant eingetragen ([[RWP]], §16.2.7).
+
+<dfn data-lt="Betreiber|Namensraum-Betreiber|namespace operator">Betreiber</dfn>: die Partei, die für einen Namensraum die Rolle [=DID provider|DID-Provider=] oder die Rolle [=custodian|Verwahrer=] ausübt, also den DID-Resolver und die Record-Endpunkte betreibt. Der Betreiber kann der Eigentümer oder ein Dienstleister sein.
+
+<dfn data-lt="Hersteller|product vendor">Hersteller</dfn>: der Lieferant der Software, mit der ein Namensraum bedient wird. Ein Hersteller ist nicht allein durch die Lieferung eines Produkts Eigentümer eines Namensraums. Er kann zugleich Betreiber sein, etwa wenn er die Software als Dienst anbietet.
+
+<dfn data-lt="Registrant">Registrant</dfn>: die Partei, die einen Namensraum im GNR eingetragen hat ([[RWP]], §16.2.7). Wer für einen Eigentümer stellvertretend registrieren darf, regelt das Governance-Framework des GNR ([[RWP]], §16.2.9).
+
+
+## Abgrenzungen ## {#delimitations}
+
+* Der Eigentümer eines Namensraums ist nicht der Eigentümer eines Records. Das Feld `metadata.governance.owner` bezeichnet die für einen einzelnen Record verantwortliche Person oder Organisationseinheit ([[RWP]], §5.2).
+* Der Inhaber eines Signaturschlüssels ist nicht ohne Weiteres der Eigentümer. Die Signatur belegt, wer eine Version autorisiert hat, nicht wer für den Namensraum zuständig ist ([[RWP]], §5.2 und §7.7).
+* Der Betreiber ist nicht automatisch der Verwahrer, und der Hersteller ist nicht der Eigentümer.
+
+
+## Typische Konstellationen ## {#constellations}
+
+Die Rollen können in einer Organisation zusammenfallen oder auf mehrere Parteien verteilt sein. Die Tabelle zeigt typische Konstellationen. Jede Konstellation verlangt eine andere schriftliche Trennung der Rollen.
+
+<table class="data">
+  <thead>
+    <tr><th>Konstellation<th>Eigentümer<th>Betreiber<th>Hersteller<th>Worauf zu achten ist
+  <tbody>
+    <tr><td>Eigenbetrieb<td>Organisation<td>dieselbe Organisation<td>extern<td>Die Software kann wechseln, der Namensraum bleibt.
+    <tr><td>Externer Betreiber<td>Organisation<td>Dienstleister<td>Hersteller oder Dienstleister<td>Ausstieg, Export und Kosten nach Vertragsende sind vorab zu regeln.
+    <tr><td>Betrieb durch den Hersteller<td>Organisation<td>Hersteller<td>Hersteller<td>Die Rollen verschwimmen leicht. Die Eigentümerschaft muss ausdrücklich bei der Organisation liegen.
+    <tr><td>Gemeinsamer Betreiber<td>mehrere Organisationen<td>eine Stelle<td>beliebig<td>Jeder Namensraum hat einen eigenen Eigentümer, auch wenn ein Resolver mehrere Namensräume bedient. (Beispiel Bund: eine zentrale Stelle betreibt für mehrere Ämter.)
+</table>
+
+
+## Global und lokal ## {#global-local}
+
+Ein [=namespace|Namensraum=] ist global auflösbar oder lokal. Die Unterscheidung bestimmt, wer für die Auflösbarkeit sorgen muss ([[RWP]], §4.3 und §4.4).
+
+<table class="data">
+  <thead>
+    <tr><th><th>Global auflösbar<th>Lokal
+  <tbody>
+    <tr><td>Form<td>UUID Version 4, opak<td>jede andere Form
+    <tr><td>GNR<td>registrierbar und über das GNR auflösbar<td>darf nicht im GNR registriert oder darüber aufgelöst werden
+    <tr><td>Namensraum-Provider<td>GNR<td>keiner
+    <tr><td>Auflösung<td>über das GNR zum DID-Provider<td>nur mit lokalem Wissen, lokaler Konfiguration oder einem lokalen Resolver
+    <tr><td>Verantwortung des Eigentümers<td>Eintrag im GNR und DID-Provider<td>zusätzlich Bekanntmachung und Pflege der lokalen Konfiguration
+</table>
+
+Ein Client darf aus einer lokalen DID keinen Resolver-Endpunkt ableiten.
+
+
+## Haftung ## {#liability}
+
+RWP regelt keine Haftung. Wo Eigentümer, Betreiber und Hersteller verschiedene Parteien sind, ist vor Inbetriebnahme zu entscheiden, wer welche Folgen trägt. Aus der Praxis ist bekannt: Stellt ein Hersteller den Betrieb ohne geordnete Übergabe ein, trägt der Eigentümer die Folgen.
+
+<div class="issue">
+
+Offener Punkt: Soll der Report Haftungsmodelle ausführen (zum Beispiel vertragliche Regelung, Verwaltungsvereinbarung) oder nur den Entscheidungspunkt benennen? Diese Fassung benennt nur den Entscheidungspunkt.
+
+</div>
+
+
+# Aufgaben und Anforderungen # {#tasks}
+
+Dieser Guide stellt keine neuen Anforderungen auf. Er ordnet die Anforderungen von [[RWP]] den Rollen aus [[RWT]] zu und ergänzt betriebliche Empfehlungen, die nicht aus dem Protokoll folgen. Empfehlungen sind als solche gekennzeichnet.
+
+
+## Wer für die Auflösbarkeit einsteht ## {#tasks-responsibility}
+
+[[RWP]] verlangt von einem [=producer|Erzeuger=] oder [=custodian|Verwahrer=], der Records erzeugt oder verwaltet, dass die zugehörigen Record-DIDs gemäss der Spezifikation auflösbar bleiben ([[RWP]], §3.6). Er muss dafür nicht selbst einen [=DID resolver|DID-Resolver=] betreiben. Er darf sich auf den Resolver einer anderen konformen Implementierung stützen, sofern er die Rolle des DID-Providers nicht selbst beansprucht.
+
+Die Pflicht bleibt damit bei dem, der Records erzeugt oder verwahrt, auch wenn der Betrieb des Resolvers bei einem Dritten liegt. Wer die Auflösbarkeit an einen Dienstleister auslagert, lagert die Ausführung aus, aber nicht die Verantwortung. Diese Trennung ist der Ausgangspunkt für [[#org-roles]] und [[#procurement]].
+
+
+## DID-Provider ## {#tasks-did-provider}
+
+Eine Implementierung, die die Rolle des [=DID provider|DID-Providers=] beansprucht, erfüllt die folgenden Anforderungen aus [[RWP]], §3.6:
+
+* Sie löst DIDs der Methode `rwp` auf und liefert das zugehörige DID-Dokument als JSON-LD gemäss DID Core.
+* Sie unterstützt die Auflösungsoptionen `versionHash` und `versionTime`. Beide schliessen sich aus. Ohne Option liefert sie die jeweils neueste Version.
+* Sie antwortet mit HTTP 200 (DID bekannt), 400 (beide Optionen angegeben), 403 (Zugriffsrichtlinie erlaubt es nicht), 404 (DID oder Version unbekannt) und 410 (Record vollständig gelöscht).
+* Sie bewahrt jede DID-Dokument-Version auf, solange die DID auflösbar ist. Eine Payload-Löschung entfernt die Historie nicht und führt nicht zu 410.
+* Sie veröffentlicht, falls vorhanden, die Service-Einträge des DID-Dokuments. Dazu ist sie nicht verpflichtet.
+
+Der DID-Provider liefert das DID-Dokument. Über `recordEndpoint` verweist es auf den Verwahrer, der den Record selbst abrufbar macht. DID-Provider und Verwahrer sind verschiedene Rollen und können von verschiedenen Parteien ausgeübt werden.
+
+
+## Namensraum-Provider (GNR) ## {#tasks-namespace-provider}
+
+Das GNR nimmt die Rolle des [=namespace provider|Namensraum-Providers=] wahr ([[RWP]], §16.2):
+
+* Es ordnet einem global auflösbaren Namensraum den Endpunkt des zuständigen DID-Resolvers zu.
+* Es löst keine einzelnen DIDs auf und speichert weder DID-Dokumente noch Records, Zugriffsentscheidungen oder Organisationsverzeichnisse. Ein GNR, das dies tut, ist nicht RWP-konform.
+* Es bietet eine Operation zum Auflösen eines Namensraums und eine Operation zum Abrufen seiner Registrierungshistorie für Prüfung und Migration. Die Historie ist unveränderlich.
+* Es läuft auf Hyperledger Fabric und wird von der RecordWeb Trust Association nach einem veröffentlichten Governance-Framework betrieben.
+
+Für die Organisationen, die Namensräume führen, ist vor allem relevant, dass das GNR nur den Weg zum DID-Provider kennt. Es weiss nichts über den Inhalt und trifft keine Aussage über Vertrauen.
+
+
+## Namensraum-Resolver ## {#tasks-namespace-resolver}
+
+Ein [=namespace resolver|Namensraum-Resolver=] arbeitet auf der Seite des Clients. Nach [[RWP]], §16.2.3, §16.2.5 und §16.3 geht er so vor:
+
+* Er klassifiziert den Namensraum einer DID. Lokale Namensräume übergibt er nicht dem GNR.
+* Bei global auflösbaren Namensräumen ermittelt er über das GNR den Endpunkt des DID-Providers und löst dort die vollständige DID auf.
+* Den Endpunkt des Records entnimmt er dem DID-Dokument. Er leitet keinen Endpunkt aus dem Namensraum oder der DID ab.
+* Bei Verweisen in andere Namensräume prüft er den `versionHash` des abgerufenen Records und legt die Version mit dem ursprünglichen Hash zwischengespeichert ab.
+
+
+## Zuordnung zu Rollen und Profilen ## {#tasks-profiles}
+
+[[RWP]] unterscheidet Profile (zum Beispiel für Information Records, Case Records oder Assertion Records) von Rollen. Die Rolle des DID-Providers ist kein Profil. Wer sie beansprucht, erfüllt §3.6 und, soweit anwendbar, §16.2 ([[RWP]], §15.4). Wer ein anderes Profil oder eine andere Rolle beansprucht, kann sich auf den Resolver einer anderen konformen Implementierung stützen.
+
+Der Begriff «Conformance-Level» wird in [[RWP]] nicht verwendet. Aussagen zur Auflösbarkeit sollten sich auf die beanspruchten Profile und Rollen beziehen.
+
+Note: In Diskussion sind Profile, die zwischen der Vergabe stabiler Identifier und der Auflösbarkeit unterscheiden (rwp#59). Das zweite Profil setzt voraus, dass jemand für den Namensraum einsteht. Die Fragen in [[#procurement]] sollten deshalb vor einer Beschaffung geklärt sein.
+
+
+## Betriebliche Empfehlungen ## {#tasks-operations}
+
+Die folgenden Empfehlungen sind nicht Teil von [[RWP]]. Sie ergeben sich aus den Anforderungen an einen DID-Provider und aus der langen Lebensdauer von Records.
+
+<table class="data">
+  <thead>
+    <tr><th>Thema<th>Empfehlung<th>Grund
+  <tbody>
+    <tr><td>Verfügbarkeit<td>Verfügbarkeit des DID-Providers und der Record-Endpunkte festlegen und überwachen<td>Eine nicht erreichbare Auflösung ist für Prüfende nicht von einem fehlenden Record zu unterscheiden (Validierungscode 424 statt 404).
+    <tr><td>Datensicherung<td>DID-Dokument-Historie und Record-Endpunkte gemeinsam sichern und regelmässig die Wiederherstellung testen<td>Der DID-Provider muss jede Version aufbewahren. Ein Verlust der Historie lässt sich nicht aus den Records rekonstruieren.
+    <tr><td>Schlüsselverwaltung<td>Schlüssel für DID-Dokument-Versionen getrennt verwalten, Rotation und Notfallverfahren dokumentieren<td>Ein Schlüsselwechsel erzeugt eine neue DID-Dokument-Version. Ein kompromittierter Schlüssel betrifft alle Dokumente, die er signiert.
+    <tr><td>Zeitquelle<td>Zeitstempel zuverlässig synchronisieren<td>Die Auflösung nach `versionTime` stützt sich auf `updated` der DID-Dokument-Versionen.
+    <tr><td>Zugriffsrichtlinie<td>Antwortcode 403 und 404 bewusst festlegen und dokumentieren<td>Der Provider darf die Existenz einer DID verbergen. Prüfende müssen wissen, wie sie das Ergebnis lesen.
+    <tr><td>Mehrere Namensräume<td>Bei einer Resolver-Instanz für mehrere Namensräume Trennung und Zuständigkeit je Namensraum festhalten<td>Eine Instanz kann mehrere Namensräume bedienen, jeder Namensraum hat aber einen eigenen Eigentümer und eigene Fristen.
+    <tr><td>Export<td>Export der DID-Dokument-Historie und der Record-Endpunkte in dokumentierter Form vorsehen<td>Voraussetzung für Anbieterwechsel und Archivübernahme (siehe [[#transitions]]).
+    <tr><td>Dokumentation<td>Endpunkte, Verantwortliche und Eintrag im GNR in einem internen Register führen<td>Siehe [[#scope-namespace]].
+</table>
+
+
+# Zuschnitt eines Namensraums # {#scope-namespace}
+
+Dieses Kapitel beschreibt, woran sich der Zuschnitt eines Namensraums orientieren kann. Es gibt eine Orientierung und keine Vorgabe. Jede Organisation klärt den Zuschnitt in ihrem eigenen Einführungsprojekt.
+
+## Der Namensraum als Einheit der Verantwortung ## {#scope-unit}
+
+Ein [=namespace|Namensraum=] ist die Einheit, für die ein [=Eigentümer=] die Auflösbarkeit verantwortet. Der Zuschnitt legt fest, welche Records unter derselben Verantwortung, demselben Resolver und derselben Dauer der Auflösbarkeit stehen. Ein Namensraum für eine ganze Organisation ist möglich und kann für sehr kleine Organisationen sinnvoll sein. Er bündelt aber Zuständigkeiten, die in grösseren Organisationen in der Praxis verteilt sind.
+
+
+## Der Zuschnitt lässt sich kaum korrigieren ## {#scope-irreversible}
+
+Die Identität eines Records besteht aus Namensraum und `recordId`. Sie ist permanent, und eine `recordId` wird nie wiederverwendet ([[RWP]], §4.1, §4.2 und §4.5). Ein bestehender Record kann daher nicht in einen anderen Namensraum verschoben werden, ohne dass seine DID wechselt.
+
+Ein Fehlzuschnitt lässt sich deshalb nur für künftige Records ändern. Die bestehenden Records bleiben im alten Namensraum, der weiterhin aufgelöst werden muss. Der Zuschnitt sollte daher am Anfang gewählt werden und über Jahrzehnte tragen.
+
+## Kriterien ## {#scope-criteria}
+
+Ein Zuschnitt ist geeignet, wenn er über lange Zeit stabil bleibt und die folgenden Fragen für alle Records im Namensraum gleich beantwortet werden:
+
+* **Verantwortung:** Wer ist zuständig? Gibt es einen Eigentümer, der die Rolle für die gesamte Dauer übernehmen oder an einen Nachfolger übergeben kann?
+* **Aufbewahrung:** Gilt für die Records dieselbe Aufbewahrungsregel und damit dieselbe Dauer der Auflösbarkeit (siehe [[#duration]])?
+* **Übertragbarkeit:** Kann die Zuständigkeit als Ganzes an eine andere Organisationseinheit oder ein Archiv übergehen, ohne dass der Namensraum aufgeteilt werden muss?
+* **Betrieb:** Steht der Aufwand für Eintrag im GNR und Resolver in einem vernünftigen Verhältnis zum Nutzen?
+
+
+## Orientierungen im Vergleich ## {#scope-options}
+
+<table class="data">
+  <thead>
+    <tr><th>Orientierung<th>Stärken<th>Schwächen
+  <tbody>
+    <tr><td>Ganze Organisation<td>Wenig Aufwand, ein Eigentümer<td>Bündelt verteilte Zuständigkeiten, Übergang von Teilen bleibt schwierig
+    <tr><td>Aufgabe im Ordnungssystem (Funktion oder Tätigkeit)<td>Verantwortung, Aufbewahrung und Zugriff hängen meist an der Aufgabe. Der Namensraum kann mit der Aufgabe umziehen.<td>Ordnungssysteme sind oft feiner gegliedert und werden regelmässig umgebaut. Die Zahl der Namensräume wächst mit der Gliederung.
+    <tr><td>Gesetzliche Aufgabe und Aufbewahrungsvorgabe<td>Langfristig stabiler als organisatorische Gliederungen, direkt an der Dauer der Verantwortung ausgerichtet<td>Setzt voraus, dass die rechtlichen Grundlagen klar zugeordnet sind. Querschnittsaufgaben sind schwer abzugrenzen.
+    <tr><td>Einzelnes System<td>Einfach umzusetzen<td>Nicht empfohlen: Ein Systemwechsel würde den Namensraum betreffen, obwohl die Identität unabhängig vom System sein soll ([[RWP]], §4.1).
+</table>
+
+(Beispiel Bund: Das Ordnungssystem ist häufig nach organisatorischen Teilprozessen gegliedert und deshalb für die Abgrenzung langfristiger Namensräume tendenziell zu fein. Die gesetzlichen Aufgaben und Aufbewahrungsvorgaben bieten eine stabilere Grundlage.)
+
+Als Orientierung empfiehlt dieser Guide, den Zuschnitt an einer langfristig stabilen Aufgabe auszurichten, für die Eigentümer und Aufbewahrungsregel feststehen. Das Ordnungssystem kann dabei als Hilfsmittel dienen, ist aber nicht der Massstab.
+
+<div class="issue">
+
+Offener Punkt: In der Community ist die Ausrichtung an einer Aufgabe des Ordnungssystems nach ISO 15489 vorgeschlagen worden (Ebene Funktion oder Tätigkeit). Es ist offen, ob der Guide die gesetzliche Aufgabe als bevorzugte Orientierung nennt oder beide Orientierungen gleichrangig führt.
+
+</div>
+
+
+## Wie viele Namensräume ## {#scope-number}
+
+Eine feste Zahl gibt es nicht. Kleine Organisationen kommen mit einem Namensraum aus. Grössere Organisationen haben meist mehrere Verantwortungsbereiche und damit mehrere Namensräume. Die Anzahl ist kein Ziel, sie ergibt sich aus der Zahl der Einheiten, die sich unabhängig voneinander übertragen lassen.
+
+Jeder global auflösbare Namensraum braucht einen Eintrag im GNR. Mehr Namensräume erhöhen den organisatorischen Aufwand, den technischen dagegen nur begrenzt: Eine Resolver-Instanz kann mehrere Namensräume bedienen (siehe [[#tasks-operations]]).
+
+
+## Global oder lokal ## {#scope-global-local}
+
+Die Entscheidung zwischen global und lokal gehört zum Zuschnitt, weil sie sich nicht ohne Wechsel der DID rückgängig machen lässt. Der Namensraum ist Teil der Identität eines Records. Ein Wechsel von einem lokalen zu einem global auflösbaren Namensraum ändert daher die DIDs der Records (siehe [[#scope-irreversible]]).
+
+* Ein **global auflösbarer** Namensraum eignet sich, wenn Records über die Organisation hinaus referenziert, abgerufen oder geprüft werden sollen.
+* Ein **lokaler** Namensraum eignet sich für Records, die ausschliesslich innerhalb eines abgegrenzten Bereichs genutzt werden. Die Auflösung bleibt auf lokale Konfiguration angewiesen, und lokale Namensräume dürfen nicht im GNR stehen (siehe [[#global-local]]).
+
+Wenn absehbar ist, dass ein Namensraum später extern aufgelöst werden soll, ist ein global auflösbarer Namensraum von Anfang an die sichere Wahl.
+
+
+## Zuordnung festhalten ## {#scope-register}
+
+Weil ein global auflösbarer Namensraum opak ist ([[RWP]], §4.3), ergibt sich aus der DID nicht, wofür der Namensraum steht. Die Zuordnung sollte in einem Register der Organisation geführt werden. Empfohlene Angaben:
+
+* Namensraum und Art (global oder lokal)
+* Aufgabe oder Zweck, gegebenenfalls Rechtsgrundlage
+* Eigentümer, Betreiber und Hersteller
+* massgebliche Aufbewahrungsregel (`retentionPolicy`)
+* Endpunkt des DID-Providers und Eintrag im GNR
+* Beginn der Verantwortung und vorgesehene Übergabe
+
+Auf Ebene eines einzelnen Records wird die verantwortliche Einheit im Feld `metadata.governance.owner` geführt ([[RWP]], §5.2). Dieses Feld bezeichnet den Record-Eigentümer, nicht den Eigentümer des Namensraums.
+
+
+# Registrierung und Verwendung des GNR # {#gnr}
+
+Dieses Kapitel beschreibt, was eine Organisation beachten muss, wenn sie einen Namensraum im GNR registriert. Es behandelt nicht den Betrieb des GNR-Netzwerks (siehe [[#tasks-namespace-provider]]).
+
+
+## Wozu das GNR dient ## {#gnr-purpose}
+
+Das GNR ordnet einem global auflösbaren Namensraum den Endpunkt des zuständigen DID-Providers zu. Ein Client, der eine fremde DID auflösen will, kann so den DID-Provider finden, ohne den Endpunkt vorher zu kennen ([[RWP]], §16.2.1 und §16.2.5). Das GNR nimmt damit die Rolle des [=namespace provider|Namensraum-Providers=] wahr.
+
+
+## Voraussetzungen ## {#gnr-prerequisites}
+
+* Der Namensraum ist eine UUID Version 4 in kanonischer Schreibweise ([[RWP]], §4.3).
+* Das GNR nimmt ausschliesslich global auflösbare Namensräume an. Die Registrierung eines lokalen Namensraums wird abgelehnt ([[RWP]], §16.2.7).
+* Der Eigentümer hat einen DID-Provider, der den Namensraum bedient und dessen Endpunkt erreichbar ist.
+* Die Organisation erfüllt die Zulassungsbedingungen des Governance-Frameworks des GNR-Netzwerks ([[RWP]], §16.2.9).
+
+
+## Was eingetragen wird ## {#gnr-entry}
+
+Der aktuelle Routingeintrag eines Namensraums enthält mindestens den Namensraum, den Endpunkt des DID-Providers (`resolverEndpoint`), den Registranten (`registeredBy`), den Zeitpunkt der Registrierung (`registeredAt`) und die Transaktionskennung (`txId`) ([[RWP]], §16.2.7).
+
+Der Registrant wird aus der authentifizierten Netzwerkidentität des Registrierenden abgeleitet. Er lässt sich nicht über die Eingabe der Transaktion festlegen. Die Eigentümerschaft kann daher nur von einer Partei festgehalten werden, die im GNR-Netzwerk eine Identität hat. Wie diese Identität zustande kommt, regelt das Governance-Framework.
+
+Der Eintrag enthält keine Angaben zur Organisation, zum Zweck des Namensraums oder zu den Records. Diese Zuordnung gehört in das Register der Organisation (siehe [[#scope-register]]).
+
+
+## Entscheidungen vor der Registrierung ## {#gnr-decisions}
+
+<table class="data">
+  <thead>
+    <tr><th>Entscheidung<th>Wer entscheidet<th>Warum es vorher feststehen muss
+  <tbody>
+    <tr><td>Wer ist Registrant und damit Eigentümer?<td>Eigentümer<td>Der Registrant lässt sich nicht nachträglich frei ändern (siehe [[#transitions]]).
+    <tr><td>Welcher DID-Provider bedient den Namensraum?<td>Eigentümer<td>Sein Endpunkt wird eingetragen und muss dauerhaft erreichbar sein.
+    <tr><td>Wie erhält die Organisation Zugang zum GNR-Netzwerk?<td>Eigentümer<td>Teilnahme und Zulassung richten sich nach dem Governance-Framework.
+    <tr><td>Wer ist für Änderungen am Eintrag zuständig?<td>Eigentümer<td>Endpunktwechsel und Stilllegung brauchen eine benannte Person oder Funktion.
+    <tr><td>Wer wird bei Störungen benachrichtigt?<td>Eigentümer und Betreiber<td>Falsche Endpunkte und Sicherheitsvorfälle betreffen alle, die den Namensraum auflösen (siehe [[#disruptions]]).
+</table>
+
+
+## Änderungen am Eintrag ## {#gnr-changes}
+
+Das Governance-Framework des GNR-Netzwerks legt fest, wie Namensräume registriert, aktualisiert, gesperrt und gegebenenfalls stillgelegt werden ([[RWP]], §16.2.9). Der Eintrag lässt sich ändern, die zugrunde liegende Transaktionshistorie aber nicht. Sie steht für Audit, Prüfung und Migration zur Verfügung ([[RWP]], §16.2.8).
+
+Für die Praxis bedeutet das:
+
+* Ein Wechsel des DID-Providers erfordert eine Aktualisierung des Endpunkts im GNR (siehe [[#transitions]]).
+* Die Registrierungshistorie zeigt später, wer wann welchen Endpunkt eingetragen hat. Sie ist Teil der Nachweise für den Eigentümer.
+* Eine Stilllegung beendet die globale Auflösbarkeit. Verweise aus anderen Namensräumen laufen dann ins Leere (siehe [[#duration]]).
+
+
+## Was das GNR nicht leistet ## {#gnr-limits}
+
+* Das GNR ist kein DID-Resolver. Es löst keine einzelnen DIDs auf und speichert weder DID-Dokumente, Records, Zugriffsentscheidungen noch Organisationsverzeichnisse ([[RWP]], §16.2.2).
+* Eine erfolgreiche Namensraum-Auflösung beweist nicht, dass die DID existiert, dass der Record zugänglich ist oder dass der Registrant die Organisation ist, die er zu sein behauptet ([[RWP]], §16.2.4).
+* Die Registrierung begründet keine Vertrauensstellung. Ob eine Registrierung, ein Controller oder ein Resolver akzeptiert wird, entscheidet die prüfende Stelle selbst ([[RWP]], §16 und §16.4).
+
+
+## Der RecordWeb-Namensraum ## {#gnr-recordweb}
+
+Die RecordWeb Trust Association betreibt den DID-Provider für den RecordWeb-Namensraum, und ihre Mitglieder betreiben das GNR ([[RWP]], §16.4). Das GNR bietet daher keine unabhängige Kontrolle der DID-Dokument-Historie dieses Namensraums. Prüfende Stellen sollten früher verifizierte DID-Dokument-Versionen aufbewahren, wenn sie sich dagegen absichern wollen.
+
+
+## Dokumentation der Registrierung ## {#gnr-documentation}
+
+Empfohlen wird, für jede Registrierung eine Akte zu führen: Beschluss des Eigentümers, Datum, Registrant, eingetragener Endpunkt, zuständige Person und Ansprechpartner des Betreibers.
+
+<div class="issue">
+
+Offener Punkt: [[RWP]] 0.0.17 beschreibt nicht, wie ein Namensraum von einem Registranten auf einen anderen übergeht. Das ist beim Eigentümerwechsel relevant (siehe [[#transitions]]).
+
+</div>
+
+
+# Dauer der Verantwortung # {#duration}
+
+
+## Grundsatz ## {#duration-principle}
+
+Die Verantwortung für einen Namensraum dauert so lange, wie die darin enthaltenen Identifier auflösbar sein sollen. Sie leitet sich aus den Aufbewahrungsfristen der Records ab und nicht aus Vertrags- oder Systemlaufzeiten.
+
+<table class="data">
+  <thead>
+    <tr><th>Laufzeit<th>Typische Dauer<th>Massgeblich für die Verantwortung?
+  <tbody>
+    <tr><td>Vertrag mit dem Betreiber oder Hersteller<td>wenige bis etwa zehn Jahre<td>Nein
+    <tr><td>Lebenszyklus eines Produkts<td>kürzer als die Aufbewahrungsfrist<td>Nein
+    <tr><td>Aufbewahrungsfrist der Records (`retentionPolicy`)<td>oft dreissig Jahre und mehr<td>Ja
+    <tr><td>Archivierung<td>dauerhaft<td>Ja, über die Frist hinaus (siehe [[#duration-end]])
+</table>
+
+[[RWP]] zeigt in seinem Beispiel eine Aufbewahrungsregel von dreissig Jahren. Dieser Wert ist ein Beispiel und keine Vorgabe. Bei Aufbewahrungsfristen dieser Länge liegt zwischen der Dauer der Verantwortung und der Laufzeit eines Softwarevertrags regelmässig eine Lücke. Dieser Guide benennt sie ausdrücklich, damit sie vor der Beschaffung geschlossen wird (siehe [[#procurement]]).
+
+
+## Beginn ## {#duration-start}
+
+Die Verantwortung beginnt spätestens mit der Vergabe der ersten DID im Namensraum. Ab diesem Zeitpunkt können andere Systeme auf den Identifier verweisen und erwarten, dass er auflösbar ist.
+
+
+## Bestimmung der Dauer ## {#duration-derivation}
+
+Die Dauer ergibt sich aus der längsten Aufbewahrungsfrist der Records im Namensraum. Wo die Fristen der Records stark voneinander abweichen, bestimmt die längste Frist die Verantwortung des gesamten Namensraums. Das ist ein Grund, Records mit sehr unterschiedlichen Fristen verschiedenen Namensräumen zuzuordnen (siehe [[#scope-criteria]]).
+
+
+## Ende der Frist beendet die Verantwortung nicht ## {#duration-end}
+
+Ein Ablauf der Aufbewahrungsfrist führt nicht automatisch dazu, dass der Namensraum nicht mehr aufgelöst werden muss. Was gilt, hängt vom Löschregime des Records ab ([[RWP]], §14.4):
+
+<table class="data">
+  <thead>
+    <tr><th>Regime<th>Wirkung auf die Auflösbarkeit
+  <tbody>
+    <tr><td>Payload-Löschung (`payload-only`)<td>DID, Metadaten und Versionsgraph bleiben bestehen. Die DID bleibt auflösbar (HTTP 200), und der DID-Provider bewahrt die DID-Dokument-Historie weiter auf.
+    <tr><td>Vollständige Löschung (`full-delete`)<td>Der DID-Provider muss die DID weiterhin beantworten, und zwar mit HTTP 410. Die `recordId` wird nie wiederverwendet.
+    <tr><td>Ausnahme (`exempt`)<td>Es wird nicht gelöscht. Die gesetzliche Aufbewahrungspflicht gilt fort.
+</table>
+
+Auch nach Löschungen braucht ein Namensraum also einen DID-Provider, der Anfragen korrekt beantwortet ([[RWP]], §3.6 und §4.2). Die Pflicht endet nicht mit der Löschung, sondern mit einer bewussten Entscheidung.
+
+
+## Ende der Verantwortung ## {#duration-handover}
+
+Die Verantwortung für einen Namensraum endet in der Regel durch Übergabe an einen Nachfolger und nicht durch Zeitablauf. Als Nachfolger kommen eine Nachfolgeorganisation oder ein Archiv in Frage. Die Übergabe wird vereinbart und dokumentiert, bevor sie wirksam wird (siehe [[#transitions]]).
+
+Wird kein Nachfolger bestimmt, entscheidet der Eigentümer bewusst über die Stilllegung. Dabei sind die Folgen zu klären und zu dokumentieren: Die globale Auflösbarkeit endet, und Verweise anderer Namensräume sowie zwischengespeicherte Versionen verlieren ihre Auflösung ([[RWP]], §16.3). Eine Stilllegung durch Versäumnis ist nicht vorgesehen und gilt als Störung (siehe [[#disruptions]]).
+
+
+## Finanzierung ## {#duration-funding}
+
+Auflösbarkeit ist ein laufender Betrieb und keine einmalige Migration. Eine Pflicht zur Auflösbarkeit ohne Finanzierungsmodell ist eine offene Verbindlichkeit für den, der sie am Ende trägt. Der Eigentümer sollte deshalb vor der Inbetriebnahme klären:
+
+* wer die Kosten der Auflösung trägt, solange Records aufbewahrt werden,
+* wer sie nach Ende eines Vertrags oder nach einer Archivübernahme trägt,
+* wie lange diese Finanzierung gesichert ist.
+
+
+## Dokumentation ## {#duration-documentation}
+
+Im Register der Organisation wird festgehalten (siehe [[#scope-register]]): die massgebliche Aufbewahrungsfrist, das daraus abgeleitete Ende der Verantwortung (falls eine Übergabe vorgesehen ist), der vorgesehene Nachfolger und die Finanzierung.
+
+<div class="issue">
+
+Offener Punkt: Soll der Guide empfehlen, dass die Auflösung nach der Frist bis zur Übergabe an ein Archiv weiterläuft? Und wie wird verhindert, dass ein Namensraum nach einer Übergabe ohne Betreiber bleibt?
+
+</div>
+
+
+# Übergänge # {#transitions}
+
+
+## Was gleich bleibt und was sich ändert ## {#transitions-principle}
+
+Der Identifier eines Records bleibt über jeden Übergang unverändert, auch nach einer Systemmigration ([[RWP]], §4.1). Es ändern sich Endpunkte, Betreiber, Verwahrer oder Eigentümer. Das Ziel jedes Übergangs ist, dass die Auflösbarkeit lückenlos erhalten bleibt.
+
+<table class="data">
+  <thead>
+    <tr><th>Übergang<th>Was sich ändert<th>Wo die Änderung sichtbar wird
+  <tbody>
+    <tr><td>Wechsel des DID-Providers<td>Der Endpunkt, der die DID-Dokumente liefert<td>Routingeintrag im GNR
+    <tr><td>Wechsel des Verwahrers<td>Der Ort, an dem die Records liegen<td>`recordEndpoint` im DID-Dokument (neue DID-Dokument-Version)
+    <tr><td>Wechsel des Eigentümers<td>Die rechenschaftspflichtige Organisation<td>Registrant im GNR, `metadata.governance.owner` der Records
+    <tr><td>Überführung ins Archiv<td>Je nach Modell Verwahrer, DID-Provider oder Eigentümer<td>wie oben, je nach Modell
+</table>
+
+
+## Was übergeben werden muss ## {#transitions-scope}
+
+Die Auflösbarkeit bleibt nur erhalten, wenn die folgenden Bestandteile vollständig übergeben werden:
+
+<table class="data">
+  <thead>
+    <tr><th>Bestandteil<th>Warum<th>RWP
+  <tbody>
+    <tr><td>DID-Dokument-Historie, alle Versionen unverändert<td>Der DID-Provider muss jede Version aufbewahren. Prüfende rechnen die Hashkette nach.<td>§3.2, §3.4, §3.6
+    <tr><td>Records mit allen Versionen und Repräsentationen<td>Der Verwahrer muss die Informationen zur Prüfung von Integrität und Versionierung erhalten.<td>§1.5, §6
+    <tr><td>Löschnachweise (DeletionRecords) und markierte Repräsentationen<td>Sie belegen, warum Inhalte fehlen. Ohne sie lässt sich eine Löschung nicht von einem Verlust unterscheiden.<td>§6.2, §14
+    <tr><td>Schemas, auf die Records verweisen<td>Jede referenzierte Schema-Version muss dauerhaft abrufbar bleiben.<td>§13.5
+    <tr><td>Verfügungsgewalt über die Schlüssel für DID-Dokumente<td>Neue DID-Dokument-Versionen müssen mit einer zulässigen Verifikationsmethode signiert werden können.<td>§3.4, §7.7
+    <tr><td>Zugriffsrichtlinien<td>Antworten wie 403 und 404 müssen gleich bleiben.<td>§3.6, §18
+    <tr><td>Register-Einträge und Verträge<td>Zuständigkeiten, Fristen und Finanzierung müssen nachvollziehbar bleiben.<td>—
+</table>
+
+Die Verifikationsmethode für neue DID-Dokument-Versionen muss in der aktuellen DID-Dokument-Version des Controllers stehen ([[RWP]], §3.4). Wo ein Controller angegeben ist, empfiehlt dieser Guide, dass er zum Eigentümer gehört und nicht zum Betreiber. So behält der Eigentümer bei einem Betreiberwechsel die Kontrolle über die Historie.
+
+
+## Systemwechsel und Anbieterwechsel ## {#transitions-system}
+
+Der Ablauf bei einem Wechsel von System, Betreiber oder Anbieter ist im Kern immer derselbe:
+
+1. **Bestandsaufnahme:** Das Register zeigt, welche Namensräume, Endpunkte, Schlüssel und Verträge betroffen sind.
+2. **Zielsystem bereitstellen:** DID-Provider und Verwahrer laufen parallel zum bestehenden System.
+3. **Historie übernehmen und prüfen:** Die DID-Dokument-Historie wird vollständig übernommen. Dann werden die Hashkette (`previousVersionHash`) und die `versionHash`-Werte nachgerechnet ([[RWP]], §3.3 und §3.4).
+4. **Records übernehmen und validieren:** Records werden übernommen. Für Stichproben oder vollständig werden `recordHash`, `versionHash` und `contentHash` neu berechnet.
+5. **Umschalten:** Ändert sich der Speicherort der Records, entsteht eine neue DID-Dokument-Version mit neuem `recordEndpoint` ([[RWP]], §3.2). Ändert sich der DID-Provider, wird der Endpunkt im GNR aktualisiert (siehe [[#gnr-changes]]).
+6. **Altsystem erst nach erfolgreicher Prüfung ausser Betrieb nehmen:** Bis dahin laufen beide Systeme parallel.
+7. **Dokumentieren:** Der Übergang wird im Register festgehalten.
+
+RWP sieht für dokumentierte Migrationen einen MigrationRecord vor, seine Ausgestaltung ist in der aktuellen Fassung aber noch offen ([[RWP]], §8.2).
+
+Während der Umschaltung sollte keine Lücke in der Auflösbarkeit entstehen. Eine Lücke erscheint bei anderen Systemen als nicht auflösbar (Validierungscode 404 oder 424). Das ist kein Beleg dafür, dass ein Record ungültig ist ([[RWP]], §7.5.3). Es bleibt aber eine Störung, die vermieden werden kann.
+
+
+## Überführung ins Archiv ## {#transitions-archive}
+
+Vor der Überführung ist zu klären, welches Modell gilt:
+
+<table class="data">
+  <thead>
+    <tr><th>Modell<th>Eigentümer<th>DID-Provider<th>Verwahrer<th>Folge
+  <tbody>
+    <tr><td>Vollständige Übernahme<td>Archiv<td>Archiv<td>Archiv<td>Das Archiv führt den Namensraum weiter. Die Endpunkte zeigen auf das Archiv.
+    <tr><td>Übernahme der Records<td>bisherige Organisation<td>bisherige Organisation oder Dienstleister<td>Archiv<td>Der `recordEndpoint` zeigt auf das Archiv. Die Organisation behält die Verantwortung für die Auflösung.
+    <tr><td>Übernahme mit Eigentümerwechsel<td>Archiv<td>nach Vereinbarung<td>Archiv<td>Das Archiv wird Registrant. Das setzt einen Eigentümerwechsel im GNR voraus (siehe unten).
+</table>
+
+(Beispiel Bund: Bei der Ablieferung an das zuständige Archiv sollte vor der Ablieferung geklärt werden, ob der Namensraum beim Amt bleibt oder an das Archiv übergeht.)
+
+Das Archiv darf die Identifier der Records nicht durch eigene ersetzen. Die DID ist permanent, eine eigene Archivsignatur kann als zusätzlicher Identifier geführt werden ([[RWP]], §4.1). Records sind beim Finalisieren bereits in archivtauglichen Formaten gespeichert ([[RWP]], §6.4 und §6.6). Das erleichtert die Übernahme.
+
+
+## Eigentümerwechsel ## {#transitions-owner}
+
+Ein Eigentümerwechsel ist bei Reorganisationen, Fusionen und Aufgabenübertragungen wahrscheinlicher als ein Anbieterwechsel. Die Nachfolgeorganisation oder das Archiv übernimmt die Rolle des Eigentümers. Das wird vereinbart und dokumentiert, bevor der Wechsel wirksam wird.
+
+Mit der Aufgabe wechselt auch der Namensraum, wenn der Zuschnitt dazu passt (siehe [[#scope-criteria]]). Zu regeln sind:
+
+* **Vereinbarung:** Wer wird Eigentümer, ab wann, mit welchen Rechten und Pflichten (siehe [[#liability]])?
+* **Registrant im GNR:** Der Registrant wird aus der authentifizierten Netzwerkidentität abgeleitet ([[RWP]], §16.2.7). Wie die Eigentümerschaft im GNR übergeht, ist in RWP 0.0.17 nicht beschrieben.
+* **Records:** Das Feld `metadata.governance.owner` wird auf den neuen Eigentümer angepasst. RWP sieht das ausdrücklich vor, etwa bei einer Übertragung der Verantwortung ([[RWP]], §5.2). Metadaten werden an Ort und Stelle geändert, die Änderung ist durch den `recordHash` erkennbar.
+* **Schlüssel:** Die Kontrolle über die Schlüssel für DID-Dokumente geht an den neuen Eigentümer über.
+
+Geht nur ein Teil der Aufgaben eines Namensraums auf eine andere Einheit über, lässt sich der Namensraum nicht teilen. Die bestehenden Records bleiben im alten Namensraum, neue Records entstehen im neuen (siehe [[#scope-irreversible]]). Der alte Namensraum muss bis zum Ende der Frist weiter aufgelöst werden. Das ist der Preis eines Zuschnitts, der sich nicht an der Aufgabe orientiert.
+
+
+## Wirkung auf andere Namensräume ## {#transitions-others}
+
+Verweise aus anderen Namensräumen bleiben gültig, solange der Namensraum aufgelöst werden kann. Der Identifier ändert sich nicht, und Systeme lösen über das GNR immer den aktuellen Endpunkt auf. Zwischengespeicherte Versionen werden mit dem ursprünglichen Hash geprüft ([[RWP]], §16.3). Ein Übergang bricht fremde Verweise nur, wenn die Auflösung unterbrochen wird.
+
+<div class="issue">
+
+Offene Punkte: Wie wird die Eigentümerschaft eines global auflösbaren Namensraums im GNR übertragen? Wie wird der MigrationRecord ausgestaltet? Beide Fragen sind Gegenstand von RWP und nicht des Guides.
+
+</div>
+
+
+# Störungen und Ausfall # {#disruptions}
+
+
+## Grundsatz ## {#disruptions-principle}
+
+Eine Störung lässt sich nicht verhindern, aber ihre Folgen lassen sich begrenzen. Entscheidend ist, was vor Eintritt des Falls vorgesehen ist. Nach einem Ausfall fehlen meist die Möglichkeiten, die Übergabe noch zu organisieren. Der Eigentümer trägt die Folgen, auch wenn der Ausfall beim Betreiber oder Hersteller liegt (siehe [[#liability]]).
+
+
+## Fälle im Überblick ## {#disruptions-cases}
+
+<table class="data">
+  <thead>
+    <tr><th>Fall<th>Wirkung auf die Auflösbarkeit<th>Was vorgesehen sein muss
+  <tbody>
+    <tr><td>Produkteinstellung durch den Hersteller<td>Der Betrieb endet zu einem angekündigten Termin.<td>Übernahme durch ein anderes Produkt oder einen anderen Betreiber vor Dienstende ([[#disruptions-discontinuation]])
+    <tr><td>Betriebsausfall beim Betreiber<td>DID-Dokumente oder Records sind vorübergehend nicht erreichbar.<td>Wiederherstellung, Kommunikation, bekannte Ansprechpartner ([[#disruptions-outage]])
+    <tr><td>Betreiber stellt den Betrieb ohne Übergabe ein<td>Die Auflösung bricht ab, ohne dass jemand übernimmt.<td>Exportierbare Historie und Endpunkte, Übernahmepartei ([[#disruptions-preparation]])
+    <tr><td>Auflösung der Organisation des Eigentümers<td>Niemand ist mehr für den Namensraum zuständig.<td>Nachfolger oder Archiv, vor der Auflösung bestimmt ([[#disruptions-dissolution]])
+    <tr><td>Kompromittierter oder verlorener Schlüssel<td>Neue DID-Dokument-Versionen sind nicht mehr vertrauenswürdig oder nicht mehr möglich.<td>Notfallverfahren für Schlüssel ([[#disruptions-keys]])
+    <tr><td>Falscher Resolver-Endpunkt im GNR<td>Anfragen werden an die falsche Stelle geleitet.<td>Meldeweg und Korrekturverfahren ([[#disruptions-endpoint]])
+    <tr><td>Ausfall des GNR<td>Die globale Auflösung von Namensräumen fällt aus.<td>Kenntnis der Ansprechstellen des GNR-Netzwerks ([[#disruptions-gnr]])
+</table>
+
+
+## Voraussetzungen für eine geordnete Übernahme ## {#disruptions-preparation}
+
+Ein Übergang bei Ausfall gelingt nur, wenn drei Dinge bereits bestehen, bevor der Fall eintritt:
+
+* **Exportierbare DID-Dokument-Historie:** Sie muss vollständig und unverändert herausgegeben werden können (siehe [[#transitions-scope]]).
+* **Dokumentierte Record-Endpunkte:** Wo die Records liegen und wie sie in einer dokumentierten Form abgerufen werden, muss festgehalten sein.
+* **Eine Partei, die bereit ist, zu übernehmen:** Das kann ein anderer Betreiber, ein Nachfolgesystem oder ein Archiv sein. Ohne eine solche Partei gibt es keine geordnete Übernahme.
+
+Das sind keine Anforderungen von [[RWP]]. Sie zeigen einer beschaffenden Stelle, was sie im Voraus sichern muss. Wo ein Hersteller den Betrieb ohne geordnete Übergabe einstellt, trägt der Eigentümer die Folgen.
+
+
+## Produkteinstellung ## {#disruptions-discontinuation}
+
+Stellt ein Hersteller ein Produkt ein, sorgt der Eigentümer dafür, dass Resolver und Record-Endpunkte vor Ende des Dienstes von einem anderen Produkt oder Anbieter übernommen werden. Dazu gehört, dass er den Termin rechtzeitig erfährt. Empfohlen werden:
+
+* eine vertraglich vereinbarte Vorlaufzeit für die Einstellung,
+* regelmässige Exporte, die der Eigentümer bei sich oder bei einer dritten Stelle aufbewahrt,
+* ein Test, ob ein Export tatsächlich in ein anderes System eingespielt und geprüft werden kann (siehe [[#transitions-system]]).
+
+
+## Betriebsausfall ## {#disruptions-outage}
+
+Nicht erreichbare DID-Dokumente oder Records sind für Prüfende nicht von fehlenden zu unterscheiden. Ein Ausfall führt bei anderen Systemen zu den Validierungsergebnissen 404 oder 424. Diese sind kein Beleg dafür, dass ein Record ungültig oder verändert ist ([[RWP]], §7.5.3). Der Betreiber sollte dennoch Ausfälle vermeiden und rasch beheben.
+
+Vorgesehen sein sollten:
+
+* Zielzeiten für die Wiederherstellung und die Verfügbarkeit,
+* Datensicherung der DID-Dokument-Historie und der Records mit getestetem Wiederanlauf (siehe [[#tasks-operations]]),
+* eine Benachrichtigung des Eigentümers und eine Information an betroffene Gegenstellen.
+
+Prüfende Stellen können sich gegen Ausfälle absichern, indem sie früher verifizierte DID-Dokument-Versionen aufbewahren ([[RWP]], §16.4).
+
+
+## Auflösung der Organisation ## {#disruptions-dissolution}
+
+Wird die Organisation des Eigentümers aufgelöst oder zusammengelegt, muss vor dem Stichtag feststehen, wer die Rolle des Eigentümers übernimmt. Das kann die Rechtsnachfolgerin oder ein Archiv sein (siehe [[#transitions-owner]] und [[#transitions-archive]]). (Beispiel Bund: Bei der Aufhebung oder Zusammenlegung von Verwaltungseinheiten werden die Aufgaben einer Nachfolgeeinheit zugewiesen. Der Namensraum folgt der Aufgabe, wenn der Zuschnitt dazu passt.)
+
+Wo kein Nachfolger vorgesehen ist, entscheidet die Organisation vor der Auflösung bewusst über die Stilllegung und dokumentiert die Folgen (siehe [[#duration-handover]]). Eine Auflösung ohne Regelung ist die schwerste Störung, weil niemand mehr für die Auflösbarkeit einsteht.
+
+
+## Kompromittierter oder verlorener Schlüssel ## {#disruptions-keys}
+
+Neue DID-Dokument-Versionen werden mit einer Verifikationsmethode signiert, die im aktuellen DID-Dokument des Controllers steht ([[RWP]], §3.4). Wird ein Schlüssel kompromittiert, entsteht eine neue DID-Dokument-Version ohne diesen Schlüssel. Ein Schlüssel, der nicht mehr im aktuellen DID-Dokument steht, darf für neue Signaturen nicht mehr verwendet werden ([[RWP]], §7.7).
+
+Zu klären ist vorab:
+
+* wer einen Schlüssel sperren und ersetzen darf, auch ausserhalb der Bürozeiten,
+* wo Ersatzschlüssel aufbewahrt werden,
+* wie bereits erstellte Signaturen eingeordnet werden. RWP bewertet bei der Validierung einer Signatur den Schlüsselstatus zum Zeitpunkt der Signatur nicht ([[RWP]], §7.5.2). Der Eigentümer kann über eine StatusAssertion festhalten, dass eine Verifikationsmethode ab einem Zeitpunkt nicht mehr verlässlich ist ([[RWP]], §11).
+
+Bei Verlust aller Schlüssel eines Controllers können keine neuen DID-Dokument-Versionen mehr erzeugt werden. Das ist ein Grund, die Schlüssel beim Eigentümer zu halten und Ersatzverfahren vorzusehen.
+
+
+## Falscher Resolver-Endpunkt ## {#disruptions-endpoint}
+
+Ein falscher oder missbräuchlich geänderter Endpunkt im GNR leitet Anfragen an eine Stelle, die nicht zuständig ist. Das Governance-Framework des GNR-Netzwerks muss Verfahren für falsche Resolver-Endpunkte, kompromittierte Schlüssel, Dienstausfälle und Sicherheitsvorfälle definieren ([[RWP]], §16.2.9). Der Eigentümer sollte den Meldeweg kennen und den Eintrag regelmässig prüfen. Die Registrierungshistorie erlaubt es, eine Änderung nachzuvollziehen ([[RWP]], §16.2.8).
+
+Ein falscher Endpunkt kann eine in sich stimmige, aber gefälschte DID-Dokument-Historie liefern. Prüfende Stellen, die dagegen geschützt sein wollen, behalten früher verifizierte DID-Dokument-Versionen ([[RWP]], §16.4).
+
+
+## Ausfall des GNR ## {#disruptions-gnr}
+
+Das GNR-Netzwerk muss laut seinem Governance-Framework Anforderungen an Verfügbarkeit, Überwachung, Datensicherung, Wiederherstellung und Kontinuität festlegen ([[RWP]], §16.2.9). Eine Organisation, die auf die globale Auflösung angewiesen ist, sollte die Ansprechstellen des Netzwerks kennen und wissen, welche ihrer Prozesse von der globalen Auflösung abhängen.
+
+
+## Notfallplan ## {#disruptions-plan}
+
+Als Ergebnis dieses Kapitels sollte pro Namensraum ein kurzer Notfallplan bestehen, der im Register (siehe [[#scope-register]]) verlinkt ist:
+
+* Verantwortliche und Stellvertretungen auf Seiten von Eigentümer und Betreiber
+* Ansprechstellen beim Hersteller und beim GNR-Netzwerk
+* Ablauf für Export und Übernahme, mit Zielbetreiber oder Nachfolger
+* Schlüsselverwahrung und Verfahren bei Kompromittierung
+* Zielzeiten und Kommunikationsweg
+* Zeitpunkt und Ergebnis der letzten Übung
+
+Empfohlen wird, den Export und die Übernahme in regelmässigen Abständen zu üben. Ein ungeprüfter Plan gilt nicht als vorgesehen.
+
+<div class="issue">
+
+Offener Punkt: Wer ist Eigentümer, wenn eine Organisation ohne Nachfolger aufgelöst wird und der Namensraum noch auflösbar sein muss? Kann ein Archiv die Rolle als Auffang übernehmen?
+
+</div>
+
+
+# Was eine Beschaffung klären muss # {#procurement}
+
+
+## Zweck und Verwendung ## {#procurement-purpose}
+
+Dieses Kapitel fasst die Fragen zusammen, die vor einer Ausschreibung beantwortet sein sollten. Es ist eine Checkliste und kein Anforderungskatalog. Die Antworten fliessen in die Ausschreibungsunterlagen und den Vertrag ein. Die Fragen sind in drei Gruppen geordnet: Klärungen der beschaffenden Stelle, Fragen an den Lieferanten und vertragliche Regelungen.
+
+
+## Auswirkung auf die Wahl des Profils ## {#procurement-profile}
+
+[[RWP]] unterscheidet Profile und Rollen. Eine beschaffende Stelle sollte die Konformität nach ihrer eigenen Vertrauensrichtlinie bewerten, einschliesslich der Identität der bestätigenden Stelle, der Bewertungsmethode, der Nachweise und der Version der Implementierung und von RWP. Selbstbestätigung, unabhängige Bewertung und Zertifizierung sind nicht gleichwertig ([[RWP]], §15.6).
+
+In Diskussion sind Profile, die die Vergabe von Identifiern von der Auflösbarkeit trennen (rwp#59). Das Identifier-Profil hat keine Abhängigkeit von der Zuständigkeit für den Namensraum und ist deshalb ein risikoarmer erster Schritt. Das Profil zur Auflösbarkeit setzt voraus, dass die Fragen dieses Kapitels geklärt sind, bevor es als Anforderung in einer Beschaffung verwendet wird.
+
+
+## A. Klärungen der beschaffenden Stelle ## {#procurement-owner}
+
+Diese Fragen beantwortet die beschaffende Stelle als künftiger Eigentümer selbst, bevor sie mit Lieferanten spricht.
+
+<table class="data">
+  <thead>
+    <tr><th>Nr.<th>Frage<th>Hintergrund
+  <tbody>
+    <tr><td>A1<td>Wer ist Eigentümer und Registrant des Namensraums?<td>[[#org-roles]], [[#gnr-decisions]]
+    <tr><td>A2<td>Welchen Zuschnitt hat der Namensraum, und ist er global auflösbar oder lokal?<td>[[#scope-namespace]], [[#scope-global-local]]
+    <tr><td>A3<td>Welche Aufbewahrungsfrist gilt, und wie lange dauert daher die Verantwortung?<td>[[#duration-derivation]]
+    <tr><td>A4<td>Wer übernimmt die Rollen Betreiber, Verwahrer und Hersteller, und fallen sie zusammen?<td>[[#constellations]]
+    <tr><td>A5<td>Wer kontrolliert die Schlüssel für die DID-Dokumente?<td>[[#transitions-scope]], [[#disruptions-keys]]
+    <tr><td>A6<td>Wie ist die Auflösung über die gesamte Dauer finanziert?<td>[[#duration-funding]]
+    <tr><td>A7<td>Wer ist Nachfolger oder Auffangstelle (zum Beispiel ein Archiv)?<td>[[#duration-handover]], [[#disruptions-dissolution]]
+</table>
+
+
+## B. Fragen an den Lieferanten ## {#procurement-supplier}
+
+<table class="data">
+  <thead>
+    <tr><th>Nr.<th>Frage<th>Hintergrund
+  <tbody>
+    <tr><td>B1<td>Welche Rollen übernimmt der Lieferant (Betreiber, Verwahrer, Hersteller), und ist das schriftlich getrennt?<td>[[#org-roles]], [[#constellations]]
+    <tr><td>B2<td>Welche RWP-Rollen und Profile beansprucht er, mit welchem Nachweis, für welche Version?<td>[[#procurement-profile]]
+    <tr><td>B3<td>Wie lange betreibt er Resolver und Endpunkte, und was geschieht nach Vertragsende?<td>[[#duration-principle]]
+    <tr><td>B4<td>Wie lassen sich DID-Dokument-Historie, Records, Löschnachweise und Schemas exportieren, in welchem Format und mit welchen Prüfmöglichkeiten?<td>[[#transitions-scope]]
+    <tr><td>B5<td>Wie unterstützt er die Übergabe an ein Nachfolgesystem oder ein Archiv, und zu welchen Kosten?<td>[[#transitions-system]], [[#transitions-archive]]
+    <tr><td>B6<td>Wie läuft die Einstellung eines Produkts oder des Betriebs ab, mit welcher Vorlaufzeit?<td>[[#disruptions-discontinuation]]
+    <tr><td>B7<td>Wer trägt die Kosten der Auflösung nach Vertragsende, und für wie lange?<td>[[#duration-funding]]
+    <tr><td>B8<td>Wo liegen die Schlüssel, wer hat Zugriff, wie laufen Rotation und Notfall?<td>[[#disruptions-keys]]
+    <tr><td>B9<td>Welche Verfügbarkeit, Datensicherung und Wiederherstellung werden zugesichert, auch für die DID-Dokument-Historie?<td>[[#tasks-operations]]
+    <tr><td>B10<td>Wie werden mehrere Namensräume auf einer Instanz getrennt?<td>[[#tasks-operations]]
+    <tr><td>B11<td>Wie verhält sich der Resolver bei Zugriffsrichtlinien (Antworten 403 und 404)?<td>[[#tasks-did-provider]]
+    <tr><td>B12<td>Wie werden Sicherheitsvorfälle gemeldet, und in welcher Frist?<td>[[#disruptions-endpoint]]
+    <tr><td>B13<td>Wo und durch wen wird betrieben (Standort, Unterauftragnehmer)?<td>[[#constellations]]
+    <tr><td>B14<td>Wer registriert und ändert den Eintrag im GNR, und unter welcher Identität?<td>[[#gnr-entry]], [[#gnr-changes]]
+</table>
+
+
+## C. Vertragliche Regelungen ## {#procurement-contract}
+
+Die folgenden Punkte gehören in den Vertrag. Sie richten sich nach der Rollenverteilung aus [[#org-roles]]:
+
+* Die Eigentümerschaft am Namensraum liegt ausdrücklich beim Auftraggeber. Der Lieferant wird nicht Eigentümer, auch wenn er den Betrieb übernimmt.
+* Der Lieferant verpflichtet sich zur Herausgabe der DID-Dokument-Historie, der Records und der Schlüssel in der vereinbarten Form, jederzeit und nach Vertragsende.
+* Bei Beendigung gibt es einen Übergangsdienst, solange die Übernahme nicht abgeschlossen ist.
+* Änderungen am Eintrag im GNR erfolgen nur mit Zustimmung des Eigentümers.
+* Es sind regelmässige Exporte und ein Probelauf der Übernahme vorgesehen.
+* Die Haftung für Ausfälle, Verluste und Folgen einer ungeordneten Einstellung ist geregelt (siehe [[#liability]]).
+* Der Auftraggeber hat Prüf- und Auskunftsrechte, insbesondere zu Betrieb, Standort und Unterauftragnehmern.
+
+
+## Verwendung der Checkliste ## {#procurement-use}
+
+Eine Beschaffung ist reif für die Ausschreibung, wenn die Fragen der Gruppe A beantwortet sind und die Gruppe B als Anforderungen und Eignungs- oder Zuschlagskriterien formuliert ist. Die Gruppe C bildet die Grundlage für den Vertragsentwurf. Wo eine Frage offen bleibt, sollte sie als Risiko benannt werden und nicht übergangen.
+
+
+<h2 class="no-num" id="annex-rwp">Anhang A: Zuordnung zu RWP und RWT</h2>
+
+Dieser Anhang ist informativ. Er zeigt, auf welche Teile von [[RWP]] und [[RWT]] sich die Kapitel dieses Guides stützen, und macht sichtbar, welche Aussagen eigene Empfehlungen des Guides sind. Die Angaben beziehen sich auf RWP 0.0.17 und RWT 0.0.1.
+
+<h3 class="no-num" id="annex-rwp-chapters">A.1 Kapitel und RWP-Abschnitte</h3>
+
+<table class="data">
+  <thead>
+    <tr><th>Kapitel<th>RWP-Abschnitte<th>Verwendet für
+  <tbody>
+    <tr><td>[[#purpose]] Zweck und Abgrenzung<td>§1.5, §3.6, §14, §16.4, §18<td>Rollen, Auflösbarkeit, Abgrenzung zu Löschung, Vertrauen und Zugriffssteuerung
+    <tr><td>[[#principles]] Grundsätze<td>§3.2, §4.1, §4.3, §5.2, §16.2.4, §16.4<td>Stabilität des Identifiers, Opazität des Namensraums, Auflösung ohne Vertrauensaussage
+    <tr><td>[[#terms]] Begriffe und Rollen<td>§1.5, §4.3, §4.4, §5.2, §7.7, §16.2.7, §16.2.9<td>Rollen, global und lokal, Registrant, Record-Eigentümer, Abgrenzung zu Signaturen
+    <tr><td>[[#tasks]] Aufgaben und Anforderungen<td>§3.5, §3.6, §7.5.3, §15.4, §16.2, §16.2.3, §16.2.5, §16.3<td>Anforderungen an DID-Provider, Namensraum-Provider und Namensraum-Resolver, Zuordnung zu Rollen und Profilen
+    <tr><td>[[#scope-namespace]] Zuschnitt<td>§4.1, §4.2, §4.3, §4.4, §4.5, §5.2<td>Permanenz der Identität, keine Wiederverwendung der recordId, opaker Namensraum, Metadaten statt Identifier
+    <tr><td>[[#gnr]] Registrierung und Verwendung des GNR<td>§4.3, §16.2.2, §16.2.4, §16.2.7, §16.2.8, §16.2.9, §16.4<td>Voraussetzungen, Routingeintrag, Registrierungshistorie, Governance, RecordWeb-Namensraum
+    <tr><td>[[#duration]] Dauer der Verantwortung<td>§3.6, §4.2, §5.2, §14.4, §16.3<td>Aufbewahrungsregel, Löschregime, Auflösbarkeit nach Löschung, Verweise aus anderen Namensräumen
+    <tr><td>[[#transitions]] Übergänge<td>§3.2, §3.3, §3.4, §4.1, §5.2, §6.2, §6.4, §6.6, §8.2, §13.5, §14, §16.2.7, §16.3<td>DID-Dokument-Historie, neue Versionen bei Endpunktwechsel, Schemas, Löschnachweise, MigrationRecord, Eigentümerwechsel
+    <tr><td>[[#disruptions]] Störungen und Ausfall<td>§3.4, §7.5.2, §7.5.3, §7.7, §11, §16.2.8, §16.2.9, §16.4<td>Schlüsselverwaltung, StatusAssertion, Validierungscodes, Governance bei Störungen
+    <tr><td>[[#procurement]] Beschaffung<td>§15.2.4, §15.6<td>Bewertung von Konformitätsaussagen, Unterschied von Selbstbestätigung, Bewertung und Zertifizierung
+</table>
+
+<h3 class="no-num" id="annex-rwp-terms">A.2 Begriffe</h3>
+
+<table class="data">
+  <thead>
+    <tr><th>Begriff im Guide<th>Quelle<th>Entsprechung oder Anmerkung zu RWP 0.0.17
+  <tbody>
+    <tr><td>[=namespace|Namensraum=]<td>[[RWT]]<td>Komponente `namespace` der DID (§4.2)
+    <tr><td>[=recordId=]<td>[[RWT]]<td>Komponente `recordId` der DID (§4.2)
+    <tr><td>[=Record=]<td>[[RWT]]<td>§2.1
+    <tr><td>[=role|Rolle=]<td>[[RWT]]<td>§1.5
+    <tr><td>[=custodian|Verwahrer=]<td>[[RWT]]<td>Rolle «custodian», §1.5
+    <tr><td>[=DID provider|DID-Provider=]<td>[[RWT]]<td>In RWP heisst die Rolle noch «resolver» (§1.5, §3.6). Eine Anpassung ist in einem Issue erfasst.
+    <tr><td>[=DID resolver|DID-Resolver=]<td>[[RWT]]<td>Komponente, §3.6
+    <tr><td>[=DID resolution|DID-Auflösung=]<td>[[RWT]]<td>§3.6
+    <tr><td>[=namespace provider|Namensraum-Provider=]<td>[[RWT]]<td>Das GNR (§16.2). RWP nennt die Rolle nicht ausdrücklich.
+    <tr><td>[=namespace resolver|Namensraum-Resolver=]<td>[[RWT]]<td>In RWP als «GNR Resolver» (§16.2.3). §16.1 verwendet «namespace resolver» in anderer Bedeutung. Eine Anpassung ist in einem Issue erfasst.
+    <tr><td>[=namespace resolution|Namensraum-Auflösung=]<td>[[RWT]]<td>§16.2.5
+    <tr><td>[=producer|Erzeuger=], [=consumer|Nutzer=], [=verifier|Prüfer=]<td>[[RWT]]<td>§1.5
+    <tr><td>[=Eigentümer=]<td>Guide<td>Kein Begriff in RWP. Im GNR der Registrant (§16.2.7). Verschieden vom Record-Eigentümer (`metadata.governance.owner`, §5.2).
+    <tr><td>[=Betreiber=]<td>Guide<td>Kein Begriff in RWP. Partei, die DID-Provider- oder Verwahrer-Rolle ausübt.
+    <tr><td>[=Hersteller=]<td>Guide<td>Kein Begriff in RWP.
+    <tr><td>[=Registrant=]<td>Guide<td>`registeredBy` im Routingeintrag (§16.2.7)
+</table>
+
+Die Begriffe Eigentümer, Betreiber und Hersteller werden erst dann in [[RWT]] aufgenommen, wenn sie in weiteren Reports verwendet werden.
+
+<h3 class="no-num" id="annex-rwp-own">A.3 Eigene Empfehlungen des Guides</h3>
+
+Folgende Aussagen stammen nicht aus [[RWP]]. Sie sind Empfehlungen oder Folgerungen des Guides und sollten in der Diskussion entsprechend behandelt werden:
+
+* die Unterscheidung von Eigentümer, Betreiber und Hersteller sowie die Konstellationen ([[#org-roles]], [[#constellations]])
+* die Orientierungen für den Zuschnitt und die Empfehlung, sich an einer langfristig stabilen Aufgabe zu orientieren ([[#scope-namespace]])
+* die Folgerung, dass sich ein Zuschnitt nur für künftige Records ändern lässt ([[#scope-irreversible]])
+* das Register der Organisation und seine Angaben ([[#scope-register]])
+* die betrieblichen Empfehlungen zu Verfügbarkeit, Datensicherung, Schlüsselverwaltung und Export ([[#tasks-operations]])
+* die Ableitung der Verantwortungsdauer aus der längsten Aufbewahrungsfrist und die Übergabe statt Zeitablauf als Ende ([[#duration]])
+* die Empfehlung, die Schlüssel für DID-Dokumente beim Eigentümer zu halten ([[#transitions-scope]])
+* der Ablauf bei Systemwechsel und die Modelle der Archivüberführung ([[#transitions-system]], [[#transitions-archive]])
+* der Notfallplan und die Verwendung einer StatusAssertion bei Schlüsselkompromittierung ([[#disruptions]])
+* die Checkliste der Beschaffung ([[#procurement]])
+
+
+<h2 class="no-num" id="annex-open">Anhang B: Offene Punkte</h2>
+
+Dieser Anhang ist informativ. Er fasst die offenen Punkte der Kapitel zusammen und nennt, wer sie klären kann. Die Spalte «Adressat» zeigt, ob der Punkt im Guide selbst, in [[RWP]], in [[RWT]], in der RecordWeb-Ontologie (RWO) oder in der Community zu klären ist.
+
+<table class="data">
+  <thead>
+    <tr><th>Nr.<th>Kapitel<th>Frage<th>Adressat
+  <tbody>
+    <tr><td>B1<td>[[#liability]]<td>Soll der Guide Haftungsmodelle ausführen (vertragliche Regelung, Verwaltungsvereinbarung) oder nur den Entscheidungspunkt benennen?<td>Guide, Community
+    <tr><td>B2<td>[[#scope-options]]<td>Soll der Guide die gesetzliche Aufgabe als bevorzugte Orientierung für den Zuschnitt nennen oder die Ausrichtung am Ordnungssystem (Funktion, Tätigkeit) gleichrangig führen?<td>Guide, Community
+    <tr><td>B3<td>[[#scope-namespace]]<td>Soll die Aufgabe, der ein Namensraum zugeordnet ist, selbst als Record geführt werden (AgentRecord oder eigener Schematyp)?<td>RWO, RWP
+    <tr><td>B4<td>[[#gnr-entry]]<td>Wo und wie wird die Zuordnung von Namensraum zu Eigentümer festgehalten, wenn der Namensraum opak ist (zum Beispiel als AssertionRecord)?<td>RWO, RWP
+    <tr><td>B5<td>[[#gnr-documentation]], [[#transitions-owner]]<td>Wie geht die Eigentümerschaft (Registrant) eines global auflösbaren Namensraums im GNR auf eine andere Partei über?<td>RWP, GNR-Governance
+    <tr><td>B6<td>[[#terms]]<td>Darf eine Registrierungsstelle stellvertretend für einen Eigentümer registrieren, und wie wird die Eigentümerschaft dann nachgewiesen?<td>GNR-Governance
+    <tr><td>B7<td>[[#transitions-system]]<td>Wie wird der MigrationRecord ausgestaltet?<td>RWP
+    <tr><td>B8<td>[[#duration-handover]]<td>Wann endet die Pflicht zur Auflösbarkeit, und soll die Auflösung nach Ablauf der Frist bis zur Übergabe an ein Archiv weiterlaufen?<td>Guide, Community
+    <tr><td>B9<td>[[#disruptions-plan]]<td>Wer ist Eigentümer, wenn eine Organisation ohne Nachfolger aufgelöst wird? Kann ein Archiv als Auffang dienen?<td>Community
+    <tr><td>B10<td>[[#transitions-scope]]<td>Soll RWP festhalten, wer Controller eines DID-Dokuments eines Records sein soll und wo die Schlüssel liegen, damit die Empfehlung des Guides eine normative Grundlage hat?<td>RWP
+    <tr><td>B11<td>[[#disruptions-keys]]<td>Soll RWP die Verwendung einer StatusAssertion für Verifikationsmethoden bei Kompromittierung ausdrücklich beschreiben?<td>RWP
+    <tr><td>B12<td>[[#tasks-operations]]<td>Soll RWP klarstellen, dass mehrere Namensräume auf denselben Resolver-Endpunkt zeigen dürfen?<td>RWP
+    <tr><td>B13<td>[[#procurement-profile]]<td>Soll im Profiltext zur Auflösbarkeit (rwp#59) stehen, dass die Fragen zu Eigentümer, Betrieb und Übergabe vor der Verwendung in einer Beschaffung zu klären sind?<td>RWP
+    <tr><td>B14<td>[[#relationship]]<td>Wie wird der Kapitelvorschlag zur Namespace Stewardship im RWC mit diesem Guide abgestimmt, damit die Aussagen sich nicht widersprechen?<td>RWC, Guide
+    <tr><td>B15<td>[[#org-roles]]<td>Wann werden Eigentümer, Betreiber und Hersteller als Begriffe in [[RWT]] aufgenommen? Nach der Regel dann, wenn ein weiterer Report sie verwendet.<td>RWT
+    <tr><td>B16<td>[[#terms-rwt]]<td>Terminologie: Rolle «resolver» in DID-Provider umbenennen, «namespace resolver» in RWP §16.1 anpassen, Präfix der Ontologie vereinheitlichen. Die Issues sind angelegt.<td>RWP, RWT, RWO
+    <tr><td>B17<td>[[#status]]<td>Die englische Fassung des Guides folgt. Die deutschen Begriffe in [[RWT]] sind Vorschläge und müssen vorher bereinigt werden.<td>Guide, RWT
+</table>
+
